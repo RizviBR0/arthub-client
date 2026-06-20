@@ -2,6 +2,7 @@
 const nextConfig = {
   reactCompiler: true,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         hostname: "i.ibb.co",
