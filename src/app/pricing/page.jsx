@@ -44,7 +44,7 @@ export default function PricingPage() {
     }
   };
 
-  const currentTier = "basic"; 
+    const currentTier = "basic"; 
   return (
     <div className="bg-[#faf8f5] py-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
@@ -59,7 +59,7 @@ export default function PricingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           
-                    <div className="bg-white rounded-2xl border border-[#e8ddd1] p-8 shadow-sm flex flex-col">
+          <div className="bg-white rounded-2xl border border-[#e8ddd1] p-8 shadow-sm flex flex-col">
             <h3 className="text-2xl font-bold text-[#3d3029] font-serif mb-2">Basic</h3>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-4xl font-bold text-[#3d3029]">$0</span>
@@ -82,7 +82,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-                    <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col transform md:-translate-y-4">
+          <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col transform md:-translate-y-4">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#b07c5b] text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1">
               <FiStar /> MOST POPULAR
             </div>
@@ -100,16 +100,25 @@ export default function PricingPage() {
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 5% transaction fee</li>
             </ul>
 
-            <button 
-              onClick={() => handleSubscribe("premium")}
-              disabled={loadingTier !== null}
-              className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors disabled:opacity-70 flex justify-center items-center gap-2"
-            >
-              {loadingTier === "premium" ? "Loading..." : "Upgrade to Premium"}
-            </button>
+            <form action="/api/checkout_sessions" method="POST">
+              <input type="hidden" name="tier" value="premium" />
+              <button 
+                type="submit"
+                onClick={(e) => {
+                  if (!session) {
+                    e.preventDefault();
+                    toast("Please log in to upgrade your account", { icon: "🔒" });
+                    router.push("/signin");
+                  }
+                }}
+                className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors flex justify-center items-center gap-2"
+              >
+                Upgrade to Premium
+              </button>
+            </form>
           </div>
 
-                    <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
+          <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
             <h3 className="text-2xl font-bold font-serif mb-2 text-white">Pro</h3>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-4xl font-bold text-[#d4c3b3]">$19.99</span>
@@ -124,13 +133,22 @@ export default function PricingPage() {
               <li className="flex items-center gap-3 font-bold text-[#d4c3b3]"><FiZap className="text-yellow-400" /> 0% transaction fee</li>
             </ul>
 
-            <button 
-              onClick={() => handleSubscribe("pro")}
-              disabled={loadingTier !== null}
-              className="w-full py-3 rounded-lg bg-white text-[#3d3029] hover:bg-[#faf5ef] font-bold shadow-md transition-colors disabled:opacity-70 flex justify-center items-center gap-2"
-            >
-              {loadingTier === "pro" ? "Loading..." : "Go Pro"}
-            </button>
+            <form action="/api/checkout_sessions" method="POST">
+              <input type="hidden" name="tier" value="pro" />
+              <button 
+                type="submit"
+                onClick={(e) => {
+                  if (!session) {
+                    e.preventDefault();
+                    toast("Please log in to upgrade your account", { icon: "🔒" });
+                    router.push("/signin");
+                  }
+                }}
+                className="w-full py-3 rounded-lg bg-white text-[#3d3029] hover:bg-[#faf5ef] font-bold shadow-md transition-colors flex justify-center items-center gap-2"
+              >
+                Go Pro
+              </button>
+            </form>
           </div>
 
         </div>
