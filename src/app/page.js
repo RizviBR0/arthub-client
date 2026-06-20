@@ -1,4 +1,7 @@
 import Banner from "@/components/home/Banner";
+import FeaturedArtworks from "@/components/home/FeaturedArtworks";
+import TopArtists from "@/components/home/TopArtists";
+import ArtCategories from "@/components/home/ArtCategories";
 
 export default function Home() {
   return (
@@ -6,13 +9,14 @@ export default function Home() {
       {/* Hero Section */}
       <Banner />
 
-      {/* Placeholder for future sections */}
-      <div className="py-20 text-center">
-        <h2 className="text-3xl font-bold text-[#3d3029] mb-4" style={{ fontFamily: "Georgia, serif" }}>
-          More content coming soon...
-        </h2>
-        <p className="text-[#7a6e64]">Featured Artworks, Top Artists, and Categories will be placed here.</p>
-      </div>
+      {/* Featured Artworks Section */}
+      <FeaturedArtworks />
+
+      {/* Top Artists Section */}
+      <TopArtists />
+
+      {/* Art Categories Section */}
+      <ArtCategories />
     </div>
   );
 }
