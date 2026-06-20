@@ -6,6 +6,7 @@ import { FiArrowLeft, FiSave, FiImage } from "react-icons/fi";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function AddArtworkPage() {
   const router = useRouter();
@@ -133,23 +134,17 @@ export default function AddArtworkPage() {
               ></textarea>
             </div>
 
-            {/* Image URL Placeholder (Before imgBB Step) */}
+            {/* ImgBB Image Upload */}
             <div className="md:col-span-2">
               <label className="block text-[#3d3029] font-medium mb-2 flex items-center gap-2">
-                <FiImage /> Image URL *
+                <FiImage /> Artwork Image *
               </label>
-              <p className="text-xs text-[#7a6e64] mb-2">
-                Note: In Step 10, this will be replaced with an actual image upload button.
-              </p>
-              <input
-                type="url"
-                name="image"
+              <ImageUpload 
                 value={formData.image}
-                onChange={handleChange}
-                placeholder="https://images.unsplash.com/photo-..."
-                className="w-full px-4 py-3 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
-                required
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                disabled={loading}
               />
+              <input type="hidden" name="image" value={formData.image} required />
             </div>
 
           </div>
@@ -163,8 +158,8 @@ export default function AddArtworkPage() {
             </Link>
             <button
               type="submit"
-              disabled={loading}
-              className="px-8 py-3 bg-[#b07c5b] text-white rounded-lg font-medium hover:bg-[#9e6c4d] transition-colors flex items-center gap-2 disabled:opacity-70"
+              disabled={loading || !formData.image}
+              className="px-8 py-3 bg-[#b07c5b] text-white rounded-lg font-medium hover:bg-[#9e6c4d] transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? "Saving..." : <><FiSave /> Publish Artwork</>}
             </button>
