@@ -64,7 +64,7 @@ export default function SignInPage() {
             >
               ArtHub
             </h1>
-            <p className="text-xs tracking-[0.3em] text-[#b07c5b] uppercase mt-1">
+            <p className="text-[10px] tracking-[0.25em] text-[#3d3029] font-medium uppercase mt-1.5 max-w-[200px] leading-relaxed">
               Discover & Buy Original Art
             </p>
           </Link>
