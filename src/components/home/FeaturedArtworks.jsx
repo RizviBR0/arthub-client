@@ -14,18 +14,7 @@ const FeaturedArtworks = () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/featured`);
         const data = await res.json();
-        
-        // If DB is empty, use mock data to show design
-        if (!data || data.length === 0) {
-          setArtworks([
-            { _id: "1", title: "Golden Horizon", artistName: "Elena Rostova", price: 450, image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=600" },
-            { _id: "2", title: "Urban Dreams", artistName: "Marcus Chen", price: 280, image: "https://images.unsplash.com/photo-1576769267415-9642010aa962?auto=format&fit=crop&q=80&w=600" },
-            { _id: "3", title: "Silent Echoes", artistName: "Sarah Jenkins", price: 850, image: "https://images.unsplash.com/photo-1578301978693-85f6516d2524?auto=format&fit=crop&q=80&w=600" },
-            { _id: "4", title: "Abstract Motion", artistName: "David Kim", price: 320, image: "https://images.unsplash.com/photo-1580136608260-4eb11f4b24fe?auto=format&fit=crop&q=80&w=600" },
-            { _id: "5", title: "Winter Solstice", artistName: "Amina Al-Fayed", price: 550, image: "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&q=80&w=600" },
-            { _id: "6", title: "Midnight Portrait", artistName: "Leo Vanguard", price: 920, image: "https://images.unsplash.com/photo-1582201942988-13e60cb38da6?auto=format&fit=crop&q=80&w=600" }
-          ]);
-        } else {
+        if (data && data.length > 0) {
           setArtworks(data);
         }
       } catch (error) {

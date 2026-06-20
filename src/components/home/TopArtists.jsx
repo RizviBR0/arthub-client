@@ -14,14 +14,7 @@ const TopArtists = () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artists/top`);
         const data = await res.json();
-        
-        if (!data || data.length === 0) {
-          setArtists([
-            { _id: "1", name: "Elena Rostova", sales: 124, image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop" },
-            { _id: "2", name: "Marcus Chen", sales: 98, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop" },
-            { _id: "3", name: "Sarah Jenkins", sales: 85, image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop" }
-          ]);
-        } else {
+        if (data && data.length > 0) {
           setArtists(data);
         }
       } catch (error) {
@@ -33,6 +26,7 @@ const TopArtists = () => {
 
     fetchTopArtists();
   }, []);
+  if (!loading && artists.length === 0) return null;
 
   return (
     <section className="py-20 bg-[#faf8f5]">
@@ -62,10 +56,11 @@ const TopArtists = () => {
               <div key={artist._id} className="group flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-5 border-[4px] border-white shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
                   <Image
-                    src={artist.image || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop"}
+                    src={artist.image}
                     alt={artist.name}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>

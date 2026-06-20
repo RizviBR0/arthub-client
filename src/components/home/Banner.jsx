@@ -58,23 +58,17 @@ export default function Banner() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [dynamicArtworks, setDynamicArtworks] = useState([]);
 
-  // Simulate fetching dynamic artworks from backend
   useEffect(() => {
-    // In the future, this will be: fetch('/api/artworks/trending')...
     const fetchTrendingArtworks = async () => {
-      // Mock API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      setDynamicArtworks([
-        "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=400", // 1. Top Left Portrait
-        "https://images.unsplash.com/photo-1576769267415-9642010aa962?auto=format&fit=crop&q=80&w=400", // 2. Mid Left Flowers
-        "https://images.unsplash.com/photo-1578301978693-85f6516d2524?auto=format&fit=crop&q=80&w=400", // 3. Bottom Left Landscape
-        "https://images.unsplash.com/photo-1580136608260-4eb11f4b24fe?auto=format&fit=crop&q=80&w=400", // 4. Bottom Inner Left Abstract
-        "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&q=80&w=400", // 5. Top Right Landscape
-        "https://images.unsplash.com/photo-1582201942988-13e60cb38da6?auto=format&fit=crop&q=80&w=400", // 6. Mid Right Portrait
-        "https://images.unsplash.com/photo-1576769267415-9642010aa962?auto=format&fit=crop&q=80&w=400", // 7. Bottom Right Flowers (using same for placeholder)
-        "https://images.unsplash.com/photo-1533158388470-9a56699990c6?auto=format&fit=crop&q=80&w=400", // 8. Bottom Inner Right Woman
-      ]);
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/featured`);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setDynamicArtworks(data.map(a => a.image).filter(Boolean));
+        }
+      } catch (error) {
+        console.error("Error fetching trending artworks:", error);
+      }
     };
     
     fetchTrendingArtworks();
