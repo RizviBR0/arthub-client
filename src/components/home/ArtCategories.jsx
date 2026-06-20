@@ -28,6 +28,30 @@ const categories = [
     name: "Photography",
     description: "Captivating moments captured through lenses",
     image: "https://images.unsplash.com/photo-1516801708819-2708b79b2da3?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    id: "drawing",
+    name: "Drawing",
+    description: "Pencil, charcoal, and ink illustrations",
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    id: "mixed-media",
+    name: "Mixed Media",
+    description: "Innovative combinations of various materials",
+    image: "https://images.unsplash.com/photo-1544268069-450fbf821bd5?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    id: "prints",
+    name: "Fine Art Prints",
+    description: "Limited edition silkscreens and lithographs",
+    image: "https://images.unsplash.com/photo-1560573994-399042b5ba4d?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    id: "textile",
+    name: "Textile Arts",
+    description: "Weaving, embroidery, and fabric creations",
+    image: "https://images.unsplash.com/photo-1584488824147-321200e00f91?auto=format&fit=crop&q=80&w=600"
   }
 ];
 

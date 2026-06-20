@@ -53,22 +53,10 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-[calc(100vh-64px)] flex">
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#f5f0eb]">
-        <div className="absolute top-8 left-8 z-10">
-          <Link href="/">
-            <h1
-              className="text-3xl font-bold text-[#3d3029]"
-              style={{ fontFamily: "Georgia, serif" }}
-            >
-              ArtHub
-            </h1>
-            <p className="text-[10px] tracking-[0.25em] text-[#3d3029] font-medium uppercase mt-1.5 max-w-[200px] leading-relaxed">
-              Discover & Buy Original Art
-            </p>
-          </Link>
-        </div>
+        {/* Removed redundant ArtHub logo since it's now in the Navbar */}
         <div className="w-full h-full relative">
           <Image
             src={loginImage}

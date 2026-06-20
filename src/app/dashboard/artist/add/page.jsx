@@ -135,6 +135,10 @@ export default function AddArtworkPage() {
                 <option value="digital">Digital Art</option>
                 <option value="sculpture">Sculpture</option>
                 <option value="photography">Photography</option>
+                <option value="drawing">Drawing</option>
+                <option value="mixed-media">Mixed Media</option>
+                <option value="prints">Fine Art Prints</option>
+                <option value="textile">Textile Arts</option>
               </select>
             </div>
 

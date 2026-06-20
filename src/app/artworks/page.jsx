@@ -11,6 +11,10 @@ const categories = [
   { id: "digital", label: "Digital Art" },
   { id: "sculpture", label: "Sculpture" },
   { id: "photography", label: "Photography" },
+  { id: "drawing", label: "Drawing" },
+  { id: "mixed-media", label: "Mixed Media" },
+  { id: "prints", label: "Fine Art Prints" },
+  { id: "textile", label: "Textile Arts" },
 ];
 
 const sortOptions = [

@@ -16,10 +16,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Hide navbar on dashboard, signin, signup pages
-  if (pathname.includes("dashboard") || pathname === "/signin" || pathname === "/signup") {
-    return null;
-  }
+  // Navbar is now globally visible as requested
 
   const handleSignOut = async () => {
     await authClient.signOut();

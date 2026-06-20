@@ -148,6 +148,7 @@ export default function ProfilePage() {
                     value={formData.image} 
                     onChange={(url) => setFormData({ ...formData, image: url })}
                     disabled={loading}
+                    shape="circle"
                   />
                 </div>
               </div>

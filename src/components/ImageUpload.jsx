@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FiUploadCloud, FiX } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-export default function ImageUpload({ value, onChange, disabled }) {
+export default function ImageUpload({ value, onChange, disabled, shape = "rectangle" }) {
   const [dragActive, setDragActive] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
   const fileInputRef = useRef(null);
@@ -80,15 +80,23 @@ export default function ImageUpload({ value, onChange, disabled }) {
     }
   };
 
+  const previewClasses = shape === "circle" 
+    ? "relative w-full rounded-full overflow-hidden border border-[#d4c3b3] bg-[#ece5de] aspect-square group flex items-center justify-center"
+    : "relative w-full rounded-xl overflow-hidden border border-[#d4c3b3] bg-[#ece5de] aspect-video group flex items-center justify-center";
+
+  const placeholderClasses = shape === "circle"
+    ? `relative w-full rounded-full border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-4 text-center cursor-pointer aspect-square`
+    : `relative w-full rounded-xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-8 text-center cursor-pointer min-h-[200px]`;
+
   return (
     <div className="w-full">
       {previewUrl ? (
-        <div className="relative w-full rounded-xl overflow-hidden border border-[#d4c3b3] bg-[#ece5de] aspect-video group flex items-center justify-center">
+        <div className={previewClasses}>
           <Image 
             src={previewUrl} 
-            alt="Artwork preview" 
+            alt="Uploaded preview" 
             fill 
-            className="object-contain"
+            className="object-cover"
             unoptimized
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -96,15 +104,16 @@ export default function ImageUpload({ value, onChange, disabled }) {
               type="button"
               onClick={clearImage}
               disabled={disabled}
-              className="bg-white text-red-500 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-red-50 transition-colors shadow-lg"
+              className="bg-white text-red-500 p-3 rounded-full font-medium flex items-center justify-center hover:bg-red-50 transition-colors shadow-lg"
+              title="Remove Image"
             >
-              <FiX /> Remove Image
+              <FiX size={20} />
             </button>
           </div>
         </div>
       ) : (
         <div 
-          className={`relative w-full rounded-xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-8 text-center cursor-pointer min-h-[200px]
+          className={`${placeholderClasses}
             ${dragActive ? "border-[#b07c5b] bg-[#faf5ef]" : "border-[#d4c3b3] bg-[#faf8f5] hover:border-[#b07c5b] hover:bg-white"}
             ${disabled ? "opacity-50 cursor-not-allowed" : ""}
           `}
@@ -123,16 +132,24 @@ export default function ImageUpload({ value, onChange, disabled }) {
             disabled={disabled}
           />
           
-          <div className="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 text-[#b07c5b]">
-            <FiUploadCloud size={32} />
+          <div className={`${shape === "circle" ? "w-10 h-10 mb-2" : "w-16 h-16 mb-4"} bg-white rounded-full shadow-sm flex shrink-0 items-center justify-center text-[#b07c5b]`}>
+            <FiUploadCloud size={shape === "circle" ? 20 : 32} />
           </div>
           
-          <h3 className="font-bold text-[#3d3029] text-lg mb-1">
-            Click or drag image to upload
-          </h3>
-          <p className="text-[#7a6e64] text-sm max-w-xs">
-            Supports JPG, PNG, GIF up to 5MB. High resolution recommended.
-          </p>
+          {shape === "circle" ? (
+            <div className="flex flex-col items-center">
+              <span className="font-bold text-[#3d3029] text-sm leading-tight text-center px-2">Upload Photo</span>
+            </div>
+          ) : (
+            <>
+              <h3 className="font-bold text-[#3d3029] text-lg mb-1">
+                Click or drag image to upload
+              </h3>
+              <p className="text-[#7a6e64] text-sm max-w-xs">
+                Supports JPG, PNG, GIF up to 5MB. High resolution recommended.
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>
