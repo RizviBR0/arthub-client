@@ -1,204 +1,89 @@
-"use client";
-
+import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FaFacebook } from "react-icons/fa";
-import { BsInstagram, BsTwitter } from "react-icons/bs";
-import { LiaLinkedin } from "react-icons/lia";
-import { FiSend } from "react-icons/fi";
+import { FiInstagram, FiTwitter, FiGithub, FiMail } from "react-icons/fi";
 
-export default function Footer() {
-  const pathname = usePathname();
-
-  // Hide footer on dashboard, signin, signup pages
-  if (
-    pathname.includes("dashboard") ||
-    pathname === "/signin" ||
-    pathname === "/signup"
-  ) {
-    return null;
-  }
-
+const Footer = () => {
   return (
-    <footer className="mt-16 border-t border-[#e8ddd1] bg-[#faf8f5]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="bg-[#3d3029] text-white pt-16 pb-8 border-t-[8px] border-[#b07c5b]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          
           {/* Brand */}
-          <div>
-            <Link href="/" className="inline-block">
-              <h2
-                className="text-2xl font-bold text-[#3d3029]"
-                style={{ fontFamily: "Georgia, serif" }}
-              >
-                ArtHub
-              </h2>
+          <div className="md:col-span-1">
+            <Link href="/" className="inline-block mb-6">
+              <span className="font-serif text-3xl font-bold tracking-tight text-white flex items-center">
+                Art<span className="text-[#c9a88a]">Hub</span>
+              </span>
             </Link>
-
-            <p className="mt-3 text-sm text-[#7a6e64] leading-relaxed">
-              Discover original artworks from talented artists worldwide.
-              ArtHub connects art lovers with creators in a seamless
-              marketplace.
+            <p className="text-[#a89888] text-sm leading-relaxed mb-6">
+              The premier marketplace for contemporary artists and collectors. Discover, buy, and sell exceptional digital and physical artworks.
             </p>
-
-            <div className="mt-5 flex items-center gap-3">
-              <Link
-                href="#"
-                className="rounded-full border border-[#e8ddd1] p-2 text-[#7a6e64] transition-all hover:bg-[#b07c5b] hover:text-white hover:border-[#b07c5b]"
-                aria-label="Facebook"
-              >
-                <FaFacebook className="h-4 w-4" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-full border border-[#e8ddd1] p-2 text-[#7a6e64] transition-all hover:bg-[#b07c5b] hover:text-white hover:border-[#b07c5b]"
-                aria-label="Instagram"
-              >
-                <BsInstagram className="h-4 w-4" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-full border border-[#e8ddd1] p-2 text-[#7a6e64] transition-all hover:bg-[#b07c5b] hover:text-white hover:border-[#b07c5b]"
-                aria-label="Twitter"
-              >
-                <BsTwitter className="h-4 w-4" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-full border border-[#e8ddd1] p-2 text-[#7a6e64] transition-all hover:bg-[#b07c5b] hover:text-white hover:border-[#b07c5b]"
-                aria-label="LinkedIn"
-              >
-                <LiaLinkedin className="h-4 w-4" />
-              </Link>
+            <div className="flex items-center gap-4 text-[#d4c3b3]">
+              <a href="#" className="hover:text-white transition-colors p-2 bg-[#5a4d42] rounded-full"><FiInstagram size={18} /></a>
+              <a href="#" className="hover:text-white transition-colors p-2 bg-[#5a4d42] rounded-full"><FiTwitter size={18} /></a>
+              <a href="#" className="hover:text-white transition-colors p-2 bg-[#5a4d42] rounded-full"><FiGithub size={18} /></a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#3d3029]">
-              Explore
-            </h3>
-            <ul className="space-y-3 text-sm text-[#7a6e64]">
-              <li>
-                <Link
-                  href="/artworks"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Browse Artworks
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Pricing Plans
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Featured Artists
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  New Arrivals
-                </Link>
-              </li>
+            <h4 className="font-serif font-bold text-lg mb-6 text-[#e8ddd1]">Explore</h4>
+            <ul className="space-y-3 text-sm text-[#a89888]">
+              <li><Link href="/artworks" className="hover:text-[#c9a88a] transition-colors">Discover Artworks</Link></li>
+              <li><Link href="/artists" className="hover:text-[#c9a88a] transition-colors">Top Artists</Link></li>
+              <li><Link href="/categories" className="hover:text-[#c9a88a] transition-colors">Categories</Link></li>
+              <li><Link href="/pricing" className="hover:text-[#c9a88a] transition-colors">Pricing & Tiers</Link></li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#3d3029]">
-              Support
-            </h3>
-            <ul className="space-y-3 text-sm text-[#7a6e64]">
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#b07c5b] transition-colors"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
+            <h4 className="font-serif font-bold text-lg mb-6 text-[#e8ddd1]">Support</h4>
+            <ul className="space-y-3 text-sm text-[#a89888]">
+              <li><Link href="/faq" className="hover:text-[#c9a88a] transition-colors">Help Center</Link></li>
+              <li><Link href="/shipping" className="hover:text-[#c9a88a] transition-colors">Shipping & Returns</Link></li>
+              <li><Link href="/terms" className="hover:text-[#c9a88a] transition-colors">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-[#c9a88a] transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#3d3029]">
-              Newsletter
-            </h3>
-            <p className="text-sm text-[#7a6e64] mb-4">
-              Subscribe to get the latest art collections and exclusive offers.
+            <h4 className="font-serif font-bold text-lg mb-6 text-[#e8ddd1]">Stay Inspired</h4>
+            <p className="text-[#a89888] text-sm mb-4">
+              Subscribe to our newsletter for exclusive interviews, new arrivals, and special promotions.
             </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="flex gap-2"
-            >
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 px-3 py-2 text-sm border border-[#ddd3c9] rounded-lg bg-white text-[#3d3029] placeholder-[#b5a99d] focus:outline-none focus:ring-2 focus:ring-[#c9a88a] focus:border-transparent transition-all"
-              />
-              <button
-                type="submit"
-                className="px-3 py-2 rounded-lg text-white bg-gradient-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
-                aria-label="Subscribe"
+            <form className="flex gap-2">
+              <div className="relative flex-1">
+                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a89888]" />
+                <input 
+                  type="email" 
+                  placeholder="Your email address" 
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#5a4d42] border border-[#7a6e64] rounded-lg text-white text-sm focus:outline-none focus:border-[#c9a88a]"
+                />
+              </div>
+              <button 
+                type="submit" 
+                className="px-4 py-2.5 bg-[#b07c5b] text-white rounded-lg text-sm font-medium hover:bg-[#9e6c4d] transition-colors shrink-0"
               >
-                <FiSend size={16} />
+                Subscribe
               </button>
             </form>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-[#e8ddd1] py-6 text-center text-sm text-[#a89888] md:flex-row">
-          <p>© {new Date().getFullYear()} ArtHub. All rights reserved.</p>
-
-          <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-[#b07c5b] transition-colors">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-[#b07c5b] transition-colors">
-              Terms
-            </Link>
-            <Link href="#" className="hover:text-[#b07c5b] transition-colors">
-              Cookies
-            </Link>
+        <div className="pt-8 border-t border-[#5a4d42] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[#a89888] text-sm">
+            © {new Date().getFullYear()} ArtHub Inc. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-[#a89888] text-sm">
+            <span>Made with precision</span>
+            <span>Based globally</span>
           </div>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;
