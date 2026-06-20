@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiImage } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import loginImage from "@/assets/login_left_image.png";
+import signupImage from "@/assets/signup_right_image.png";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,8 +64,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Image */}
+    <div className="min-h-screen flex flex-row-reverse">
+      {/* Right Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#f5f0eb]">
         <div className="absolute top-8 left-8 z-10">
           <Link href="/">
@@ -82,7 +82,7 @@ export default function SignUpPage() {
         </div>
         <div className="w-full h-full relative">
           <Image
-            src={loginImage}
+            src={signupImage}
             alt="Art Gallery"
             fill
             className="object-cover"
@@ -91,7 +91,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Right Side - Form */}
+      {/* Left Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-[#faf8f5]">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
