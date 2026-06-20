@@ -9,6 +9,7 @@ import {
   FiTrash2, FiTrendingUp, FiBarChart2
 } from "react-icons/fi";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -135,11 +136,19 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-[#3d3029] flex items-center gap-3">
-          <FiShield className="text-[#b07c5b]" /> Admin Dashboard
-        </h1>
-        <p className="text-[#7a6e64] mt-1">Manage users, artworks, and view transactions.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-serif font-bold text-[#3d3029] flex items-center gap-3">
+            <FiShield className="text-[#b07c5b]" /> Admin Dashboard
+          </h1>
+          <p className="text-[#7a6e64] mt-1">Manage users, artworks, and view transactions.</p>
+        </div>
+        <Link
+          href="/dashboard/admin/analytics"
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#b07c5b] text-white rounded-lg font-medium hover:bg-[#9e6c4d] transition-colors shadow-sm w-fit"
+        >
+          <FiBarChart2 size={16} /> View Analytics
+        </Link>
       </div>
 
       {/* Analytics Cards */}
