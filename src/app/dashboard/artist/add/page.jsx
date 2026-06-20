@@ -46,13 +46,16 @@ export default function AddArtworkPage() {
         body: JSON.stringify(formData)
       });
 
-      if (!res.ok) throw new Error("Failed to create artwork");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.msg || `Server error: ${res.status}`);
+      }
 
       toast.success("Artwork added to portfolio!");
       router.push("/dashboard/artist");
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while adding artwork");
+      toast.error(error.message || "An error occurred while adding artwork");
     } finally {
       setLoading(false);
     }

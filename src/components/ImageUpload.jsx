@@ -61,7 +61,7 @@ export default function ImageUpload({ value, onChange, disabled }) {
       formData.append("image", file);
 
       // Using the ImgBB API key from env
-      const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
       
       if (!imgbbKey) {
          toast.dismiss(toastId);
@@ -108,6 +108,7 @@ export default function ImageUpload({ value, onChange, disabled }) {
             alt="Uploaded artwork" 
             fill 
             className="object-contain"
+            unoptimized
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <button

@@ -142,6 +142,7 @@ export default function ArtworkDetailsPage() {
                 fill
                 className="object-contain"
                 priority
+                unoptimized
               />
             </div>
           </div>
