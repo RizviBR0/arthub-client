@@ -48,8 +48,7 @@ export default function ArtworkDetailsPage() {
     if (!window.confirm("Are you sure you want to delete this artwork? This action cannot be undone.")) return;
     
     setIsDeleting(true);
-    // Note: The actual delete API will be implemented in Step 9
-    setTimeout(() => {
+        setTimeout(() => {
       toast.success("Artwork deleted successfully");
       router.push("/dashboard/artist");
     }, 1000);
@@ -124,8 +123,7 @@ export default function ArtworkDetailsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
-      {/* Back navigation */}
-      <button 
+            <button 
         onClick={() => router.back()} 
         className="flex items-center gap-2 text-[#7a6e64] hover:text-[#b07c5b] transition-colors mb-8 font-medium"
       >
@@ -134,8 +132,7 @@ export default function ArtworkDetailsPage() {
 
       <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
         
-        {/* Left Column: Image */}
-        <div className="w-full lg:w-3/5">
+                <div className="w-full lg:w-3/5">
           <div className="relative w-full rounded-xl overflow-hidden shadow-2xl bg-[#ece5de] flex items-center justify-center p-2 md:p-6 border border-[#e8ddd1]">
             <div className="relative w-full aspect-[4/5] md:aspect-auto md:h-[650px] shadow-inner bg-white">
               <Image
@@ -149,10 +146,8 @@ export default function ArtworkDetailsPage() {
           </div>
         </div>
 
-        {/* Right Column: Details */}
-        <div className="w-full lg:w-2/5 flex flex-col">
-          {/* Header Info */}
-          <div className="mb-6 border-b border-[#e8ddd1] pb-6">
+                <div className="w-full lg:w-2/5 flex flex-col">
+                    <div className="mb-6 border-b border-[#e8ddd1] pb-6">
             <div className="flex items-center justify-between gap-4 mb-3">
               <span className="inline-block px-3 py-1 bg-[#ece5de] text-[#7a6e64] text-xs font-bold uppercase tracking-wider rounded-sm">
                 {artwork.category}
@@ -174,8 +169,7 @@ export default function ArtworkDetailsPage() {
             </p>
           </div>
 
-          {/* Pricing */}
-          <div className="mb-8">
+                    <div className="mb-8">
             <p className="text-4xl font-semibold text-[#b07c5b]">
               ${artwork.price?.toLocaleString()}
             </p>
@@ -184,8 +178,7 @@ export default function ArtworkDetailsPage() {
             </p>
           </div>
 
-          {/* Description */}
-          <div className="mb-10 flex-1">
+                    <div className="mb-10 flex-1">
             <h3 className="font-bold text-[#3d3029] text-lg mb-3">About the Artwork</h3>
             <p className="text-[#5a4d42] leading-relaxed">
               {artwork.description || "No description provided by the artist."}
@@ -196,11 +189,9 @@ export default function ArtworkDetailsPage() {
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="mt-auto pt-6 border-t border-[#e8ddd1] space-y-4">
+                    <div className="mt-auto pt-6 border-t border-[#e8ddd1] space-y-4">
             
-            {/* Purchase Button (For Buyers / Non-Owners) */}
-            {!isOwner && (
+                        {!isOwner && (
               <button 
                 onClick={handlePurchase}
                 disabled={isSold}
@@ -215,8 +206,7 @@ export default function ArtworkDetailsPage() {
               </button>
             )}
 
-            {/* Artist Controls (For Owners) */}
-            {isOwner && (
+                        {isOwner && (
               <div className="flex gap-4">
                 <Link 
                   href={`/dashboard/artist/edit/${artwork._id}`}

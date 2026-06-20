@@ -76,8 +76,7 @@ export default function AddArtworkPage() {
         <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            {/* Title */}
-            <div className="md:col-span-2">
+                        <div className="md:col-span-2">
               <label className="block text-[#3d3029] font-medium mb-2">Title *</label>
               <input
                 type="text"
@@ -90,8 +89,7 @@ export default function AddArtworkPage() {
               />
             </div>
 
-            {/* Category */}
-            <div>
+                        <div>
               <label className="block text-[#3d3029] font-medium mb-2">Category *</label>
               <select
                 name="category"
@@ -106,8 +104,7 @@ export default function AddArtworkPage() {
               </select>
             </div>
 
-            {/* Price */}
-            <div>
+                        <div>
               <label className="block text-[#3d3029] font-medium mb-2">Price ($) *</label>
               <input
                 type="number"
@@ -121,8 +118,7 @@ export default function AddArtworkPage() {
               />
             </div>
 
-            {/* Description */}
-            <div className="md:col-span-2">
+                        <div className="md:col-span-2">
               <label className="block text-[#3d3029] font-medium mb-2">Description</label>
               <textarea
                 name="description"
@@ -134,8 +130,7 @@ export default function AddArtworkPage() {
               ></textarea>
             </div>
 
-            {/* ImgBB Image Upload */}
-            <div className="md:col-span-2">
+                        <div className="md:col-span-2">
               <label className="block text-[#3d3029] font-medium mb-2 flex items-center gap-2">
                 <FiImage /> Artwork Image *
               </label>

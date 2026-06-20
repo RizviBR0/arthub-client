@@ -44,8 +44,7 @@ export default function PricingPage() {
     }
   };
 
-  const currentTier = "basic"; // In a real app, read from session.user.tier if we passed it down, else default "basic"
-
+  const currentTier = "basic"; 
   return (
     <div className="bg-[#faf8f5] py-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
@@ -60,8 +59,7 @@ export default function PricingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           
-          {/* Basic Tier */}
-          <div className="bg-white rounded-2xl border border-[#e8ddd1] p-8 shadow-sm flex flex-col">
+                    <div className="bg-white rounded-2xl border border-[#e8ddd1] p-8 shadow-sm flex flex-col">
             <h3 className="text-2xl font-bold text-[#3d3029] font-serif mb-2">Basic</h3>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-4xl font-bold text-[#3d3029]">$0</span>
@@ -84,8 +82,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Premium Tier */}
-          <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col transform md:-translate-y-4">
+                    <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col transform md:-translate-y-4">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#b07c5b] text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1">
               <FiStar /> MOST POPULAR
             </div>
@@ -112,8 +109,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Pro Tier */}
-          <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
+                    <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
             <h3 className="text-2xl font-bold font-serif mb-2 text-white">Pro</h3>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-4xl font-bold text-[#d4c3b3]">$19.99</span>

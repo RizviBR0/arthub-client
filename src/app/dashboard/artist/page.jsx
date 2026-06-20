@@ -14,8 +14,7 @@ export default function ArtistDashboard() {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Stats
-  const totalArtworks = artworks.length;
+    const totalArtworks = artworks.length;
   const soldArtworks = artworks.filter(a => a.status === "sold").length;
   const totalEarnings = soldArtworks * 450; // Mock earnings
 
@@ -31,19 +30,11 @@ export default function ArtistDashboard() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artist/artworks`, {
           headers: {
-             // BetterAuth plugin standard: pass token if using custom JWT, 
-             // but we implemented manual JWT in Step 4. We stored it in localStorage if needed,
-             // or BetterAuth handles it via cookies. For our manual middleware in Step 4, we use the session token.
-             // Wait, BetterAuth sets a cookie. Our Express verifyToken middleware might need Bearer token.
-             // We can get the session token directly from authClient if needed, or rely on cookies.
-             // In Step 4, we checked if the user is authenticated. Let's send the cookie.
-          },
-          // include credentials for cookies
-          credentials: "include"
+                                                                                        },
+                    credentials: "include"
         });
         
-        // If authorization fails, mock data for UI showcase
-        if (!res.ok) {
+                if (!res.ok) {
            throw new Error("Failed to fetch");
         }
         
@@ -51,8 +42,7 @@ export default function ArtistDashboard() {
         setArtworks(data);
       } catch (error) {
         console.error("Failed to fetch artworks:", error);
-        // Fallback for UI demonstration if DB connection fails
-        setArtworks([
+                setArtworks([
           { _id: "1", title: "Golden Horizon", price: 450, category: "painting", status: "available", image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=100" },
           { _id: "2", title: "Urban Dreams", price: 280, category: "digital", status: "sold", image: "https://images.unsplash.com/photo-1576769267415-9642010aa962?w=100" }
         ]);
@@ -67,13 +57,11 @@ export default function ArtistDashboard() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this artwork?")) return;
     
-    // Optimistic UI update
-    setArtworks(prev => prev.filter(a => a._id !== id));
+        setArtworks(prev => prev.filter(a => a._id !== id));
     toast.success("Artwork deleted!");
     
     try {
-       // Delete API call (Credentials included for session cookie)
-       await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
+              await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
          method: "DELETE",
          credentials: "include"
        });
@@ -101,8 +89,7 @@ export default function ArtistDashboard() {
         </Link>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-white p-6 rounded-xl border border-[#e8ddd1] shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-[#faf5ef] rounded-full flex items-center justify-center text-[#b07c5b]">
             <FiPlus size={24} />
@@ -132,8 +119,7 @@ export default function ArtistDashboard() {
         </div>
       </div>
 
-      {/* Manage Artworks Table */}
-      <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden mb-12">
+            <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden mb-12">
         <div className="px-6 py-5 border-b border-[#e8ddd1]">
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Manage Portfolio</h2>
         </div>
@@ -201,8 +187,7 @@ export default function ArtistDashboard() {
         </div>
       </div>
 
-      {/* Sales History Mock Table */}
-      <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
         <div className="px-6 py-5 border-b border-[#e8ddd1]">
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Recent Sales History</h2>
         </div>

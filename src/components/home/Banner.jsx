@@ -87,10 +87,8 @@ export default function Banner() {
     return () => emblaApi.off("select", onSelect);
   }, [emblaApi]);
 
-  // Framed image component
-  const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
-    if (!src) return null; // Don't render until dynamic data is loaded
-    
+    const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
+    if (!src) return null;     
     return (
       <div
         className={`absolute hidden lg:block z-20 transition-transform duration-1000 ease-in-out hover:scale-105 shadow-xl ${className}`}
@@ -101,8 +99,7 @@ export default function Banner() {
       >
         <div className="relative border-[6px] border-[#c2b2a1] shadow-inner bg-[#ece5de] p-1 inline-block">
           <div className="relative border border-[#8a7a6c] flex">
-            {/* Auto-height image so frame tightly wraps the artwork without arbitrary cropping */}
-            <Image
+                        <Image
               src={src}
               alt="Trending Artwork"
               width={300}
@@ -119,47 +116,36 @@ export default function Banner() {
   return (
     <div className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden bg-[#faf8f5]">
       
-      {/* Dynamic Floating Artworks (Outside carousel so they don't slide, perfectly positioned) */}
-      <div className="absolute inset-0 w-full max-w-[1600px] mx-auto pointer-events-none z-20">
+            <div className="absolute inset-0 w-full max-w-[1600px] mx-auto pointer-events-none z-20">
         {dynamicArtworks.length > 0 && (
           <>
-            {/* Top Left */}
-            <FloatingFrame src={dynamicArtworks[0]} className="top-[10%] left-[12%]" baseWidth="160px" animationDelay="0s" />
+                        <FloatingFrame src={dynamicArtworks[0]} className="top-[10%] left-[12%]" baseWidth="160px" animationDelay="0s" />
             
-            {/* Mid Left */}
-            <FloatingFrame src={dynamicArtworks[1]} className="top-[35%] left-[6%]" baseWidth="130px" animationDelay="1s" />
+                        <FloatingFrame src={dynamicArtworks[1]} className="top-[35%] left-[6%]" baseWidth="130px" animationDelay="1s" />
             
-            {/* Bottom Left */}
-            <FloatingFrame src={dynamicArtworks[2]} className="bottom-[20%] left-[8%]" baseWidth="200px" animationDelay="2s" />
+                        <FloatingFrame src={dynamicArtworks[2]} className="bottom-[20%] left-[8%]" baseWidth="200px" animationDelay="2s" />
             
-            {/* Bottom Inner Left */}
-            <FloatingFrame src={dynamicArtworks[3]} className="bottom-[8%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
+                        <FloatingFrame src={dynamicArtworks[3]} className="bottom-[8%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
 
-            {/* Top Right Inner */}
-            <FloatingFrame src={dynamicArtworks[4]} className="top-[8%] right-[25%]" baseWidth="130px" animationDelay="0.3s" />
+                        <FloatingFrame src={dynamicArtworks[4]} className="top-[8%] right-[25%]" baseWidth="130px" animationDelay="0.3s" />
             
-            {/* Top Right Outer */}
-            <FloatingFrame src={dynamicArtworks[5]} className="top-[18%] right-[6%]" baseWidth="150px" animationDelay="1.5s" />
+                        <FloatingFrame src={dynamicArtworks[5]} className="top-[18%] right-[6%]" baseWidth="150px" animationDelay="1.5s" />
             
-            {/* Bottom Right */}
-            <FloatingFrame src={dynamicArtworks[6]} className="bottom-[22%] right-[10%]" baseWidth="180px" animationDelay="2.5s" />
+                        <FloatingFrame src={dynamicArtworks[6]} className="bottom-[22%] right-[10%]" baseWidth="180px" animationDelay="2.5s" />
             
-            {/* Bottom Inner Right */}
-            <FloatingFrame src={dynamicArtworks[7]} className="bottom-[10%] right-[28%]" baseWidth="120px" animationDelay="1.2s" />
+                        <FloatingFrame src={dynamicArtworks[7]} className="bottom-[10%] right-[28%]" baseWidth="120px" animationDelay="1.2s" />
           </>
         )}
       </div>
 
-      {/* Carousel */}
-      <div className="overflow-hidden h-full" ref={emblaRef}>
+            <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {banners.map((banner) => (
             <div
               key={banner.id}
               className="flex-[0_0_100%] min-w-0 relative flex flex-col items-center justify-center h-full px-6 text-center"
             >
-              {/* Background Image */}
-              <div className="absolute inset-0 z-0">
+                            <div className="absolute inset-0 z-0">
                 <Image
                   src={banner.image}
                   alt={`Banner ${banner.id}`}
@@ -169,8 +155,7 @@ export default function Banner() {
                 />
               </div>
 
-              {/* Text Content */}
-              <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center pt-10">
+                            <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center pt-10">
                 <h1
                   className="text-5xl sm:text-6xl lg:text-[5.5rem] font-medium text-[#2d2522] tracking-tight leading-[1.05] mb-6"
                   style={{ fontFamily: "Georgia, serif" }}
@@ -192,8 +177,7 @@ export default function Banner() {
         </div>
       </div>
 
-      {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20">
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20">
         {banners.map((_, index) => (
           <button
             key={index}

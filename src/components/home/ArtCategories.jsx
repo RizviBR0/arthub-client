@@ -56,11 +56,9 @@ const ArtCategories = () => {
               fill
               className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
             />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
             
-            {/* Content */}
-            <div className="absolute bottom-0 left-0 w-full p-6 text-left">
+                        <div className="absolute bottom-0 left-0 w-full p-6 text-left">
               <h3 className="text-2xl font-bold text-white mb-2 font-serif tracking-wide">{category.name}</h3>
               <p className="text-white/80 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                 {category.description}
