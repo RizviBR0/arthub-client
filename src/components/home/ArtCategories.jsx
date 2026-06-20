@@ -21,13 +21,13 @@ const categories = [
     id: "sculpture",
     name: "Sculpture",
     description: "3D artworks in clay, metal, and stone",
-    image: "https://images.unsplash.com/photo-1582561424760-0321d6daa242?auto=format&fit=crop&q=80&w=600"
+    image: "/categories/sculpture_cat_1781986165814.png"
   },
   {
     id: "photography",
     name: "Photography",
     description: "Captivating moments captured through lenses",
-    image: "https://images.unsplash.com/photo-1516801708819-2708b79b2da3?auto=format&fit=crop&q=80&w=600"
+    image: "/categories/photography_cat_1781986182296.png"
   },
   {
     id: "drawing",
@@ -39,19 +39,19 @@ const categories = [
     id: "mixed-media",
     name: "Mixed Media",
     description: "Innovative combinations of various materials",
-    image: "https://images.unsplash.com/photo-1544268069-450fbf821bd5?auto=format&fit=crop&q=80&w=600"
+    image: "/categories/mixed_media_cat_1781986192972.png"
   },
   {
     id: "prints",
     name: "Fine Art Prints",
     description: "Limited edition silkscreens and lithographs",
-    image: "https://images.unsplash.com/photo-1560573994-399042b5ba4d?auto=format&fit=crop&q=80&w=600"
+    image: "/categories/prints_cat_1781986202495.png"
   },
   {
     id: "textile",
     name: "Textile Arts",
     description: "Weaving, embroidery, and fabric creations",
-    image: "https://images.unsplash.com/photo-1584488824147-321200e00f91?auto=format&fit=crop&q=80&w=600"
+    image: "/categories/textile_cat_1781986212924.png"
   }
 ];
 
@@ -63,7 +63,7 @@ const ArtCategories = () => {
           Explore by Category
         </h2>
         <p className="text-[#7a6e64] max-w-2xl mx-auto text-lg">
-          Find exactly what you're looking for by browsing our curated collections.
+          Find exactly what you&apos;re looking for by browsing our curated collections.
         </p>
       </div>
 
@@ -82,9 +82,9 @@ const ArtCategories = () => {
             />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
             
-                        <div className="absolute bottom-0 left-0 w-full p-6 text-left">
-              <h3 className="text-2xl font-bold text-white mb-2 font-serif tracking-wide">{category.name}</h3>
-              <p className="text-white/80 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="absolute bottom-0 left-0 w-full p-4 lg:p-5 text-left">
+              <h3 className="text-xl xl:text-2xl font-bold text-white mb-2 font-serif tracking-wide break-words">{category.name}</h3>
+              <p className="text-white/80 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 line-clamp-2">
                 {category.description}
               </p>
             </div>
