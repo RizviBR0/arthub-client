@@ -41,6 +41,10 @@ export const auth = betterAuth({
       purchaseCount: {
         defaultValue: 0,
       },
+      bio: {
+        type: "string",
+        required: false,
+      },
     },
   },
   session: {

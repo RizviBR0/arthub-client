@@ -189,7 +189,7 @@ const Navbar = () => {
                         Dashboard
                       </Link>
                       <Link
-                        href="/dashboard/user/profile"
+                        href="/dashboard/profile"
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#5a4d42] hover:bg-[#faf5ef] transition-colors"
                       >
