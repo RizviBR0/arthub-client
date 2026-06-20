@@ -42,10 +42,7 @@ export default function ArtistDashboard() {
         setArtworks(data);
       } catch (error) {
         console.error("Failed to fetch artworks:", error);
-                setArtworks([
-          { _id: "1", title: "Golden Horizon", price: 450, category: "painting", status: "available", image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=100" },
-          { _id: "2", title: "Urban Dreams", price: 280, category: "digital", status: "sold", image: "https://images.unsplash.com/photo-1576769267415-9642010aa962?w=100" }
-        ]);
+        setArtworks([]);
       } finally {
         setLoading(false);
       }
