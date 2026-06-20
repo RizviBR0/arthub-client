@@ -55,14 +55,35 @@ export default function ArtworkDetailsPage() {
     }, 1000);
   };
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     if (!user) {
       toast("Please log in to purchase artworks", { icon: "🔒" });
       router.push("/signin");
       return;
     }
-    // Stripe checkout logic will be added in Step 11
-    toast.success("Redirecting to secure checkout...");
+
+    const toastId = toast.loading("Preparing secure checkout...");
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/create-checkout-session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // For session cookie
+        body: JSON.stringify({ artworkId: artwork._id })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.msg || "Failed to initiate checkout");
+      }
+
+      toast.success("Redirecting to Stripe...", { id: toastId });
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message, { id: toastId });
+    }
   };
 
   if (loading) {
