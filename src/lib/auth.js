@@ -5,7 +5,16 @@ import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { jwt } from "better-auth/plugins";
 
-const client = new MongoClient(process.env.MONGODB_URI);
+let client;
+if (process.env.NODE_ENV === "development") {
+  if (!global._mongoClient) {
+    global._mongoClient = new MongoClient(process.env.MONGODB_URI);
+  }
+  client = global._mongoClient;
+} else {
+  client = new MongoClient(process.env.MONGODB_URI);
+}
+
 const db = client.db("art-hub");
 
 export const auth = betterAuth({
