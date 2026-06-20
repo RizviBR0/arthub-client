@@ -7,6 +7,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { FiArrowLeft, FiEdit2, FiTrash2, FiShoppingCart, FiClock, FiTag, FiCheckCircle } from "react-icons/fi";
 import toast from "react-hot-toast";
+import CommentsSection from "@/components/CommentsSection";
 
 export default function ArtworkDetailsPage() {
   const params = useParams();
@@ -227,6 +228,8 @@ export default function ArtworkDetailsPage() {
 
         </div>
       </div>
+
+      <CommentsSection artworkId={artwork._id} />
     </div>
   );
 }
