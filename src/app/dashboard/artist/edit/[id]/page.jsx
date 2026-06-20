@@ -29,7 +29,7 @@ export default function EditArtworkPage() {
   useEffect(() => {
     if (!session) return;
     
-    if (session.user.role !== "artist") {
+    if (session.user.role !== "artist" && session.user.role !== "admin") {
       toast.error("Unauthorized");
       router.push("/");
       return;
@@ -76,26 +76,60 @@ export default function EditArtworkPage() {
     e.preventDefault();
 
     if (!formData.title || !formData.price || !formData.image) {
-      toast.error("Please fill all required fields");
+      toast.error("Please fill all required fields and ensure an image is present");
       return;
     }
 
     setSaving(true);
+    const toastId = toast.loading("Updating artwork...");
+
     try {
+      let finalImageUrl = formData.image;
+
+      // If the image is a new File object, upload to ImgBB first
+      if (formData.image instanceof File) {
+        toast.loading("Uploading new image to ImgBB...", { id: toastId });
+        
+        const uploadData = new FormData();
+        uploadData.append("image", formData.image);
+        
+        const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
+        if (!imgbbKey) {
+          throw new Error("ImgBB API key is missing in .env");
+        }
+
+        const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: uploadData,
+        });
+
+        const imgJson = await imgRes.json();
+        if (!imgJson.success) {
+          throw new Error(imgJson.error?.message || "Failed to upload image");
+        }
+        
+        finalImageUrl = imgJson.data.display_url;
+      }
+
+      toast.loading("Saving changes...", { id: toastId });
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, image: finalImageUrl })
       });
 
-      if (!res.ok) throw new Error("Failed to update artwork");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.msg || "Failed to update artwork");
+      }
 
-      toast.success("Artwork updated successfully!");
+      toast.success("Artwork updated successfully!", { id: toastId });
       router.push("/dashboard/artist");
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while updating artwork");
+      toast.error(error.message || "An error occurred while updating artwork", { id: toastId });
     } finally {
       setSaving(false);
     }

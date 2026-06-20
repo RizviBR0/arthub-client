@@ -27,23 +27,54 @@ export default function AddArtworkPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!session || session.user.role !== "artist") {
+    if (!session || (session.user.role !== "artist" && session.user.role !== "admin")) {
       toast.error("Unauthorized");
       return;
     }
 
     if (!formData.title || !formData.price || !formData.image) {
-      toast.error("Please fill all required fields");
+      toast.error("Please fill all required fields and select an image");
       return;
     }
 
     setLoading(true);
+    const toastId = toast.loading("Publishing artwork...");
+
     try {
+      let finalImageUrl = formData.image;
+
+      // If the image is a File object, upload to ImgBB first
+      if (formData.image instanceof File) {
+        toast.loading("Uploading image to ImgBB...", { id: toastId });
+        
+        const uploadData = new FormData();
+        uploadData.append("image", formData.image);
+        
+        const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
+        if (!imgbbKey) {
+          throw new Error("ImgBB API key is missing in .env");
+        }
+
+        const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: uploadData,
+        });
+
+        const imgJson = await imgRes.json();
+        if (!imgJson.success) {
+          throw new Error(imgJson.error?.message || "Failed to upload image");
+        }
+        
+        finalImageUrl = imgJson.data.display_url;
+      }
+
+      toast.loading("Saving artwork details...", { id: toastId });
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, image: finalImageUrl })
       });
 
       if (!res.ok) {
@@ -51,11 +82,11 @@ export default function AddArtworkPage() {
         throw new Error(errorData.msg || `Server error: ${res.status}`);
       }
 
-      toast.success("Artwork added to portfolio!");
+      toast.success("Artwork added to portfolio!", { id: toastId });
       router.push("/dashboard/artist");
     } catch (error) {
       console.error(error);
-      toast.error(error.message || "An error occurred while adding artwork");
+      toast.error(error.message || "An error occurred while adding artwork", { id: toastId });
     } finally {
       setLoading(false);
     }

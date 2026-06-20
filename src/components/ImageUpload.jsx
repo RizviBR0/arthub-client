@@ -1,14 +1,31 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { FiUploadCloud, FiX, FiImage } from "react-icons/fi";
+import { FiUploadCloud, FiX } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 export default function ImageUpload({ value, onChange, disabled }) {
-  const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("");
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!value) {
+      setPreviewUrl("");
+      return;
+    }
+    // If value is a File, create a local preview URL
+    if (value instanceof File) {
+      const objectUrl = URL.createObjectURL(value);
+      setPreviewUrl(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+    // If value is a string, it's an existing URL from the DB
+    if (typeof value === "string") {
+      setPreviewUrl(value);
+    }
+  }, [value]);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -20,80 +37,44 @@ export default function ImageUpload({ value, onChange, disabled }) {
     }
   };
 
-  const handleDrop = async (e) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     
-    if (disabled || uploading) return;
+    if (disabled) return;
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      await uploadImage(e.dataTransfer.files[0]);
+      handleFileSelection(e.dataTransfer.files[0]);
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     e.preventDefault();
-    if (disabled || uploading) return;
+    if (disabled) return;
 
     if (e.target.files && e.target.files[0]) {
-      await uploadImage(e.target.files[0]);
+      handleFileSelection(e.target.files[0]);
     }
   };
 
-  const uploadImage = async (file) => {
+  const handleFileSelection = (file) => {
     if (!file.type.startsWith("image/")) {
       toast.error("Please upload an image file (JPEG, PNG, etc.)");
       return;
     }
 
-    // Limit to 5MB (imgBB limit is 32MB, but 5MB is safer for fast uploads)
     if (file.size > 5 * 1024 * 1024) {
       toast.error("Image size should be less than 5MB");
       return;
     }
 
-    setUploading(true);
-    const toastId = toast.loading("Uploading image to ImgBB...");
-
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-
-      // Using the ImgBB API key from env
-      const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
-      
-      if (!imgbbKey) {
-         toast.dismiss(toastId);
-         toast.error("ImgBB API key is missing in .env");
-         setUploading(false);
-         return;
-      }
-
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        toast.success("Image uploaded successfully!", { id: toastId });
-        onChange(data.data.display_url);
-      } else {
-        throw new Error(data.error?.message || "Failed to upload image");
-      }
-    } catch (error) {
-      console.error("ImgBB Upload Error:", error);
-      toast.error(error.message || "Failed to upload image. Please try again.", { id: toastId });
-    } finally {
-      setUploading(false);
-    }
+    onChange(file);
   };
 
   const clearImage = () => {
-    if (disabled || uploading) return;
-    onChange("");
+    if (disabled) return;
+    onChange(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -101,11 +82,11 @@ export default function ImageUpload({ value, onChange, disabled }) {
 
   return (
     <div className="w-full">
-      {value ? (
+      {previewUrl ? (
         <div className="relative w-full rounded-xl overflow-hidden border border-[#d4c3b3] bg-[#ece5de] aspect-video group flex items-center justify-center">
           <Image 
-            src={value} 
-            alt="Uploaded artwork" 
+            src={previewUrl} 
+            alt="Artwork preview" 
             fill 
             className="object-contain"
             unoptimized
@@ -114,7 +95,7 @@ export default function ImageUpload({ value, onChange, disabled }) {
             <button
               type="button"
               onClick={clearImage}
-              disabled={disabled || uploading}
+              disabled={disabled}
               className="bg-white text-red-500 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-red-50 transition-colors shadow-lg"
             >
               <FiX /> Remove Image
@@ -125,13 +106,13 @@ export default function ImageUpload({ value, onChange, disabled }) {
         <div 
           className={`relative w-full rounded-xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-8 text-center cursor-pointer min-h-[200px]
             ${dragActive ? "border-[#b07c5b] bg-[#faf5ef]" : "border-[#d4c3b3] bg-[#faf8f5] hover:border-[#b07c5b] hover:bg-white"}
-            ${disabled || uploading ? "opacity-50 cursor-not-allowed" : ""}
+            ${disabled ? "opacity-50 cursor-not-allowed" : ""}
           `}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
-          onClick={() => !disabled && !uploading && fileInputRef.current?.click()}
+          onClick={() => !disabled && fileInputRef.current?.click()}
         >
           <input
             type="file"
@@ -139,22 +120,18 @@ export default function ImageUpload({ value, onChange, disabled }) {
             onChange={handleChange}
             accept="image/*"
             className="hidden"
-            disabled={disabled || uploading}
+            disabled={disabled}
           />
           
           <div className="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 text-[#b07c5b]">
-            {uploading ? (
-              <div className="w-8 h-8 border-4 border-[#e8ddd1] border-t-[#b07c5b] rounded-full animate-spin"></div>
-            ) : (
-              <FiUploadCloud size={32} />
-            )}
+            <FiUploadCloud size={32} />
           </div>
           
           <h3 className="font-bold text-[#3d3029] text-lg mb-1">
-            {uploading ? "Uploading to ImgBB..." : "Click or drag image to upload"}
+            Click or drag image to upload
           </h3>
           <p className="text-[#7a6e64] text-sm max-w-xs">
-            {uploading ? "Please wait, generating URL..." : "Supports JPG, PNG, GIF up to 5MB. High resolution recommended."}
+            Supports JPG, PNG, GIF up to 5MB. High resolution recommended.
           </p>
         </div>
       )}
