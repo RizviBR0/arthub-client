@@ -204,7 +204,7 @@ export default function AdminDashboard() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 border-b border-[#e8ddd1]">
+      <div className="flex gap-1 mb-6 border-b border-[#e8ddd1] overflow-x-auto whitespace-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {tabs.map((tab) => (
           <button
             key={tab.id}

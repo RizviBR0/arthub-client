@@ -115,6 +115,8 @@ export default function SignUpPage() {
             className="object-cover"
             priority
           />
+          {/* Dark Mode Overlay */}
+          <div className="absolute inset-0 z-10 bg-black/60 hidden dark:block"></div>
         </div>
       </div>
 

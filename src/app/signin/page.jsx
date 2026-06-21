@@ -65,6 +65,8 @@ export default function SignInPage() {
             className="object-cover"
             priority
           />
+          {/* Dark Mode Overlay */}
+          <div className="absolute inset-0 bg-black/60 hidden dark:block"></div>
         </div>
       </div>
 
@@ -98,7 +100,7 @@ export default function SignInPage() {
               Log in to ArtHub
             </h2>
             <div className="flex items-center justify-center gap-1 mb-4">
-              <span className="w-6 h-[1px] bg-[#c9a88a]"></span>
+              <span className="w-6 h-px bg-[#c9a88a]"></span>
               <svg
                 width="16"
                 height="10"
@@ -112,7 +114,7 @@ export default function SignInPage() {
                   strokeWidth="1.5"
                 />
               </svg>
-              <span className="w-6 h-[1px] bg-[#c9a88a]"></span>
+              <span className="w-6 h-px bg-[#c9a88a]"></span>
             </div>
             <p className="text-[#7a6e64] text-sm">
               Access your account to discover, collect,
@@ -205,9 +207,9 @@ export default function SignInPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-[1px] bg-[#ddd3c9]"></div>
+            <div className="flex-1 h-px bg-[#ddd3c9]"></div>
             <span className="text-sm text-[#a89888]">or</span>
-            <div className="flex-1 h-[1px] bg-[#ddd3c9]"></div>
+            <div className="flex-1 h-px bg-[#ddd3c9]"></div>
           </div>
 
           {/* Google Button */}

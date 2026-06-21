@@ -206,7 +206,7 @@ export default function ArtworkDetailsPage() {
             </h1>
             
             <p className="text-lg text-[#7a6e64]">
-              By <span className="font-semibold text-[#b07c5b]">{artwork.artistName}</span>
+              By <Link href={`/artworks?search=${encodeURIComponent(artwork.artistName)}`} className="font-semibold text-[#b07c5b] hover:text-[#8f5f3d] hover:underline transition-colors">{artwork.artistName}</Link>
             </p>
           </div>
 

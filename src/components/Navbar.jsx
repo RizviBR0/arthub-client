@@ -4,7 +4,7 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import {
   FiMenu,
@@ -14,7 +14,11 @@ import {
   FiUser,
   FiGrid,
   FiCheckCircle,
+  FiHeart,
+  FiSun,
+  FiMoon
 } from "react-icons/fi";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +39,14 @@ const Navbar = () => {
   const remaining = limit === "∞" ? "Unlimited" : Math.max(0, limit - count);
 
   // Navbar is now globally visible as requested
+
+  // For dark mode
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -112,6 +124,18 @@ const Navbar = () => {
 
         {/* Right — Auth */}
         <div className="flex items-center gap-3">
+          
+          {/* Theme Toggle */}
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-full text-[#5a4d42] hover:bg-[#e8ddd1] transition-colors dark:text-gray-300 dark:hover:bg-gray-700"
+              aria-label="Toggle Dark Mode"
+            >
+              {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+            </button>
+          )}
+
           {!user && (
             <div className="hidden md:flex items-center gap-3">
               <Link
@@ -254,6 +278,16 @@ const Navbar = () => {
                         <FiGrid size={16} />
                         Dashboard
                       </Link>
+                      {(!user.role || user.role === "user") && (
+                        <Link
+                          href="/wishlist"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#5a4d42] hover:bg-[#faf5ef] transition-colors"
+                        >
+                          <FiHeart size={16} />
+                          My Wishlist
+                        </Link>
+                      )}
                       <Link
                         href="/dashboard/profile"
                         onClick={() => setIsProfileOpen(false)}

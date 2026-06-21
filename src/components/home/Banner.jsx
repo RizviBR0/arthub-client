@@ -70,8 +70,8 @@ const FloatingFrame = ({ artwork, className, animationDelay, baseWidth }) => {
             height={300}
             className="object-cover max-h-65 object-center"
             style={{ width: baseWidth, height: "auto" }}
-            sizes="(max-width: 1024px) 0px, 300px"
-            quality={80}
+            sizes="(max-width: 1024px) 0px, 250px"
+            quality={70}
           />
         </div>
       </div>
@@ -152,6 +152,8 @@ export default function Banner() {
                   sizes="100vw"
                   quality={90}
                 />
+                {/* Dark Mode Overlay */}
+                <div className="absolute inset-0 bg-black/50 hidden dark:block"></div>
               </div>
 
                             <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center pt-10">

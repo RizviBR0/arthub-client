@@ -79,7 +79,7 @@ const TopArtists = () => {
                   {artist.sales ? `${artist.sales} Artworks Sold` : "Top Creator"}
                 </p>
                 <Link 
-                  href={`/artists/${artist._id}`}
+                  href={`/artworks?search=${encodeURIComponent(artist.name)}`}
                   className="mt-4 px-5 py-2 rounded-full border border-[#d4c3b3] text-[#5a4d42] text-sm font-medium hover:bg-[#b07c5b] hover:text-white hover:border-[#b07c5b] transition-all flex items-center gap-2"
                 >
                   View Profile <FiArrowRight size={14} />

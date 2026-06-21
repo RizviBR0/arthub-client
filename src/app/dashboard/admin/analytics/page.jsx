@@ -120,16 +120,16 @@ export default function AnalyticsPage() {
           {chartData.categoryData?.length > 0 && (
             <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm p-6">
               <h3 className="text-lg font-bold text-[#3d3029] mb-4 font-serif">Artwork Categories</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
+              <ResponsiveContainer width="100%" height={350}>
+                <PieChart margin={{ top: 20, right: 30, bottom: 30, left: 30 }}>
                   <Pie
                     data={chartData.categoryData}
                     dataKey="value"
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
-                    innerRadius={50}
+                    outerRadius={85}
+                    innerRadius={45}
                     paddingAngle={3}
                     label={({ name, value }) => `${name} (${value})`}
                     labelLine={true}
@@ -149,16 +149,16 @@ export default function AnalyticsPage() {
           {chartData.roleData?.length > 0 && (
             <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm p-6">
               <h3 className="text-lg font-bold text-[#3d3029] mb-4 font-serif">User Roles</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
+              <ResponsiveContainer width="100%" height={350}>
+                <PieChart margin={{ top: 20, right: 30, bottom: 30, left: 30 }}>
                   <Pie
                     data={chartData.roleData}
                     dataKey="value"
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
-                    innerRadius={50}
+                    outerRadius={85}
+                    innerRadius={45}
                     paddingAngle={3}
                     label={({ name, value }) => `${name} (${value})`}
                     labelLine={true}
@@ -178,8 +178,8 @@ export default function AnalyticsPage() {
           {chartData.priceRanges?.length > 0 && (
             <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm p-6">
               <h3 className="text-lg font-bold text-[#3d3029] mb-4 font-serif">Price Distribution</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={chartData.priceRanges}>
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={chartData.priceRanges} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e8ddd1" />
                   <XAxis dataKey="range" tick={{ fill: "#7a6e64", fontSize: 12 }} />
                   <YAxis tick={{ fill: "#7a6e64", fontSize: 12 }} allowDecimals={false} />
@@ -194,8 +194,8 @@ export default function AnalyticsPage() {
           {chartData.monthlyArtworks?.length > 0 && (
             <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm p-6">
               <h3 className="text-lg font-bold text-[#3d3029] mb-4 font-serif">Monthly Artworks</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <AreaChart data={chartData.monthlyArtworks}>
+              <ResponsiveContainer width="100%" height={350}>
+                <AreaChart data={chartData.monthlyArtworks} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                   <defs>
                     <linearGradient id="artworkGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#b07c5b" stopOpacity={0.3} />
@@ -223,8 +223,8 @@ export default function AnalyticsPage() {
           {chartData.monthlyTransactions?.length > 0 && (
             <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm p-6 md:col-span-2">
               <h3 className="text-lg font-bold text-[#3d3029] mb-4 font-serif">Monthly Revenue & Transactions</h3>
-              <ResponsiveContainer width="100%" height={320}>
-                <AreaChart data={chartData.monthlyTransactions}>
+              <ResponsiveContainer width="100%" height={400}>
+                <AreaChart data={chartData.monthlyTransactions} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                   <defs>
                     <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#3d3029" stopOpacity={0.2} />
