@@ -10,7 +10,7 @@ function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("session_id");
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending, refetch } = authClient.useSession();
 
   const [status, setStatus] = useState("verifying"); // verifying, success, error
   const [transaction, setTransaction] = useState(null);
@@ -43,8 +43,8 @@ function CheckoutSuccessContent() {
           throw new Error(data.msg || "Payment verification failed");
         }
 
-        // Force BetterAuth to fetch the updated user object (with incremented purchaseCount)
-        await authClient.getSession();
+        // Force BetterAuth to fetch and broadcast the updated user object
+        await refetch();
 
         setTransaction(data.transaction);
         setStatus("success");
