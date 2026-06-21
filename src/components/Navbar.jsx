@@ -2,10 +2,19 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { FiMenu, FiX, FiChevronDown, FiLogOut, FiUser, FiGrid, FiCheckCircle } from "react-icons/fi";
+import {
+  FiMenu,
+  FiX,
+  FiChevronDown,
+  FiLogOut,
+  FiUser,
+  FiGrid,
+  FiCheckCircle,
+} from "react-icons/fi";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +31,7 @@ const Navbar = () => {
   let limit = 3;
   if (tier === "pro") limit = 9;
   if (tier === "premium") limit = "∞";
-  
+
   const remaining = limit === "∞" ? "Unlimited" : Math.max(0, limit - count);
 
   // Navbar is now globally visible as requested
@@ -124,16 +133,18 @@ const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#e8ddd1] hover:border-[#c9a88a] bg-white hover:bg-[#fdfaf7] transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-full border border-[#e8ddd1] hover:border-[#c9a88a] bg-white hover:bg-[#fdfaf7] transition-all duration-200 cursor-pointer"
               >
                 {/* Avatar */}
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-sm font-bold overflow-hidden">
+                <div className="relative w-8 h-8 rounded-full bg-linear-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-sm font-bold overflow-hidden">
                   {user.image ? (
-                    <img
+                    <Image
                       src={user.image}
                       alt={user.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                       referrerPolicy="no-referrer"
+                      unoptimized
                     />
                   ) : (
                     user.name?.charAt(0)?.toUpperCase() || "U"
@@ -160,15 +171,17 @@ const Navbar = () => {
                   />
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl border border-[#e8ddd1] shadow-lg z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     {/* User Info */}
-                    <div className="px-4 py-3 border-b border-[#f0e8df]">
+                    <div className="px-3 py-3 border-b border-[#f0e8df]">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-base font-bold overflow-hidden shrink-0">
+                        <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-base font-bold overflow-hidden shrink-0">
                           {user.image ? (
-                            <img
+                            <Image
                               src={user.image}
                               alt={user.name}
-                              className="w-full h-full object-cover"
+                              fill
+                              className="object-cover"
                               referrerPolicy="no-referrer"
+                              unoptimized
                             />
                           ) : (
                             user.name?.charAt(0)?.toUpperCase() || "U"
@@ -183,20 +196,26 @@ const Navbar = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-2 mt-2">
                         <span className="inline-block px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#b07c5b] bg-[#b07c5b]/10 rounded-full">
                           {user.role === "user" ? "buyer" : user.role}
                         </span>
-                        
+
                         {(!user.role || user.role === "user") && (
-                          <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${
-                            tier === "free" ? "text-[#7a6e64] bg-[#ece5de]" : 
-                            tier === "pro" ? "text-blue-700 bg-blue-100" : 
-                            "text-purple-700 bg-purple-100"
-                          }`}>
+                          <span
+                            className={`inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${
+                              tier === "free"
+                                ? "text-[#7a6e64] bg-[#ece5de]"
+                                : tier === "pro"
+                                  ? "text-blue-700 bg-blue-100"
+                                  : "text-purple-700 bg-purple-100"
+                            }`}
+                          >
                             {tier}
-                            {tier !== "free" && <FiCheckCircle size={10} className="ml-0.5" />}
+                            {tier !== "free" && (
+                              <FiCheckCircle size={10} className="ml-0.5" />
+                            )}
                           </span>
                         )}
                       </div>
@@ -204,14 +223,20 @@ const Navbar = () => {
                       {(!user.role || user.role === "user") && (
                         <div className="mt-3 bg-[#faf8f5] rounded-lg p-2 border border-[#e8ddd1]">
                           <div className="flex justify-between items-center mb-1.5">
-                            <span className="text-[11px] font-medium text-[#7a6e64]">Purchase Quota</span>
-                            <span className="text-[11px] font-bold text-[#3d3029]">{remaining} left</span>
+                            <span className="text-[11px] font-medium text-[#7a6e64]">
+                              Purchase Quota
+                            </span>
+                            <span className="text-[11px] font-bold text-[#3d3029]">
+                              {remaining} left
+                            </span>
                           </div>
                           {limit !== "Unlimited" && (
                             <div className="w-full bg-[#ece5de] rounded-full h-1.5 overflow-hidden">
-                              <div 
-                                className={`h-1.5 rounded-full transition-all duration-500 ${count >= limit ? 'bg-red-500' : 'bg-[#b07c5b]'}`}
-                                style={{ width: `${Math.min(100, (count / limit) * 100)}%` }}
+                              <div
+                                className={`h-1.5 rounded-full transition-all duration-500 ${count >= limit ? "bg-red-500" : "bg-[#b07c5b]"}`}
+                                style={{
+                                  width: `${Math.min(100, (count / limit) * 100)}%`,
+                                }}
                               ></div>
                             </div>
                           )}

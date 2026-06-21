@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   FiUsers, FiShield, FiStar, FiUser, FiImage, FiDollarSign,
-  FiTrash2, FiTrendingUp, FiBarChart2
+  FiTrash2, FiTrendingUp, FiBarChart2, FiChevronDown
 } from "react-icons/fi";
 import ConfirmModal from "@/components/ConfirmModal";
 import toast from "react-hot-toast";
@@ -248,16 +248,19 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">{getRoleBadge(u.role || "user")}</td>
                       <td className="px-6 py-4 text-[#7a6e64] text-sm">{new Date(u.createdAt).toLocaleDateString()}</td>
                       <td className="px-6 py-4 text-right">
-                        <select
-                          className="text-sm border border-[#d4c3b3] rounded-md px-2 py-1.5 focus:outline-none focus:border-[#b07c5b] bg-white text-[#5a4d42]"
-                          value={u.role || "user"}
-                          onChange={(e) => handleUpdateRole(u.id || u._id, e.target.value)}
-                          disabled={updatingId === (u.id || u._id) || (u.id || u._id) === session.user.id}
-                        >
-                          <option value="user">Buyer</option>
-                          <option value="artist">Artist</option>
-                          <option value="admin">Admin</option>
-                        </select>
+                        <div className="relative inline-block w-full sm:w-auto">
+                          <select
+                            className="appearance-none w-full text-sm border border-[#d4c3b3] rounded-md px-2 py-1.5 pr-8 focus:outline-none focus:border-[#b07c5b] bg-white text-[#5a4d42]"
+                            value={u.role || "user"}
+                            onChange={(e) => handleUpdateRole(u.id || u._id, e.target.value)}
+                            disabled={updatingId === (u.id || u._id) || (u.id || u._id) === session.user.id}
+                          >
+                            <option value="user">Buyer</option>
+                            <option value="artist">Artist</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                          <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-[#7a6e64] pointer-events-none" size={14} />
+                        </div>
                       </td>
                     </tr>
                   ))

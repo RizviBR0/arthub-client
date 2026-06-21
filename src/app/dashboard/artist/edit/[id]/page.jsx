@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { FiArrowLeft, FiSave, FiImage } from "react-icons/fi";
+import { FiArrowLeft, FiSave, FiImage, FiChevronDown } from "react-icons/fi";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
@@ -177,21 +177,24 @@ export default function EditArtworkPage() {
 
             <div>
               <label className="block text-[#3d3029] font-medium mb-2">Category *</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors bg-white"
-              >
-                <option value="painting">Painting</option>
-                <option value="digital">Digital Art</option>
-                <option value="sculpture">Sculpture</option>
-                <option value="photography">Photography</option>
-                <option value="drawing">Drawing</option>
-                <option value="mixed-media">Mixed Media</option>
-                <option value="prints">Fine Art Prints</option>
-                <option value="textile">Textile Arts</option>
-              </select>
+              <div className="relative">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="appearance-none w-full px-4 py-3 pr-10 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors bg-white"
+                >
+                  <option value="painting">Painting</option>
+                  <option value="digital">Digital Art</option>
+                  <option value="sculpture">Sculpture</option>
+                  <option value="photography">Photography</option>
+                  <option value="drawing">Drawing</option>
+                  <option value="mixed-media">Mixed Media</option>
+                  <option value="prints">Fine Art Prints</option>
+                  <option value="textile">Textile Arts</option>
+                </select>
+                <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7a6e64] pointer-events-none" size={18} />
+              </div>
             </div>
 
             <div>

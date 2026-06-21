@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ArtworkCard from "@/components/ArtworkCard";
-import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiChevronDown } from "react-icons/fi";
 
 const categories = [
   { id: "all", label: "All Categories" },
@@ -174,15 +174,18 @@ function ArtworksBrowser() {
               <FiFilter /> Filters
             </button>
 
-            <select
-              value={sort}
-              onChange={(e) => { setSort(e.target.value); setPage(1); }}
-              className="w-full sm:w-auto px-4 py-2.5 bg-white border border-[#e8ddd1] rounded-lg text-sm text-[#5a4d42] focus:outline-none focus:border-[#b07c5b] shadow-sm cursor-pointer"
-            >
-              {sortOptions.map(option => (
-                <option key={option.id} value={option.id}>{option.label}</option>
-              ))}
-            </select>
+            <div className="relative w-full sm:w-auto">
+              <select
+                value={sort}
+                onChange={(e) => { setSort(e.target.value); setPage(1); }}
+                className="appearance-none w-full sm:w-auto px-4 py-2.5 pr-10 bg-white border border-[#e8ddd1] rounded-lg text-sm text-[#5a4d42] focus:outline-none focus:border-[#b07c5b] shadow-sm cursor-pointer"
+              >
+                {sortOptions.map(option => (
+                  <option key={option.id} value={option.id}>{option.label}</option>
+                ))}
+              </select>
+              <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a6e64] pointer-events-none" size={16} />
+            </div>
           </div>
         </div>
 

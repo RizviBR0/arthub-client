@@ -130,7 +130,7 @@ export default function ArtworkDetailsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20 animate-pulse">
         <div className="w-24 h-6 bg-[#ece5de] rounded mb-8"></div>
         <div className="flex flex-col lg:flex-row gap-12 items-start">
-          <div className="w-full lg:w-3/5 aspect-[4/5] md:aspect-auto md:h-[600px] bg-[#ece5de] rounded-xl"></div>
+          <div className="w-full lg:w-3/5 aspect-4/5 md:aspect-auto md:h-150 bg-[#ece5de] rounded-xl"></div>
           <div className="w-full lg:w-2/5 space-y-6">
             <div className="h-10 bg-[#ece5de] rounded w-3/4"></div>
             <div className="h-6 bg-[#ece5de] rounded w-1/3"></div>
@@ -174,7 +174,7 @@ export default function ArtworkDetailsPage() {
         
                 <div className="w-full lg:w-3/5">
           <div className="relative w-full rounded-xl overflow-hidden shadow-2xl bg-[#ece5de] flex items-center justify-center p-2 md:p-6 border border-[#e8ddd1]">
-            <div className="relative w-full aspect-[4/5] md:aspect-auto md:h-[650px] shadow-inner bg-white">
+            <div className="relative w-full aspect-4/5 md:aspect-auto md:h-162.5 shadow-inner bg-white">
               <Image
                 src={artwork.image}
                 alt={artwork.title}
@@ -206,7 +206,7 @@ export default function ArtworkDetailsPage() {
             </h1>
             
             <p className="text-lg text-[#7a6e64]">
-              By <Link href={`/artists/${artwork.artistId}`} className="font-semibold text-[#b07c5b] hover:underline">{artwork.artistName}</Link>
+              By <span className="font-semibold text-[#b07c5b]">{artwork.artistName}</span>
             </p>
           </div>
 
@@ -226,7 +226,7 @@ export default function ArtworkDetailsPage() {
             </p>
             
             <div className="mt-6 flex items-center gap-2 text-sm text-[#7a6e64]">
-              <FiClock /> Uploaded on {new Date(artwork.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              <FiClock /> Uploaded on {artwork?.createdAt ? new Date(artwork.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Recently'}
             </div>
           </div>
 
