@@ -55,14 +55,14 @@ const FloatingFrame = ({ artwork, className, animationDelay, baseWidth }) => {
   return (
     <Link
       href={`/artworks/${artwork._id}`}
-      className={`absolute hidden lg:block z-20 transition-duration-1000 ease-in-out hover:scale-105 shadow-xl hover:z-30 pointer-events-auto ${className}`}
+      className={`absolute hidden lg:block z-20 transition-duration-1000 ease-in-out hover:scale-105 hover:z-30 pointer-events-auto ${className}`}
       style={{
         animation: `float 6s ease-in-out infinite`,
         animationDelay: animationDelay,
       }}
     >
-      <div className="relative border-[6px] border-[#c2b2a1] shadow-inner bg-[#ece5de] p-1 inline-block">
-        <div className="relative border border-[#8a7a6c] flex">
+      <div className="relative border-4 border-[#a28b75] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.2)] bg-[#3d3029] inline-block rounded-xs overflow-hidden">
+        <div className="relative flex">
           <Image
             src={artwork.image}
             alt={artwork.title || "Trending Artwork"}
@@ -116,21 +116,21 @@ export default function Banner() {
             <div className="absolute inset-0 w-full max-w-[1600px] mx-auto pointer-events-none z-20">
         {dynamicArtworks.length > 0 && (
           <>
-                        <FloatingFrame artwork={dynamicArtworks[0]} className="top-[10%] left-[12%]" baseWidth="160px" animationDelay="0s" />
+            <FloatingFrame artwork={dynamicArtworks[0]} className="top-[6%] left-[16%]" baseWidth="170px" animationDelay="0s" />
             
-            <FloatingFrame artwork={dynamicArtworks[1]} className="top-[35%] left-[6%]" baseWidth="130px" animationDelay="1s" />
+            <FloatingFrame artwork={dynamicArtworks[1]} className="top-[45%] right-[18%]" baseWidth="130px" animationDelay="1s" />
             
-            <FloatingFrame artwork={dynamicArtworks[2]} className="bottom-[20%] left-[8%]" baseWidth="200px" animationDelay="2s" />
+            <FloatingFrame artwork={dynamicArtworks[2]} className="bottom-[22%] left-[10%]" baseWidth="200px" animationDelay="2s" />
             
-            <FloatingFrame artwork={dynamicArtworks[3]} className="bottom-[8%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
+            <FloatingFrame artwork={dynamicArtworks[3]} className="bottom-[4%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
 
-            <FloatingFrame artwork={dynamicArtworks[4]} className="top-[8%] right-[25%]" baseWidth="130px" animationDelay="0.3s" />
+            <FloatingFrame artwork={dynamicArtworks[4]} className="top-[6%] right-[22%]" baseWidth="140px" animationDelay="0.3s" />
             
-            <FloatingFrame artwork={dynamicArtworks[5]} className="top-[18%] right-[6%]" baseWidth="150px" animationDelay="1.5s" />
+            <FloatingFrame artwork={dynamicArtworks[5]} className="top-[18%] right-[4%]" baseWidth="160px" animationDelay="1.5s" />
             
-            <FloatingFrame artwork={dynamicArtworks[6]} className="bottom-[22%] right-[10%]" baseWidth="180px" animationDelay="2.5s" />
+            <FloatingFrame artwork={dynamicArtworks[6]} className="bottom-[18%] right-[10%]" baseWidth="220px" animationDelay="2.5s" />
             
-            <FloatingFrame artwork={dynamicArtworks[7]} className="bottom-[10%] right-[28%]" baseWidth="120px" animationDelay="1.2s" />
+            <FloatingFrame artwork={dynamicArtworks[7]} className="bottom-[5%] right-[25%]" baseWidth="130px" animationDelay="1.2s" />
           </>
         )}
       </div>

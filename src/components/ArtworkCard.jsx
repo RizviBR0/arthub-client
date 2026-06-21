@@ -14,7 +14,7 @@ const ArtworkCard = ({ artwork }) => {
 
   return (
     <Link href={`/artworks/${id}`} className="group block w-full">
-      <div className="relative overflow-hidden rounded-md bg-[#ece5de] aspect-[4/5] mb-4">
+      <div className="relative overflow-hidden rounded-md bg-[#ece5de] aspect-4/5 mb-4">
                 <button className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/70 backdrop-blur-md text-[#5a4d42] hover:text-red-500 hover:bg-white transition-all opacity-0 group-hover:opacity-100 shadow-sm" aria-label="Add to Wishlist">
           <FiHeart size={18} />
         </button>
