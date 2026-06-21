@@ -56,7 +56,7 @@ function CheckoutSuccessContent() {
     };
 
     verifyCheckout();
-  }, [sessionId, session, isPending, router]);
+  }, [sessionId, session, isPending, router, refetch]);
 
   if (isPending || status === "verifying") {
     return (
