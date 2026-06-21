@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { FiPlus, FiEdit2, FiTrash2, FiDollarSign, FiTrendingUp } from "react-icons/fi";
+import ConfirmModal from "@/components/ConfirmModal";
 import toast from "react-hot-toast";
 
 export default function ArtistDashboard() {
@@ -13,8 +14,20 @@ export default function ArtistDashboard() {
   const { data: session, isPending } = authClient.useSession();
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmModalState, setConfirmModalState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    isDanger: true,
+    onConfirm: () => {}
+  });
 
-    const totalArtworks = artworks.length;
+  const closeConfirmModal = () => {
+    setConfirmModalState(prev => ({ ...prev, isOpen: false }));
+  };
+
+  const totalArtworks = artworks.length;
   const soldArtworks = artworks.filter(a => a.status === "sold").length;
   const totalEarnings = soldArtworks * 450; // Mock earnings
 
@@ -52,19 +65,26 @@ export default function ArtistDashboard() {
   }, [session, isPending, router]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this artwork?")) return;
-    
+    setConfirmModalState({
+      isOpen: true,
+      title: "Delete Artwork",
+      message: "Delete this artwork?",
+      confirmText: "Delete",
+      isDanger: true,
+      onConfirm: async () => {
         setArtworks(prev => prev.filter(a => a._id !== id));
-    toast.success("Artwork deleted!");
-    
-    try {
-              await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
-         method: "DELETE",
-         credentials: "include"
-       });
-    } catch (err) {
-       console.error(err);
-    }
+        toast.success("Artwork deleted!");
+        
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
+             method: "DELETE",
+             credentials: "include"
+           });
+        } catch (err) {
+           console.error(err);
+        }
+      }
+    });
   };
 
   if (isPending || loading) {
@@ -160,20 +180,26 @@ export default function ArtistDashboard() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-3">
-                        <Link 
-                          href={`/dashboard/artist/edit/${art._id}`}
-                          className="p-2 text-[#7a6e64] hover:text-[#b07c5b] hover:bg-[#faf5ef] rounded transition-colors"
-                          title="Edit"
-                        >
-                          <FiEdit2 size={18} />
-                        </Link>
-                        <button 
-                          onClick={() => handleDelete(art._id)}
-                          className="p-2 text-[#7a6e64] hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                          title="Delete"
-                        >
-                          <FiTrash2 size={18} />
-                        </button>
+                        {art.status === "sold" ? (
+                          <span className="text-xs text-[#a89888] italic mr-2">No actions</span>
+                        ) : (
+                          <>
+                            <Link 
+                              href={`/dashboard/artist/edit/${art._id}`}
+                              className="p-2 text-[#7a6e64] hover:text-[#b07c5b] hover:bg-[#faf5ef] rounded transition-colors"
+                              title="Edit"
+                            >
+                              <FiEdit2 size={18} />
+                            </Link>
+                            <button 
+                              onClick={() => handleDelete(art._id)}
+                              className="p-2 text-[#7a6e64] hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                              title="Delete"
+                            >
+                              <FiTrash2 size={18} />
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -192,6 +218,7 @@ export default function ArtistDashboard() {
           <p>Sales tracking and transaction history will be available after Stripe integration (Step 11).</p>
         </div>
       </div>
+      <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
     </div>
   );
 }

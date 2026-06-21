@@ -8,6 +8,7 @@ import {
   FiUsers, FiShield, FiStar, FiUser, FiImage, FiDollarSign,
   FiTrash2, FiTrendingUp, FiBarChart2
 } from "react-icons/fi";
+import ConfirmModal from "@/components/ConfirmModal";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
@@ -20,6 +21,19 @@ export default function AdminDashboard() {
   const [artworks, setArtworks] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+
+  const [confirmModalState, setConfirmModalState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    isDanger: true,
+    onConfirm: () => {}
+  });
+
+  const closeConfirmModal = () => {
+    setConfirmModalState(prev => ({ ...prev, isOpen: false }));
+  };
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
 
@@ -58,43 +72,59 @@ export default function AdminDashboard() {
   };
 
   const handleUpdateRole = async (userId, newRole) => {
-    if (!window.confirm(`Change this user's role to "${newRole}"?`)) return;
-    setUpdatingId(userId);
-    const toastId = toast.loading("Updating role...");
-    try {
-      const res = await fetch(`${API}/api/admin/users/${userId}/role`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ role: newRole }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.msg || "Failed to update role");
+    setConfirmModalState({
+      isOpen: true,
+      title: "Change User Role",
+      message: `Change this user's role to "${newRole}"?`,
+      confirmText: "Update Role",
+      isDanger: false,
+      onConfirm: async () => {
+        setUpdatingId(userId);
+        const toastId = toast.loading("Updating role...");
+        try {
+          const res = await fetch(`${API}/api/admin/users/${userId}/role`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ role: newRole }),
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.msg || "Failed to update role");
+          }
+          setUsers(users.map((u) => ((u.id || u._id) === userId ? { ...u, role: newRole } : u)));
+          toast.success(`Role updated to ${newRole}`, { id: toastId });
+        } catch (error) {
+          toast.error(error.message, { id: toastId });
+        } finally {
+          setUpdatingId(null);
+        }
       }
-      setUsers(users.map((u) => (u.id === userId ? { ...u, role: newRole } : u)));
-      toast.success(`Role updated to ${newRole}`, { id: toastId });
-    } catch (error) {
-      toast.error(error.message, { id: toastId });
-    } finally {
-      setUpdatingId(null);
-    }
+    });
   };
 
   const handleDeleteArtwork = async (artworkId) => {
-    if (!window.confirm("Permanently delete this artwork?")) return;
-    const toastId = toast.loading("Deleting artwork...");
-    try {
-      const res = await fetch(`${API}/api/admin/artworks/${artworkId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!res.ok) throw new Error("Failed to delete artwork");
-      setArtworks(artworks.filter((a) => a._id !== artworkId));
-      toast.success("Artwork deleted", { id: toastId });
-    } catch (error) {
-      toast.error(error.message, { id: toastId });
-    }
+    setConfirmModalState({
+      isOpen: true,
+      title: "Delete Artwork",
+      message: "Permanently delete this artwork?",
+      confirmText: "Delete",
+      isDanger: true,
+      onConfirm: async () => {
+        const toastId = toast.loading("Deleting artwork...");
+        try {
+          const res = await fetch(`${API}/api/admin/artworks/${artworkId}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error("Failed to delete artwork");
+          setArtworks(artworks.filter((a) => a._id !== artworkId));
+          toast.success("Artwork deleted", { id: toastId });
+        } catch (error) {
+          toast.error(error.message, { id: toastId });
+        }
+      }
+    });
   };
 
   const getRoleBadge = (role) => {
@@ -106,7 +136,7 @@ export default function AdminDashboard() {
     const icons = { admin: <FiShield size={12} />, artist: <FiStar size={12} />, user: <FiUser size={12} /> };
     return (
       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[role] || styles.user}`}>
-        {icons[role] || icons.user} {role?.charAt(0).toUpperCase() + role?.slice(1)}
+        {icons[role] || icons.user} {role === "user" ? "Buyer" : (role?.charAt(0).toUpperCase() + role?.slice(1))}
       </span>
     );
   };
@@ -221,10 +251,10 @@ export default function AdminDashboard() {
                         <select
                           className="text-sm border border-[#d4c3b3] rounded-md px-2 py-1.5 focus:outline-none focus:border-[#b07c5b] bg-white text-[#5a4d42]"
                           value={u.role || "user"}
-                          onChange={(e) => handleUpdateRole(u.id, e.target.value)}
-                          disabled={updatingId === u.id || u.id === session.user.id}
+                          onChange={(e) => handleUpdateRole(u.id || u._id, e.target.value)}
+                          disabled={updatingId === (u.id || u._id) || (u.id || u._id) === session.user.id}
                         >
-                          <option value="user">User</option>
+                          <option value="user">Buyer</option>
                           <option value="artist">Artist</option>
                           <option value="admin">Admin</option>
                         </select>
@@ -341,6 +371,7 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+      <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
     </div>
   );
 }

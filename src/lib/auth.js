@@ -3,7 +3,7 @@ dns.setServers(["1.1.1.1", "1.0.0.1"]);
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { jwt } from "better-auth/plugins";
+
 
 let client;
 if (process.env.NODE_ENV === "development") {
@@ -33,7 +33,8 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        defaultValue: "user",
+        type: "string",
+        required: false,
       },
       subscriptionTier: {
         defaultValue: "free",
@@ -48,12 +49,7 @@ export const auth = betterAuth({
     },
   },
   session: {
-    cookieCache: {
-      enabled: true,
-      strategy: "jwt",
-      maxAge: 60 * 24 * 30,
-    },
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day
   },
-
-  plugins: [jwt()],
 });

@@ -49,6 +49,12 @@ export default function EditArtworkPage() {
             return;
         }
 
+        if (data.status === "sold") {
+            toast.error("Sold artworks cannot be edited.");
+            router.push("/dashboard/artist");
+            return;
+        }
+
         setFormData({
           title: data.title,
           category: data.category,

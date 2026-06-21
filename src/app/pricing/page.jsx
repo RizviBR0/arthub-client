@@ -8,8 +8,19 @@ import toast from "react-hot-toast";
 
 export default function PricingPage() {
   const router = useRouter();
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const [loadingTier, setLoadingTier] = useState(null);
+
+  React.useEffect(() => {
+    if (!isPending && session?.user && session.user.role !== "user") {
+      router.push("/");
+    }
+  }, [session, isPending, router]);
+
+  // Don't render the pricing page for non-buyers while redirecting
+  if (session?.user && session.user.role !== "user") {
+    return null;
+  }
 
   const handleSubscribe = async (tierId) => {
     if (!session) {
@@ -53,7 +64,7 @@ export default function PricingPage() {
             Elevate Your Art Career
           </h1>
           <p className="text-lg text-[#7a6e64]">
-            Choose the perfect plan to showcase your portfolio, reach more buyers, and maximize your earnings.
+            Choose the perfect plan to discover, collect, and showcase your artwork while maximizing your potential.
           </p>
         </div>
 
@@ -70,7 +81,7 @@ export default function PricingPage() {
             <ul className="space-y-4 mb-8 flex-1">
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> Unlimited artwork uploads</li>
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> Standard gallery placement</li>
-              <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> Secure payment processing</li>
+              <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> Buy up to 3 artworks</li>
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 10% transaction fee</li>
             </ul>
 
@@ -86,51 +97,18 @@ export default function PricingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#b07c5b] text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1">
               <FiStar /> MOST POPULAR
             </div>
-            <h3 className="text-2xl font-bold text-[#3d3029] font-serif mb-2">Premium</h3>
+            <h3 className="text-2xl font-bold text-[#3d3029] font-serif mb-2">Pro</h3>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-4xl font-bold text-[#b07c5b]">$9.99</span>
               <span className="text-[#7a6e64]">/ month</span>
             </div>
-            <p className="text-[#5a4d42] mb-8 h-12">Stand out to collectors with premium visibility.</p>
+            <p className="text-[#5a4d42] mb-8 h-12">Stand out to buyers with premium visibility.</p>
             
             <ul className="space-y-4 mb-8 flex-1">
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> All Basic features</li>
-              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> "Premium" Profile Badge</li>
-              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> Priority gallery placement</li>
+              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> "Pro" Profile Badge</li>
+              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> Buy up to 9 artworks</li>
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 5% transaction fee</li>
-            </ul>
-
-            <form action="/api/checkout_sessions" method="POST">
-              <input type="hidden" name="tier" value="premium" />
-              <button 
-                type="submit"
-                onClick={(e) => {
-                  if (!session) {
-                    e.preventDefault();
-                    toast("Please log in to upgrade your account", { icon: "🔒" });
-                    router.push("/signin");
-                  }
-                }}
-                className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors flex justify-center items-center gap-2"
-              >
-                Upgrade to Premium
-              </button>
-            </form>
-          </div>
-
-          <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
-            <h3 className="text-2xl font-bold font-serif mb-2 text-white">Pro</h3>
-            <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-4xl font-bold text-[#d4c3b3]">$19.99</span>
-              <span className="text-[#a89888]">/ month</span>
-            </div>
-            <p className="text-[#e8ddd1] mb-8 h-12">For serious professionals maximizing their revenue.</p>
-            
-            <ul className="space-y-4 mb-8 flex-1">
-              <li className="flex items-center gap-3 text-[#e8ddd1]"><FiCheck className="text-green-400" /> All Premium features</li>
-              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> "Pro" Profile Badge</li>
-              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> Top gallery placement</li>
-              <li className="flex items-center gap-3 font-bold text-[#d4c3b3]"><FiZap className="text-yellow-400" /> 0% transaction fee</li>
             </ul>
 
             <form action="/api/checkout_sessions" method="POST">
@@ -144,9 +122,42 @@ export default function PricingPage() {
                     router.push("/signin");
                   }
                 }}
+                className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors flex justify-center items-center gap-2"
+              >
+                Upgrade to Pro
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
+            <h3 className="text-2xl font-bold font-serif mb-2 text-white">Premium</h3>
+            <div className="flex items-baseline gap-1 mb-6">
+              <span className="text-4xl font-bold text-[#d4c3b3]">$19.99</span>
+              <span className="text-[#a89888]">/ month</span>
+            </div>
+            <p className="text-[#e8ddd1] mb-8 h-12">For serious professionals maximizing their revenue.</p>
+            
+            <ul className="space-y-4 mb-8 flex-1">
+              <li className="flex items-center gap-3 text-[#e8ddd1]"><FiCheck className="text-green-400" /> All Pro features</li>
+              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> "Premium" Profile Badge</li>
+              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> Unlimited purchases</li>
+              <li className="flex items-center gap-3 font-bold text-[#d4c3b3]"><FiZap className="text-yellow-400" /> 0% transaction fee</li>
+            </ul>
+
+            <form action="/api/checkout_sessions" method="POST">
+              <input type="hidden" name="tier" value="premium" />
+              <button 
+                type="submit"
+                onClick={(e) => {
+                  if (!session) {
+                    e.preventDefault();
+                    toast("Please log in to upgrade your account", { icon: "🔒" });
+                    router.push("/signin");
+                  }
+                }}
                 className="w-full py-3 rounded-lg bg-white text-[#3d3029] hover:bg-[#faf5ef] font-bold shadow-md transition-colors flex justify-center items-center gap-2"
               >
-                Go Pro
+                Go Premium
               </button>
             </form>
           </div>

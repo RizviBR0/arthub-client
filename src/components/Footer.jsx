@@ -16,7 +16,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-[#a89888] text-sm leading-relaxed mb-6">
-              The premier marketplace for contemporary artists and collectors. Discover, buy, and sell exceptional digital and physical artworks.
+              The premier marketplace for contemporary artists and buyers. Discover, buy, and sell exceptional digital and physical artworks.
             </p>
             <div className="flex items-center gap-4 text-[#d4c3b3]">
               <a href="#" className="hover:text-white transition-colors p-2 bg-[#5a4d42] rounded-full"><FiInstagram size={18} /></a>

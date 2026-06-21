@@ -49,12 +49,12 @@ export default async function Success({ searchParams }) {
             </ul>
           </div>
 
-          <Link
+          <a
             href="/dashboard/user"
-            className="inline-block w-full py-3 px-6 bg-[#b07c5b] text-white font-medium rounded-lg hover:bg-[#9e6c4d] transition-colors shadow-md"
+            className="inline-block w-full py-3 px-6 bg-[#b07c5b] text-white font-medium rounded-lg hover:bg-[#9e6c4d] transition-colors shadow-md text-center"
           >
             Go to Dashboard
-          </Link>
+          </a>
         </div>
       </div>
     );

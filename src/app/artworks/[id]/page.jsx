@@ -5,9 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { FiArrowLeft, FiEdit2, FiTrash2, FiShoppingCart, FiClock, FiTag, FiCheckCircle } from "react-icons/fi";
+import { FiArrowLeft, FiEdit2, FiTrash2, FiShoppingCart, FiClock, FiTag, FiCheckCircle, FiX, FiShoppingBag } from "react-icons/fi";
 import toast from "react-hot-toast";
 import CommentsSection from "@/components/CommentsSection";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function ArtworkDetailsPage() {
   const params = useParams();
@@ -20,6 +21,27 @@ export default function ArtworkDetailsPage() {
   const [artwork, setArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  const [confirmModalState, setConfirmModalState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    isDanger: true,
+    onConfirm: () => {}
+  });
+
+  const closeConfirmModal = () => {
+    setConfirmModalState(prev => ({ ...prev, isOpen: false }));
+  };
+
+  const tier = user?.subscriptionTier || "free";
+  const count = user?.purchaseCount || 0;
+  let limit = 3;
+  if (tier === "pro") limit = 9;
+  if (tier === "premium") limit = Infinity;
+  const isQuotaReached = user?.role === "user" && count >= limit;
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -46,19 +68,31 @@ export default function ArtworkDetailsPage() {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this artwork? This action cannot be undone.")) return;
-    
-    setIsDeleting(true);
+    setConfirmModalState({
+      isOpen: true,
+      title: "Delete Artwork",
+      message: "Are you sure you want to delete this artwork? This action cannot be undone.",
+      confirmText: "Delete",
+      isDanger: true,
+      onConfirm: async () => {
+        setIsDeleting(true);
         setTimeout(() => {
-      toast.success("Artwork deleted successfully");
-      router.push("/dashboard/artist");
-    }, 1000);
+          toast.success("Artwork deleted successfully");
+          router.push("/dashboard/artist");
+        }, 1000);
+      }
+    });
   };
 
   const handlePurchase = async () => {
     if (!user) {
       toast("Please log in to purchase artworks", { icon: "🔒" });
       router.push("/signin");
+      return;
+    }
+
+    if (isQuotaReached) {
+      setShowUpgradeModal(true);
       return;
     }
 
@@ -74,6 +108,11 @@ export default function ArtworkDetailsPage() {
       const data = await res.json();
       
       if (!res.ok) {
+        if (data.code === "LIMIT_REACHED") {
+          toast.dismiss(toastId);
+          setShowUpgradeModal(true);
+          return;
+        }
         throw new Error(data.msg || "Failed to initiate checkout");
       }
 
@@ -193,7 +232,7 @@ export default function ArtworkDetailsPage() {
 
                     <div className="mt-auto pt-6 border-t border-[#e8ddd1] space-y-4">
             
-                        {!isOwner && (
+                        {(!user || user.role === "user") && (
               <button 
                 onClick={handlePurchase}
                 disabled={isSold}
@@ -204,25 +243,33 @@ export default function ArtworkDetailsPage() {
                 }`}
               >
                 <FiShoppingCart size={20} />
-                {isSold ? "Artwork Sold" : "Secure Checkout"}
+                {isSold ? "Artwork Sold" : (isQuotaReached ? "Upgrade Plan to Purchase" : "Secure Checkout")}
               </button>
             )}
 
                         {isOwner && (
               <div className="flex gap-4">
-                <Link 
-                  href={`/dashboard/artist/edit/${artwork._id}`}
-                  className="flex-1 py-3 border-2 border-[#b07c5b] text-[#b07c5b] hover:bg-[#b07c5b] hover:text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-colors"
-                >
-                  <FiEdit2 /> Edit
-                </Link>
-                <button 
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                  className="flex-1 py-3 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50"
-                >
-                  <FiTrash2 /> {isDeleting ? "Deleting..." : "Delete"}
-                </button>
+                {isSold ? (
+                  <div className="w-full py-4 bg-[#f0e8df] text-[#7a6e64] rounded-lg flex items-center justify-center gap-2 font-medium border border-[#d4c3b3]">
+                    <FiCheckCircle className="text-[#b07c5b]" /> This artwork is sold and can no longer be edited.
+                  </div>
+                ) : (
+                  <>
+                    <Link 
+                      href={`/dashboard/artist/edit/${artwork._id}`}
+                      className="flex-1 py-3 border-2 border-[#b07c5b] text-[#b07c5b] hover:bg-[#b07c5b] hover:text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-colors"
+                    >
+                      <FiEdit2 /> Edit
+                    </Link>
+                    <button 
+                      onClick={handleDelete}
+                      disabled={isDeleting}
+                      className="flex-1 py-3 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-lg flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50"
+                    >
+                      <FiTrash2 /> {isDeleting ? "Deleting..." : "Delete"}
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -231,6 +278,46 @@ export default function ArtworkDetailsPage() {
       </div>
 
       <CommentsSection artworkId={artwork._id} />
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-in fade-in duration-200">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 text-center relative animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setShowUpgradeModal(false)}
+              className="absolute top-4 right-4 text-[#a89888] hover:text-[#3d3029] transition-colors"
+            >
+              <FiX size={24} />
+            </button>
+            
+            <div className="w-16 h-16 bg-[#faf5ef] text-[#b07c5b] rounded-full flex items-center justify-center mx-auto mb-6">
+              <FiShoppingBag size={32} />
+            </div>
+            
+            <h2 className="text-2xl font-serif font-bold text-[#3d3029] mb-3">Purchase Limit Reached</h2>
+            <p className="text-[#7a6e64] mb-8 leading-relaxed">
+              You have reached the maximum number of artwork purchases ({limit}) for your {tier} plan. Upgrade to unlock more purchases and premium features!
+            </p>
+            
+            <div className="flex flex-col gap-3">
+              <Link 
+                href="/pricing"
+                className="w-full py-3.5 bg-[#b07c5b] text-white font-medium rounded-lg hover:bg-[#9e6c4d] transition-colors shadow-md"
+              >
+                View Upgrade Plans
+              </Link>
+              <button 
+                onClick={() => setShowUpgradeModal(false)}
+                className="w-full py-3.5 bg-transparent text-[#7a6e64] font-medium rounded-lg hover:bg-[#faf8f5] transition-colors"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { FiMessageSquare, FiEdit2, FiTrash2, FiX, FiCheck } from "react-icons/fi";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function CommentsSection({ artworkId }) {
   const { data: session } = authClient.useSession();
@@ -20,6 +21,19 @@ export default function CommentsSection({ artworkId }) {
   // Edit comment state
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
+
+  const [confirmModalState, setConfirmModalState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    isDanger: true,
+    onConfirm: () => {}
+  });
+
+  const closeConfirmModal = () => {
+    setConfirmModalState(prev => ({ ...prev, isOpen: false }));
+  };
 
   const fetchComments = async () => {
     try {
@@ -67,22 +81,29 @@ export default function CommentsSection({ artworkId }) {
   };
 
   const handleDeleteComment = async (id) => {
-    if (!window.confirm("Are you sure you want to delete your comment?")) return;
+    setConfirmModalState({
+      isOpen: true,
+      title: "Delete Comment",
+      message: "Are you sure you want to delete your comment?",
+      confirmText: "Delete",
+      isDanger: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/comments/${id}`, {
+            method: "DELETE",
+            credentials: "include"
+          });
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/comments/${id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
-
-      if (!res.ok) throw new Error("Failed to delete");
-      
-      setComments(comments.filter(c => c._id !== id));
-      toast.success("Comment deleted");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to delete comment");
-    }
+          if (!res.ok) throw new Error("Failed to delete");
+          
+          setComments(comments.filter(c => c._id !== id));
+          toast.success("Comment deleted");
+        } catch (error) {
+          console.error(error);
+          toast.error("Failed to delete comment");
+        }
+      }
+    });
   };
 
   const handleStartEdit = (comment) => {
@@ -220,6 +241,7 @@ export default function CommentsSection({ artworkId }) {
           ))
         )}
       </div>
+      <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
     </div>
   );
 }

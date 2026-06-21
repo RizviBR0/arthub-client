@@ -11,6 +11,8 @@ import { ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
+import RoleGuard from "@/components/RoleGuard";
+
 export const metadata = {
   title: "ArtHub | The Premier Artist Marketplace",
   description: "Discover, buy, and sell exceptional digital and physical artworks.",
@@ -30,7 +32,9 @@ export default function RootLayout({ children }) {
           }} />
           <Navbar />
           <main className="flex-grow">
-            {children}
+            <RoleGuard>
+              {children}
+            </RoleGuard>
           </main>
           <Footer />
         </ThemeProvider>

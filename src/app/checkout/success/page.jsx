@@ -42,6 +42,9 @@ function CheckoutSuccessContent() {
           throw new Error(data.msg || "Payment verification failed");
         }
 
+        // Force BetterAuth to fetch the updated user object (with incremented purchaseCount)
+        await authClient.getSession();
+
         setTransaction(data.transaction);
         setStatus("success");
       } catch (error) {

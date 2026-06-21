@@ -6,7 +6,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiImage } from "react-icons/fi";
+import {
+  FiUser,
+  FiMail,
+  FiLock,
+  FiEye,
+  FiEyeOff,
+  FiImage,
+} from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import signupImage from "@/assets/signup_right_image.png";
 
@@ -126,7 +133,8 @@ export default function SignUpPage() {
               <span className="w-6 h-[1px] bg-[#c9a88a]"></span>
             </div>
             <p className="text-[#7a6e64] text-sm">
-              Sign up to start collecting masterpieces or selling your own artwork.
+              Sign up to start collecting masterpieces or selling your own
+              artwork.
             </p>
           </div>
 
@@ -217,7 +225,11 @@ export default function SignUpPage() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#a89888] hover:text-[#7a6e64] transition-colors"
                 >
-                  {showConfirmPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                  {showConfirmPassword ? (
+                    <FiEyeOff size={18} />
+                  ) : (
+                    <FiEye size={18} />
+                  )}
                 </button>
               </div>
             </div>
@@ -225,7 +237,8 @@ export default function SignUpPage() {
             {/* Profile Image URL (Optional) */}
             <div>
               <label className="block text-sm font-medium text-[#4a3f37] mb-1">
-                Profile Image URL <span className="text-[#a89888] font-normal">(Optional)</span>
+                Profile Image URL{" "}
+                <span className="text-[#a89888] font-normal">(Optional)</span>
               </label>
               <div className="relative">
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#a89888]">
@@ -255,8 +268,10 @@ export default function SignUpPage() {
                       : "border-[#ddd3c9] bg-white text-[#7a6e64] hover:bg-[#faf8f5]"
                   }`}
                 >
-                  <p className="text-sm font-bold">Buyer / Collector</p>
-                  <p className="text-xs text-[#a89888] mt-0.5 font-normal">Discover & purchase art</p>
+                  <p className="text-sm font-bold">Buyer</p>
+                  <p className="text-xs text-[#a89888] mt-0.5 font-normal">
+                    Discover & purchase art
+                  </p>
                 </button>
                 <button
                   type="button"
@@ -268,7 +283,9 @@ export default function SignUpPage() {
                   }`}
                 >
                   <p className="text-sm font-bold">Artist</p>
-                  <p className="text-xs text-[#a89888] mt-0.5 font-normal">Showcase & sell art</p>
+                  <p className="text-xs text-[#a89888] mt-0.5 font-normal">
+                    Showcase & sell art
+                  </p>
                 </button>
               </div>
             </div>

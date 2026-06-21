@@ -15,7 +15,6 @@ export default function UserDashboard() {
   
     const [name, setName] = useState("");
   const [updatingProfile, setUpdatingProfile] = useState(false);
-  const [upgradingRole, setUpgradingRole] = useState(false);
 
   useEffect(() => {
     if (isPending) return;
@@ -69,32 +68,6 @@ export default function UserDashboard() {
     }
   };
 
-  const handleUpgradeToArtist = async () => {
-    if (!window.confirm("Are you sure you want to upgrade your account to an Artist? This will unlock portfolio management features.")) return;
-    
-    setUpgradingRole(true);
-    const toastId = toast.loading("Upgrading account...");
-    
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/upgrade-to-artist`, {
-        method: "POST",
-        credentials: "include"
-      });
-
-      if (!res.ok) throw new Error("Failed to upgrade");
-      
-      toast.success("Congratulations! You are now an Artist. Please sign in again.", { id: toastId });
-      
-      // Force sign out to refresh claims
-      await authClient.signOut();
-      router.push("/signin");
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred during upgrade", { id: toastId });
-    } finally {
-      setUpgradingRole(false);
-    }
-  };
 
   if (isPending || loading) {
     return <div className="p-8 animate-pulse flex space-x-4"><div className="flex-1 space-y-6 py-1"><div className="h-2 bg-slate-200 rounded"></div><div className="space-y-3"><div className="h-2 bg-slate-200 rounded col-span-2"></div></div></div></div>;
@@ -147,37 +120,40 @@ export default function UserDashboard() {
             </form>
           </div>
 
-                    {session.user.role === "user" && (
-            <div className="bg-gradient-to-br from-[#faf5ef] to-white rounded-xl border border-[#e8ddd1] shadow-sm p-6 text-center">
-              <div className="w-12 h-12 bg-[#b07c5b] text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                <FiStar size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-[#3d3029] font-serif mb-2">Become an Artist</h3>
-              <p className="text-[#7a6e64] text-sm mb-6">
-                Start selling your own masterpieces to our global community of collectors.
-              </p>
-              <button
-                onClick={handleUpgradeToArtist}
-                disabled={upgradingRole}
-                className="w-full py-3 border-2 border-[#b07c5b] text-[#b07c5b] rounded-md font-bold hover:bg-[#b07c5b] hover:text-white transition-colors disabled:opacity-50"
-              >
-                {upgradingRole ? "Upgrading..." : "Upgrade Account for Free"}
-              </button>
-            </div>
-          )}
-
-                    {session.user.tier && (
-             <div className="bg-[#3d3029] rounded-xl shadow-sm p-6 flex items-center gap-4 text-white">
+          {session.user.role === "user" && (
+            <div className="bg-[#3d3029] rounded-xl shadow-sm p-6 text-white space-y-4">
+              <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-[#b07c5b] rounded-full flex items-center justify-center">
                   <FiCheck size={20} />
                 </div>
                 <div>
-                   <p className="text-sm text-[#e8ddd1]">Current Plan</p>
-                   <p className="text-xl font-bold font-serif capitalize">{session.user.tier} Member</p>
+                  <p className="text-sm text-[#e8ddd1]">Current Plan</p>
+                  <p className="text-xl font-bold font-serif capitalize">
+                    {session.user.subscriptionTier || "Free"} Member
+                  </p>
                 </div>
-             </div>
+              </div>
+              
+              <div className="bg-[#2d2522] rounded-lg p-4 border border-[#5a4d42]">
+                <p className="text-sm text-[#e8ddd1] mb-1">Purchase Quota</p>
+                <div className="flex items-end justify-between">
+                  <p className="text-2xl font-bold text-[#b07c5b]">
+                    {(() => {
+                      const tier = session.user.subscriptionTier || "free";
+                      const count = session.user.purchaseCount || 0;
+                      let limit = 3;
+                      if (tier === "pro") limit = 9;
+                      if (tier === "premium") return "Unlimited";
+                      return `${Math.max(0, limit - count)} remaining`;
+                    })()}
+                  </p>
+                  <p className="text-xs text-[#a89888]">
+                    {session.user.purchaseCount || 0} used
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
-
         </div>
 
                 <div className="lg:col-span-2">

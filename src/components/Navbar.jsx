@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { FiMenu, FiX, FiChevronDown, FiLogOut, FiUser, FiGrid } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiLogOut, FiUser, FiGrid, FiCheckCircle } from "react-icons/fi";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +15,15 @@ const Navbar = () => {
   const user = session?.user;
   const pathname = usePathname();
   const router = useRouter();
+
+  // Calculate subscription and limits
+  const tier = user?.subscriptionTier || "free";
+  const count = user?.purchaseCount || 0;
+  let limit = 3;
+  if (tier === "pro") limit = 9;
+  if (tier === "premium") limit = "∞";
+  
+  const remaining = limit === "∞" ? "Unlimited" : Math.max(0, limit - count);
 
   // Navbar is now globally visible as requested
 
@@ -29,8 +38,12 @@ const Navbar = () => {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Browse Artworks", href: "/artworks" },
-    { label: "Pricing", href: "/pricing" },
   ];
+
+  // Only show Pricing to unauthenticated users or buyers
+  if (!user || user.role === "user") {
+    navLinks.push({ label: "Pricing", href: "/pricing" });
+  }
 
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
@@ -170,9 +183,40 @@ const Navbar = () => {
                           </p>
                         </div>
                       </div>
-                      <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#b07c5b] bg-[#b07c5b]/10 rounded-full">
-                        {user.role}
-                      </span>
+                      
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="inline-block px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#b07c5b] bg-[#b07c5b]/10 rounded-full">
+                          {user.role === "user" ? "buyer" : user.role}
+                        </span>
+                        
+                        {(!user.role || user.role === "user") && (
+                          <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${
+                            tier === "free" ? "text-[#7a6e64] bg-[#ece5de]" : 
+                            tier === "pro" ? "text-blue-700 bg-blue-100" : 
+                            "text-purple-700 bg-purple-100"
+                          }`}>
+                            {tier}
+                            {tier !== "free" && <FiCheckCircle size={10} className="ml-0.5" />}
+                          </span>
+                        )}
+                      </div>
+
+                      {(!user.role || user.role === "user") && (
+                        <div className="mt-3 bg-[#faf8f5] rounded-lg p-2 border border-[#e8ddd1]">
+                          <div className="flex justify-between items-center mb-1.5">
+                            <span className="text-[11px] font-medium text-[#7a6e64]">Purchase Quota</span>
+                            <span className="text-[11px] font-bold text-[#3d3029]">{remaining} left</span>
+                          </div>
+                          {limit !== "Unlimited" && (
+                            <div className="w-full bg-[#ece5de] rounded-full h-1.5 overflow-hidden">
+                              <div 
+                                className={`h-1.5 rounded-full transition-all duration-500 ${count >= limit ? 'bg-red-500' : 'bg-[#b07c5b]'}`}
+                                style={{ width: `${Math.min(100, (count / limit) * 100)}%` }}
+                              ></div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Menu Items */}
