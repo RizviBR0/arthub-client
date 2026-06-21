@@ -28,23 +28,24 @@ const FeaturedArtworks = () => {
   }, []);
 
   return (
-    <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+    <section className="w-full bg-white py-20 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#3d3029] mb-3" style={{ fontFamily: "Georgia, serif" }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#3d3029] mb-4 tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
             Featured Artworks
           </h2>
-          <p className="text-[#7a6e64] max-w-2xl text-lg">
+          <p className="text-[#7a6e64] max-w-xl text-lg leading-relaxed">
             Handpicked original pieces from our most trending and talented creators.
           </p>
         </div>
         
         <Link 
           href="/artworks" 
-          className="group flex items-center gap-2 text-[#b07c5b] font-medium hover:text-[#9e6c4d] transition-colors"
+          className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
         >
-          View All Collection 
-          <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+          View All Artworks 
+          <FiArrowRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
         </Link>
       </div>
 
@@ -65,6 +66,7 @@ const FeaturedArtworks = () => {
           ))}
         </div>
       )}
+      </div>
     </section>
   );
 };

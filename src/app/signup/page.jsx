@@ -16,8 +16,10 @@ import {
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import signupImage from "@/assets/signup_right_image.png";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function SignUpPage() {
+  const [imageFile, setImageFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,33 +29,56 @@ export default function SignUpPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const toastId = toast.loading("Creating account...");
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
     if (user.password !== user.confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error("Passwords do not match", { id: toastId });
       setLoading(false);
       return;
     }
 
     try {
+      let finalImageUrl = undefined;
+      
+      if (imageFile instanceof File) {
+        toast.loading("Uploading profile image...", { id: toastId });
+        const uploadData = new FormData();
+        uploadData.append("image", imageFile);
+        
+        const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
+        const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: uploadData,
+        });
+
+        const imgJson = await imgRes.json();
+        if (!imgJson.success) {
+          throw new Error("Failed to upload image to ImgBB");
+        }
+        finalImageUrl = imgJson.data.display_url;
+      }
+
+      toast.loading("Finalizing registration...", { id: toastId });
+
       const { error } = await authClient.signUp.email({
         email: user.email,
         password: user.password,
         name: user.name,
-        image: user.image || undefined,
+        image: finalImageUrl || undefined,
         role: role,
         callbackURL: "/",
       });
 
       if (error) {
-        toast.error(error.message || "Registration failed");
+        toast.error(error.message || "Registration failed", { id: toastId });
       } else {
-        toast.success("Account created successfully!");
+        toast.success("Account created successfully!", { id: toastId });
         router.push("/");
       }
     } catch (err) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(err.message || "Something went wrong. Please try again.", { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -140,6 +165,23 @@ export default function SignUpPage() {
 
           {/* Form */}
           <form onSubmit={onSubmit} className="space-y-4">
+            {/* Profile Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-[#4a3f37] mb-2 text-center">
+                Profile Image <span className="text-[#a89888] font-normal">(Optional)</span>
+              </label>
+              <div className="flex justify-center mb-4">
+                <div className="w-32 sm:w-36 aspect-square">
+                  <ImageUpload
+                    value={imageFile}
+                    onChange={setImageFile}
+                    disabled={loading}
+                    shape="circle"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-[#4a3f37] mb-1">
@@ -234,24 +276,6 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            {/* Profile Image URL (Optional) */}
-            <div>
-              <label className="block text-sm font-medium text-[#4a3f37] mb-1">
-                Profile Image URL{" "}
-                <span className="text-[#a89888] font-normal">(Optional)</span>
-              </label>
-              <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#a89888]">
-                  <FiImage size={18} />
-                </span>
-                <input
-                  type="url"
-                  name="image"
-                  placeholder="https://example.com/avatar.jpg"
-                  className="w-full pl-11 pr-4 py-2.5 border border-[#ddd3c9] rounded-lg bg-white text-[#3d3029] placeholder-[#b5a99d] focus:outline-none focus:ring-2 focus:ring-[#c9a88a] focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
 
             {/* Role Selection */}
             <div>

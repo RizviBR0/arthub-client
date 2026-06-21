@@ -29,15 +29,24 @@ const TopArtists = () => {
   if (!loading && artists.length === 0) return null;
 
   return (
-    <section className="py-20 bg-[#faf8f5]">
+    <section className="w-full bg-[#faf8f5] py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#3d3029] mb-4" style={{ fontFamily: "Georgia, serif" }}>
-            Top Artists This Month
-          </h2>
-          <p className="text-[#7a6e64] max-w-2xl mx-auto text-lg">
-            Meet the creators behind our most beloved masterpieces.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#3d3029] mb-4 tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
+              Top Artists
+            </h2>
+            <p className="text-[#7a6e64] max-w-xl text-lg leading-relaxed">
+              Meet the visionary creators behind our most beloved masterpieces.
+            </p>
+          </div>
+          <Link 
+            href="/artworks" 
+            className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
+          >
+            Discover Artists 
+            <FiArrowRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+          </Link>
         </div>
 
         {loading ? (

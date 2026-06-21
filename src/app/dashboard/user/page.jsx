@@ -147,9 +147,11 @@ export default function UserDashboard() {
                       return `${Math.max(0, limit - count)} remaining`;
                     })()}
                   </p>
-                  <p className="text-xs text-[#a89888]">
-                    {session.user.purchaseCount || 0} used
-                  </p>
+                  {session.user.subscriptionTier !== "premium" && (
+                    <p className="text-xs text-[#a89888]">
+                      {session.user.purchaseCount || 0} used
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { FiArrowUpRight } from "react-icons/fi";
 
 const categories = [
   {
@@ -55,41 +56,77 @@ const categories = [
   }
 ];
 
+const getGridClass = (index) => {
+  const classes = [
+    "col-span-1 md:col-span-2 row-span-2 h-[350px] md:h-[624px]", // Painting (Big)
+    "col-span-1 md:col-span-2 h-[250px] md:h-[300px]",                     // Digital Art (Wide)
+    "col-span-1 md:col-span-1 h-[250px] md:h-[300px]",                     // Sculpture
+    "col-span-1 md:col-span-1 h-[250px] md:h-[300px]",                     // Photography
+    "col-span-1 md:col-span-4 h-[250px] md:h-[300px]",                     // Drawing (Very Wide Bottom)
+  ];
+  return classes[index] || "col-span-1 md:col-span-4 h-[300px]";
+};
+
 const ArtCategories = () => {
+  const displayCategories = categories.slice(0, 5);
+
   return (
-    <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#3d3029] mb-4" style={{ fontFamily: "Georgia, serif" }}>
-          Explore by Category
-        </h2>
-        <p className="text-[#7a6e64] max-w-2xl mx-auto text-lg">
-          Find exactly what you&apos;re looking for by browsing our curated collections.
-        </p>
+    <section className="w-full bg-[#faf8f5] py-20 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#3d3029] mb-4 tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
+            Explore Collections
+          </h2>
+          <p className="text-[#7a6e64] max-w-xl text-lg leading-relaxed">
+            Discover a curated world of creativity. Find exactly what speaks to your soul across our diverse range of artistic mediums.
+          </p>
+        </div>
+        <Link 
+          href="/artworks" 
+          className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
+        >
+          View All Artworks
+          <FiArrowUpRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {categories.map((category) => (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 auto-rows-min">
+        {displayCategories.map((category, index) => (
           <Link 
             key={category.id} 
             href={`/artworks?category=${category.id}`}
-            className="group relative h-[350px] rounded-xl overflow-hidden block"
+            className={`group relative rounded-2xl overflow-hidden block shadow-sm hover:shadow-2xl transition-all duration-500 ${getGridClass(index)}`}
           >
             <Image
               src={category.image}
               alt={category.name}
               fill
-              className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+              className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
             />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
             
-                        <div className="absolute bottom-0 left-0 w-full p-4 lg:p-5 text-left">
-              <h3 className="text-xl xl:text-2xl font-bold text-white mb-2 font-serif tracking-wide break-words">{category.name}</h3>
-              <p className="text-white/80 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 line-clamp-2">
-                {category.description}
-              </p>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2d2522]/90 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="absolute top-6 right-6 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100 border border-white/20">
+              <FiArrowUpRight className="text-white" size={20} />
+            </div>
+
+            <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 text-left">
+              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <span className="inline-block px-3 py-1 mb-3 text-[10px] font-bold uppercase tracking-widest text-[#2d2522] bg-white/90 backdrop-blur-sm rounded-sm">
+                  {category.name}
+                </span>
+                <h3 className="text-2xl xl:text-3xl font-bold text-white mb-2 font-serif tracking-wide drop-shadow-md">
+                  {category.name}
+                </h3>
+                <p className="text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  {category.description}
+                </p>
+              </div>
             </div>
           </Link>
         ))}
+      </div>
       </div>
     </section>
   );
