@@ -227,8 +227,8 @@ export default function AnalyticsPage() {
                 <AreaChart data={chartData.monthlyTransactions} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                   <defs>
                     <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3d3029" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#3d3029" stopOpacity={0} />
+                      <stop offset="5%" stopColor="var(--chart-color)" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="var(--chart-color)" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="transGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#b07c5b" stopOpacity={0.2} />
@@ -245,7 +245,7 @@ export default function AnalyticsPage() {
                     yAxisId="left"
                     type="monotone"
                     dataKey="revenue"
-                    stroke="#3d3029"
+                    stroke="var(--chart-color)"
                     fill="url(#revenueGradient)"
                     strokeWidth={2}
                     name="revenue"
