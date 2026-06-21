@@ -193,7 +193,7 @@ export default function UserDashboard() {
                         <td className="px-6 py-4 text-[#5a4d42]">
                           {new Date(purchase.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 text-[#5a4d42] truncate max-w-[150px]">
+                        <td className="px-6 py-4 text-[#5a4d42] truncate max-w-37.5">
                           {purchase.artistId}
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-[#3d3029]">

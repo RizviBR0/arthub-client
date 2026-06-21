@@ -150,7 +150,7 @@ const Navbar = () => {
                     user.name?.charAt(0)?.toUpperCase() || "U"
                   )}
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-[#3d3029] max-w-[100px] truncate">
+                <span className="hidden sm:block text-sm font-medium text-[#3d3029] max-w-25 truncate">
                   {user.name?.split(" ")[0]}
                 </span>
                 <FiChevronDown

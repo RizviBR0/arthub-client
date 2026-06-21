@@ -24,7 +24,8 @@ const ArtworkCard = ({ artwork }) => {
           alt={title}
           fill
           className="object-cover transition-duration-700 ease-in-out group-hover:scale-105"
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          quality={85}
         />
         
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

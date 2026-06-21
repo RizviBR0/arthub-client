@@ -63,13 +63,14 @@ const TopArtists = () => {
           <div className="flex flex-wrap justify-center gap-10 lg:gap-16">
             {artists.map((artist) => (
               <div key={artist._id} className="group flex flex-col items-center text-center">
-                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-5 border-[4px] border-white shadow-lg transition-duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
+                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-5 border-4 border-white shadow-lg transition-duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
                   <Image
                     src={artist.image}
                     alt={artist.name}
                     fill
                     className="object-cover"
-                    unoptimized
+                    sizes="(max-width: 768px) 160px, 192px"
+                    quality={85}
                   />
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>

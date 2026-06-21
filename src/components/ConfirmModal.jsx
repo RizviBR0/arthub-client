@@ -14,7 +14,7 @@ export default function ConfirmModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/50 animate-in fade-in duration-200">
       <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 text-center relative animate-in zoom-in-95 duration-200">
         <button 
           onClick={onClose}

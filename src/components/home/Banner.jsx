@@ -50,11 +50,12 @@ const banners = [
   },
 ];
 
-const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
-  if (!src) return null;     
+const FloatingFrame = ({ artwork, className, animationDelay, baseWidth }) => {
+  if (!artwork || !artwork.image) return null;     
   return (
-    <div
-      className={`absolute hidden lg:block z-20 transition-duration-1000 ease-in-out hover:scale-105 shadow-xl ${className}`}
+    <Link
+      href={`/artworks/${artwork._id}`}
+      className={`absolute hidden lg:block z-20 transition-duration-1000 ease-in-out hover:scale-105 shadow-xl hover:z-30 pointer-events-auto ${className}`}
       style={{
         animation: `float 6s ease-in-out infinite`,
         animationDelay: animationDelay,
@@ -63,16 +64,18 @@ const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
       <div className="relative border-[6px] border-[#c2b2a1] shadow-inner bg-[#ece5de] p-1 inline-block">
         <div className="relative border border-[#8a7a6c] flex">
           <Image
-            src={src}
-            alt="Trending Artwork"
+            src={artwork.image}
+            alt={artwork.title || "Trending Artwork"}
             width={300}
             height={300}
-            className="object-cover max-h-[260px] object-center"
+            className="object-cover max-h-65 object-center"
             style={{ width: baseWidth, height: "auto" }}
+            sizes="(max-width: 1024px) 0px, 300px"
+            quality={80}
           />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -90,7 +93,7 @@ export default function Banner() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/featured`);
         const data = await res.json();
         if (data && data.length > 0) {
-          setDynamicArtworks(data.map(a => a.image).filter(Boolean));
+          setDynamicArtworks(data.filter(a => a.image));
         }
       } catch (error) {
         console.error("Error fetching trending artworks:", error);
@@ -108,26 +111,26 @@ export default function Banner() {
   }, [emblaApi]);
 
   return (
-    <div className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden bg-[#faf8f5]">
+    <div className="relative w-full h-150 md:h-175 lg:h-200 overflow-hidden bg-[#faf8f5]">
       
             <div className="absolute inset-0 w-full max-w-[1600px] mx-auto pointer-events-none z-20">
         {dynamicArtworks.length > 0 && (
           <>
-                        <FloatingFrame src={dynamicArtworks[0]} className="top-[10%] left-[12%]" baseWidth="160px" animationDelay="0s" />
+                        <FloatingFrame artwork={dynamicArtworks[0]} className="top-[10%] left-[12%]" baseWidth="160px" animationDelay="0s" />
             
-                        <FloatingFrame src={dynamicArtworks[1]} className="top-[35%] left-[6%]" baseWidth="130px" animationDelay="1s" />
+            <FloatingFrame artwork={dynamicArtworks[1]} className="top-[35%] left-[6%]" baseWidth="130px" animationDelay="1s" />
             
-                        <FloatingFrame src={dynamicArtworks[2]} className="bottom-[20%] left-[8%]" baseWidth="200px" animationDelay="2s" />
+            <FloatingFrame artwork={dynamicArtworks[2]} className="bottom-[20%] left-[8%]" baseWidth="200px" animationDelay="2s" />
             
-                        <FloatingFrame src={dynamicArtworks[3]} className="bottom-[8%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
+            <FloatingFrame artwork={dynamicArtworks[3]} className="bottom-[8%] left-[24%]" baseWidth="120px" animationDelay="0.5s" />
 
-                        <FloatingFrame src={dynamicArtworks[4]} className="top-[8%] right-[25%]" baseWidth="130px" animationDelay="0.3s" />
+            <FloatingFrame artwork={dynamicArtworks[4]} className="top-[8%] right-[25%]" baseWidth="130px" animationDelay="0.3s" />
             
-                        <FloatingFrame src={dynamicArtworks[5]} className="top-[18%] right-[6%]" baseWidth="150px" animationDelay="1.5s" />
+            <FloatingFrame artwork={dynamicArtworks[5]} className="top-[18%] right-[6%]" baseWidth="150px" animationDelay="1.5s" />
             
-                        <FloatingFrame src={dynamicArtworks[6]} className="bottom-[22%] right-[10%]" baseWidth="180px" animationDelay="2.5s" />
+            <FloatingFrame artwork={dynamicArtworks[6]} className="bottom-[22%] right-[10%]" baseWidth="180px" animationDelay="2.5s" />
             
-                        <FloatingFrame src={dynamicArtworks[7]} className="bottom-[10%] right-[28%]" baseWidth="120px" animationDelay="1.2s" />
+            <FloatingFrame artwork={dynamicArtworks[7]} className="bottom-[10%] right-[28%]" baseWidth="120px" animationDelay="1.2s" />
           </>
         )}
       </div>
@@ -146,6 +149,8 @@ export default function Banner() {
                   fill
                   className="object-cover object-center"
                   priority={banner.id === 1}
+                  sizes="100vw"
+                  quality={90}
                 />
               </div>
 
@@ -156,7 +161,7 @@ export default function Banner() {
                 >
                   {banner.title}
                 </h1>
-                <p className="text-base sm:text-lg text-[#4a3f38] mb-10 max-w-[500px] mx-auto leading-relaxed">
+                <p className="text-base sm:text-lg text-[#4a3f38] mb-10 max-w-125 mx-auto leading-relaxed">
                   {banner.subtitle}
                 </p>
                 <Link

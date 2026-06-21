@@ -172,7 +172,7 @@ export default function AddArtworkPage() {
             </div>
 
                         <div className="md:col-span-2">
-              <label className="block text-[#3d3029] font-medium mb-2 flex items-center gap-2">
+              <label className="text-[#3d3029] font-medium mb-2 flex items-center gap-2">
                 <FiImage /> Artwork Image *
               </label>
               <ImageUpload 

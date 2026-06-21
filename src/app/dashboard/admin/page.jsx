@@ -301,7 +301,7 @@ export default function AdminDashboard() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-medium text-[#3d3029] max-w-[200px] truncate">{a.title}</td>
+                      <td className="px-6 py-4 font-medium text-[#3d3029] max-w-50 truncate">{a.title}</td>
                       <td className="px-6 py-4 text-[#5a4d42] text-sm">{a.artistName || "Unknown"}</td>
                       <td className="px-6 py-4 text-[#7a6e64] text-sm capitalize">{a.category}</td>
                       <td className="px-6 py-4 text-[#3d3029] font-medium">${a.price}</td>
@@ -355,7 +355,7 @@ export default function AdminDashboard() {
                         {t._id.toString().slice(-8).toUpperCase()}
                       </td>
                       <td className="px-6 py-4 text-[#3d3029] text-sm">{t.buyerName || t.buyerEmail || "N/A"}</td>
-                      <td className="px-6 py-4 text-[#5a4d42] text-sm max-w-[200px] truncate">{t.artworkTitle || "N/A"}</td>
+                      <td className="px-6 py-4 text-[#5a4d42] text-sm max-w-50 truncate">{t.artworkTitle || "N/A"}</td>
                       <td className="px-6 py-4 text-[#3d3029] font-medium">${t.amount || 0}</td>
                       <td className="px-6 py-4 text-[#7a6e64] text-sm">
                         {t.createdAt ? new Date(t.createdAt).toLocaleDateString() : "N/A"}

@@ -103,6 +103,8 @@ const ArtCategories = () => {
               alt={category.name}
               fill
               className="object-cover transition-duration-1000 ease-out group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={85}
             />
             
             <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-[#2d2522]/90 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />

@@ -200,7 +200,7 @@ function ArtworksBrowser() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 animate-pulse">
             {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
               <div key={i} className="flex flex-col gap-3">
-                <div className="w-full aspect-[4/5] bg-[#ece5de] rounded-md"></div>
+                <div className="w-full aspect-4/5 bg-[#ece5de] rounded-md"></div>
                 <div className="h-5 bg-[#ece5de] rounded w-3/4"></div>
                 <div className="h-4 bg-[#ece5de] rounded w-1/2"></div>
               </div>

@@ -148,7 +148,7 @@ export default function SignUpPage() {
               Create Account
             </h2>
             <div className="flex items-center justify-center gap-1 mb-4">
-              <span className="w-6 h-[1px] bg-[#c9a88a]"></span>
+              <span className="w-6 h-px bg-[#c9a88a]"></span>
               <svg
                 width="16"
                 height="10"
@@ -162,7 +162,7 @@ export default function SignUpPage() {
                   strokeWidth="1.5"
                 />
               </svg>
-              <span className="w-6 h-[1px] bg-[#c9a88a]"></span>
+              <span className="w-6 h-px bg-[#c9a88a]"></span>
             </div>
             <p className="text-[#7a6e64] text-sm">
               Sign up to start collecting masterpieces or selling your own
@@ -358,9 +358,9 @@ export default function SignUpPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-[1px] bg-[#ddd3c9]"></div>
+            <div className="flex-1 h-px bg-[#ddd3c9]"></div>
             <span className="text-sm text-[#a89888]">or</span>
-            <div className="flex-1 h-[1px] bg-[#ddd3c9]"></div>
+            <div className="flex-1 h-px bg-[#ddd3c9]"></div>
           </div>
 
           {/* Google Button */}

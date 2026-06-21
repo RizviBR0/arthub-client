@@ -140,10 +140,10 @@ export default function ProfilePage() {
           {/* Avatar Section */}
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="w-full md:w-1/3">
-              <label className="block text-[#3d3029] font-medium mb-3 flex items-center gap-2">
+              <label className="text-[#3d3029] font-medium mb-3 flex items-center gap-2">
                 <FiUser /> Profile Picture
               </label>
-              <div className="aspect-square w-full max-w-[200px] mx-auto rounded-full overflow-hidden border-2 border-dashed border-[#d4c3b3] p-1">
+              <div className="aspect-square w-full max-w-50 mx-auto rounded-full overflow-hidden border-2 border-dashed border-[#d4c3b3] p-1">
                 <div className="w-full h-full rounded-full overflow-hidden relative">
                   <ImageUpload 
                     value={formData.image} 
@@ -172,7 +172,7 @@ export default function ProfilePage() {
 
               {/* Email (Read Only) */}
               <div>
-                <label className="block text-[#3d3029] font-medium mb-2 text-[#3d3029]/70">Email Address</label>
+                <label className="block text-[#3d3029] font-medium mb-2">Email Address</label>
                 <input
                   type="email"
                   value={session?.user?.email || ""}
@@ -194,7 +194,7 @@ export default function ProfilePage() {
 
           {/* Bio Section */}
           <div className="pt-6 border-t border-[#e8ddd1]">
-            <label className="block text-[#3d3029] font-medium mb-2 flex items-center gap-2">
+            <label className="text-[#3d3029] font-medium mb-2 flex items-center gap-2">
               <FiEdit3 /> Bio / About Me
             </label>
             <p className="text-sm text-[#7a6e64] mb-3">
