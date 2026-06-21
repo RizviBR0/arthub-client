@@ -5,6 +5,8 @@ import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
 
+import { jwt } from "better-auth/plugins";
+
 let client;
 if (process.env.NODE_ENV === "development") {
   if (!global._mongoClient) {
@@ -51,5 +53,11 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
+    cookieCache: {
+      enabled: true,
+      strategy: "jwt",
+      maxAge: 60 * 60 * 24 * 7,
+    },
   },
+  plugins: [jwt()],
 });

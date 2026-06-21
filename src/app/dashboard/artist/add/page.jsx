@@ -18,7 +18,7 @@ export default function AddArtworkPage() {
     category: "painting",
     price: "",
     description: "",
-    image: "" // Standard URL input for now (Step 10 will replace with imgBB upload)
+    image: ""
   });
 
   const handleChange = (e) => {

@@ -215,7 +215,7 @@ export default function ArtistDashboard() {
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Recent Sales History</h2>
         </div>
         <div className="px-6 py-12 text-center text-[#7a6e64]">
-          <p>Sales tracking and transaction history will be available after Stripe integration (Step 11).</p>
+          <p>Sales tracking and transaction history will be available after Stripe integration.</p>
         </div>
       </div>
       <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
