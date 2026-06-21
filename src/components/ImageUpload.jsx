@@ -12,6 +12,7 @@ export default function ImageUpload({ value, onChange, disabled, shape = "rectan
 
   useEffect(() => {
     if (!value) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewUrl("");
       return;
     }

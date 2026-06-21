@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ArtworkCard from "@/components/ArtworkCard";
 import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiChevronDown } from "react-icons/fi";
@@ -43,7 +43,7 @@ function ArtworksBrowser() {
   // Mobile filters toggle
   const [showFilters, setShowFilters] = useState(false);
 
-  const fetchArtworks = async () => {
+  const fetchArtworks = useCallback(async () => {
     setLoading(true);
     try {
       const queryParams = new URLSearchParams({
@@ -71,9 +71,10 @@ function ArtworksBrowser() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, category, minPrice, maxPrice, sort, page]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchArtworks();
     // Update URL silently
     const queryParams = new URLSearchParams();
@@ -85,7 +86,7 @@ function ArtworksBrowser() {
     if (page > 1) queryParams.append("page", page.toString());
     
     router.replace(`/artworks?${queryParams.toString()}`, { scroll: false });
-  }, [search, category, minPrice, maxPrice, sort, page]);
+  }, [fetchArtworks, search, category, minPrice, maxPrice, sort, page, router]);
 
   // Debounce search input
   const handleSearchChange = (e) => {
@@ -208,7 +209,7 @@ function ArtworksBrowser() {
         ) : artworks.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-[#faf8f5] rounded-xl border border-dashed border-[#e8ddd1]">
             <h3 className="text-2xl font-serif font-bold text-[#3d3029] mb-2">No artworks found</h3>
-            <p className="text-[#7a6e64]">Try adjusting your search or filters to find what you're looking for.</p>
+            <p className="text-[#7a6e64]">Try adjusting your search or filters to find what you&apos;re looking for.</p>
             <button 
               onClick={() => { setSearch(""); setCategory("all"); setMinPrice(""); setMaxPrice(""); }}
               className="mt-6 px-6 py-2 bg-white border border-[#d4c3b3] text-[#b07c5b] font-medium rounded-md hover:bg-[#faf5ef] transition-colors"

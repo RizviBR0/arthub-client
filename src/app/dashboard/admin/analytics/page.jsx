@@ -13,14 +13,30 @@ import {
 
 const COLORS = ["#b07c5b", "#c9a88a", "#7a6e64", "#3d3029", "#d4c3b3", "#9e6c4d"];
 
+const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white border border-[#e8ddd1] rounded-lg shadow-lg px-4 py-3">
+        <p className="text-sm font-medium text-[#3d3029]">{label}</p>
+        {payload.map((entry, idx) => (
+          <p key={idx} className="text-sm" style={{ color: entry.color }}>
+            {entry.name}: {entry.name === "revenue" ? `$${entry.value}` : entry.value}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function AnalyticsPage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [chartData, setChartData] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 
   useEffect(() => {
     if (isPending) return;
@@ -65,21 +81,7 @@ export default function AnalyticsPage() {
 
   if (session?.user?.role !== "admin") return null;
 
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white border border-[#e8ddd1] rounded-lg shadow-lg px-4 py-3">
-          <p className="text-sm font-medium text-[#3d3029]">{label}</p>
-          {payload.map((entry, idx) => (
-            <p key={idx} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {entry.name === "revenue" ? `$${entry.value}` : entry.value}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
+  if (session?.user?.role !== "admin") return null;
 
   const hasData = chartData && (
     chartData.categoryData?.length > 0 ||

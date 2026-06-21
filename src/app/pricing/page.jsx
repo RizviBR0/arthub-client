@@ -93,7 +93,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col transform md:-translate-y-4">
+          <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col md:-translate-y-4">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#b07c5b] text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1">
               <FiStar /> MOST POPULAR
             </div>
@@ -106,7 +106,7 @@ export default function PricingPage() {
             
             <ul className="space-y-4 mb-8 flex-1">
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> All Basic features</li>
-              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> "Pro" Profile Badge</li>
+              <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> &quot;Pro&quot; Profile Badge</li>
               <li className="flex items-center gap-3 font-semibold text-[#b07c5b]"><FiCheck className="text-green-500" /> Buy up to 9 artworks</li>
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 5% transaction fee</li>
             </ul>
@@ -139,7 +139,7 @@ export default function PricingPage() {
             
             <ul className="space-y-4 mb-8 flex-1">
               <li className="flex items-center gap-3 text-[#e8ddd1]"><FiCheck className="text-green-400" /> All Pro features</li>
-              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> "Premium" Profile Badge</li>
+              <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> &quot;Premium&quot; Profile Badge</li>
               <li className="flex items-center gap-3 font-semibold text-white"><FiCheck className="text-green-400" /> Unlimited purchases</li>
               <li className="flex items-center gap-3 font-bold text-[#d4c3b3]"><FiZap className="text-yellow-400" /> 0% transaction fee</li>
             </ul>

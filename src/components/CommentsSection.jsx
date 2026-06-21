@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 import { FiMessageSquare, FiEdit2, FiTrash2, FiX, FiCheck } from "react-icons/fi";
 import Link from "next/link";
@@ -35,7 +35,7 @@ export default function CommentsSection({ artworkId }) {
     setConfirmModalState(prev => ({ ...prev, isOpen: false }));
   };
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${artworkId}/comments`);
       if (res.ok) {
@@ -47,11 +47,12 @@ export default function CommentsSection({ artworkId }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [artworkId]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (artworkId) fetchComments();
-  }, [artworkId]);
+  }, [artworkId, fetchComments]);
 
   const handleAddComment = async (e) => {
     e.preventDefault();

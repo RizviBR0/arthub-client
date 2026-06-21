@@ -25,6 +25,7 @@ function CheckoutSuccessContent() {
     }
 
     if (!sessionId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus("error");
       setErrorMessage("No checkout session found. Please return to the gallery.");
       return;
@@ -92,8 +93,8 @@ function CheckoutSuccessContent() {
       <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-[#e8ddd1] overflow-hidden text-center">
         
         {/* Success Header */}
-        <div className="bg-gradient-to-b from-[#faf5ef] to-white pt-12 pb-8 px-6">
-          <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-100 transform transition-transform hover:scale-105 duration-500">
+        <div className="bg-linear-to-b from-[#faf5ef] to-white pt-12 pb-8 px-6">
+          <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-100 transition-hover:scale-105 duration-500">
             <FiCheckCircle size={48} />
           </div>
           <h1 className="text-4xl font-serif font-bold text-[#3d3029] mb-3">Order Confirmed!</h1>
@@ -114,7 +115,7 @@ function CheckoutSuccessContent() {
             <div className="flex justify-between items-center pb-4 border-b border-[#e8ddd1]">
               <span className="text-[#7a6e64]">Date</span>
               <span className="font-medium text-[#3d3029]">
-                {new Date(transaction?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                {transaction ? new Date(transaction.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '-'}
               </span>
             </div>
             <div className="flex justify-between items-center pt-2">

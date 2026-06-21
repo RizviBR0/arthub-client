@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             },
           }} />
           <Navbar />
-          <main className="flex-grow">
+          <main className="grow">
             <RoleGuard>
               {children}
             </RoleGuard>

@@ -50,6 +50,32 @@ const banners = [
   },
 ];
 
+const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
+  if (!src) return null;     
+  return (
+    <div
+      className={`absolute hidden lg:block z-20 transition-duration-1000 ease-in-out hover:scale-105 shadow-xl ${className}`}
+      style={{
+        animation: `float 6s ease-in-out infinite`,
+        animationDelay: animationDelay,
+      }}
+    >
+      <div className="relative border-[6px] border-[#c2b2a1] shadow-inner bg-[#ece5de] p-1 inline-block">
+        <div className="relative border border-[#8a7a6c] flex">
+          <Image
+            src={src}
+            alt="Trending Artwork"
+            width={300}
+            height={300}
+            className="object-cover max-h-[260px] object-center"
+            style={{ width: baseWidth, height: "auto" }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Banner() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 6000, stopOnInteraction: false }),
@@ -80,32 +106,6 @@ export default function Banner() {
     emblaApi.on("select", onSelect);
     return () => emblaApi.off("select", onSelect);
   }, [emblaApi]);
-
-    const FloatingFrame = ({ src, className, animationDelay, baseWidth }) => {
-    if (!src) return null;     
-    return (
-      <div
-        className={`absolute hidden lg:block z-20 transition-transform duration-1000 ease-in-out hover:scale-105 shadow-xl ${className}`}
-        style={{
-          animation: `float 6s ease-in-out infinite`,
-          animationDelay: animationDelay,
-        }}
-      >
-        <div className="relative border-[6px] border-[#c2b2a1] shadow-inner bg-[#ece5de] p-1 inline-block">
-          <div className="relative border border-[#8a7a6c] flex">
-                        <Image
-              src={src}
-              alt="Trending Artwork"
-              width={300}
-              height={300}
-              className="object-cover max-h-[260px] object-center"
-              style={{ width: baseWidth, height: "auto" }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden bg-[#faf8f5]">
@@ -161,7 +161,7 @@ export default function Banner() {
                 </p>
                 <Link
                   href={banner.link}
-                  className="px-8 py-3.5 bg-[#c46f53] hover:bg-[#a85a40] text-white font-medium rounded-sm text-[15px] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-block"
+                  className="px-8 py-3.5 bg-[#c46f53] hover:bg-[#a85a40] text-white font-medium rounded-sm text-[15px] transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 inline-block"
                 >
                   {banner.buttonText}
                 </Link>

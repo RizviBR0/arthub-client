@@ -45,7 +45,7 @@ const FeaturedArtworks = () => {
           className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
         >
           View All Artworks 
-          <FiArrowRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+          <FiArrowRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
         </Link>
       </div>
 

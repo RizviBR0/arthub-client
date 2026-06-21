@@ -155,7 +155,7 @@ export default function ArtistDashboard() {
               {artworks.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-12 text-center text-[#7a6e64]">
-                    You haven't uploaded any artworks yet.
+                    You haven&apos;t uploaded any artworks yet.
                   </td>
                 </tr>
               ) : (

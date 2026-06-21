@@ -23,6 +23,7 @@ export default function UserDashboard() {
       return;
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setName(session.user.name);
 
     const fetchPurchases = async () => {
@@ -180,7 +181,7 @@ export default function UserDashboard() {
                     <tr>
                       <td colSpan="4" className="px-6 py-16 text-center text-[#7a6e64]">
                         <FiShoppingBag size={32} className="mx-auto mb-3 opacity-50" />
-                        You haven't purchased any artworks yet.
+                        You haven&apos;t purchased any artworks yet.
                       </td>
                     </tr>
                   ) : (

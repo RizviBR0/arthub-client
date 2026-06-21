@@ -23,7 +23,7 @@ const ArtworkCard = ({ artwork }) => {
           src={image}
           alt={title}
           fill
-          className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+          className="object-cover transition-duration-700 ease-in-out group-hover:scale-105"
           unoptimized
         />
         

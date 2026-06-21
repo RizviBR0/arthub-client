@@ -122,7 +122,7 @@ const Navbar = () => {
               </Link>
               <Link
                 href="/signup"
-                className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all duration-300 shadow-sm hover:shadow-md"
+                className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all duration-300 shadow-sm hover:shadow-md"
               >
                 Sign Up
               </Link>
@@ -155,7 +155,7 @@ const Navbar = () => {
                 </span>
                 <FiChevronDown
                   size={14}
-                  className={`text-[#7a6e64] transition-transform duration-200 ${
+                  className={`text-[#7a6e64] transition-duration-200 ${
                     isProfileOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -173,7 +173,7 @@ const Navbar = () => {
                     {/* User Info */}
                     <div className="px-3 py-3 border-b border-[#f0e8df]">
                       <div className="flex items-center gap-3">
-                        <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-base font-bold overflow-hidden shrink-0">
+                        <div className="relative w-10 h-10 rounded-full bg-linear-to-br from-[#c9a88a] to-[#b07c5b] flex items-center justify-center text-white text-base font-bold overflow-hidden shrink-0">
                           {user.image ? (
                             <Image
                               src={user.image}
@@ -331,7 +331,7 @@ const Navbar = () => {
                 <Link
                   href="/signup"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-2.5 rounded-lg text-sm font-semibold text-center text-white bg-gradient-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all"
+                  className="block px-4 py-2.5 rounded-lg text-sm font-semibold text-center text-white bg-linear-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all"
                 >
                   Sign Up
                 </Link>

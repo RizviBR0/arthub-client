@@ -239,7 +239,7 @@ export default function ArtworkDetailsPage() {
                 className={`w-full py-4 rounded-lg flex items-center justify-center gap-2 text-lg font-medium transition-all shadow-md ${
                   isSold 
                     ? "bg-[#ece5de] text-[#a89888] cursor-not-allowed border border-[#d4c3b3]"
-                    : "bg-gradient-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] text-white hover:shadow-xl transform hover:-translate-y-0.5"
+                    : "bg-linear-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] text-white hover:shadow-xl hover:-translate-y-0.5"
                 }`}
               >
                 <FiShoppingCart size={20} />

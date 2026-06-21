@@ -28,6 +28,7 @@ export default function ProfilePage() {
     }
 
     // Initialize form data from session
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData({
       name: session.user.name || "",
       image: session.user.image || "",
@@ -171,7 +172,7 @@ export default function ProfilePage() {
 
               {/* Email (Read Only) */}
               <div>
-                <label className="block text-[#3d3029] font-medium mb-2 text-opacity-70">Email Address</label>
+                <label className="block text-[#3d3029] font-medium mb-2 text-[#3d3029]/70">Email Address</label>
                 <input
                   type="email"
                   value={session?.user?.email || ""}

@@ -41,17 +41,22 @@ export default function SignUpPage() {
 
     try {
       let finalImageUrl = undefined;
-      
+
       if (imageFile instanceof File) {
         toast.loading("Uploading profile image...", { id: toastId });
         const uploadData = new FormData();
         uploadData.append("image", imageFile);
-        
-        const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_KEY;
-        const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-          method: "POST",
-          body: uploadData,
-        });
+
+        const imgbbKey =
+          process.env.NEXT_PUBLIC_IMGBB_API_KEY ||
+          process.env.NEXT_PUBLIC_IMGBB_KEY;
+        const imgRes = await fetch(
+          `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+          {
+            method: "POST",
+            body: uploadData,
+          },
+        );
 
         const imgJson = await imgRes.json();
         if (!imgJson.success) {
@@ -78,7 +83,9 @@ export default function SignUpPage() {
         router.push("/");
       }
     } catch (err) {
-      toast.error(err.message || "Something went wrong. Please try again.", { id: toastId });
+      toast.error(err.message || "Something went wrong. Please try again.", {
+        id: toastId,
+      });
     } finally {
       setLoading(false);
     }
@@ -166,11 +173,12 @@ export default function SignUpPage() {
           {/* Form */}
           <form onSubmit={onSubmit} className="space-y-4">
             {/* Profile Image Upload */}
-            <div>
-              <label className="block text-sm font-medium text-[#4a3f37] mb-2 text-center">
-                Profile Image <span className="text-[#a89888] font-normal">(Optional)</span>
+            <div className="flex flex-col items-start">
+              <label className="block text-sm font-medium text-[#4a3f37] mb-2 text-left">
+                Profile Image{" "}
+                <span className="text-[#a89888] font-normal">(Optional)</span>
               </label>
-              <div className="flex justify-center mb-4">
+              <div className="flex mx-auto justify-center mb-4">
                 <div className="w-32 sm:w-36 aspect-square">
                   <ImageUpload
                     value={imageFile}
@@ -276,7 +284,6 @@ export default function SignUpPage() {
               </div>
             </div>
 
-
             {/* Role Selection */}
             <div>
               <label className="block text-sm font-medium text-[#4a3f37] mb-2">
@@ -318,7 +325,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 mt-2 rounded-lg text-white font-semibold text-base bg-gradient-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-3 mt-2 rounded-lg text-white font-semibold text-base bg-linear-to-r from-[#c9a88a] to-[#b07c5b] hover:from-[#b8977a] hover:to-[#9e6c4d] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

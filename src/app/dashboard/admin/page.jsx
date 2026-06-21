@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -39,17 +39,7 @@ export default function AdminDashboard() {
 
   const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 
-  useEffect(() => {
-    if (isPending) return;
-    if (!session || session.user.role !== "admin") {
-      router.push("/");
-      toast.error("Access denied. Admin only.");
-      return;
-    }
-    fetchAll();
-  }, [session, isPending, router]);
-
-  const fetchAll = async () => {
+  const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
       const [usersRes, artworksRes, transactionsRes, analyticsRes] = await Promise.all([
@@ -69,7 +59,18 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API]);
+
+  useEffect(() => {
+    if (isPending) return;
+    if (!session || session.user.role !== "admin") {
+      router.push("/");
+      toast.error("Access denied. Admin only.");
+      return;
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchAll();
+  }, [session, isPending, router, fetchAll]);
 
   const handleUpdateRole = async (userId, newRole) => {
     setConfirmModalState({

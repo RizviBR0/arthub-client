@@ -45,7 +45,7 @@ const TopArtists = () => {
             className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
           >
             Discover Artists 
-            <FiArrowRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+            <FiArrowRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
           </Link>
         </div>
 
@@ -63,7 +63,7 @@ const TopArtists = () => {
           <div className="flex flex-wrap justify-center gap-10 lg:gap-16">
             {artists.map((artist) => (
               <div key={artist._id} className="group flex flex-col items-center text-center">
-                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-5 border-[4px] border-white shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
+                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-5 border-[4px] border-white shadow-lg transition-duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
                   <Image
                     src={artist.image}
                     alt={artist.name}

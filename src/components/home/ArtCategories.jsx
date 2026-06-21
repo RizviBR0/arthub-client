@@ -87,7 +87,7 @@ const ArtCategories = () => {
           className="inline-flex items-center gap-2 text-[#b07c5b] font-semibold hover:text-[#3d3029] transition-colors group"
         >
           View All Artworks
-          <FiArrowUpRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+          <FiArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
         </Link>
       </div>
 
@@ -102,17 +102,17 @@ const ArtCategories = () => {
               src={category.image}
               alt={category.name}
               fill
-              className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              className="object-cover transition-duration-1000 ease-out group-hover:scale-105"
             />
             
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2d2522]/90 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-[#2d2522]/90 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
             
-            <div className="absolute top-6 right-6 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100 border border-white/20">
+            <div className="absolute top-6 right-6 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100 border border-white/20">
               <FiArrowUpRight className="text-white" size={20} />
             </div>
 
             <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 text-left">
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <div className="translate-y-4 group-hover:translate-y-0 transition-duration-500">
                 <span className="inline-block px-3 py-1 mb-3 text-[10px] font-bold uppercase tracking-widest text-[#2d2522] bg-white/90 backdrop-blur-sm rounded-sm">
                   {category.name}
                 </span>
