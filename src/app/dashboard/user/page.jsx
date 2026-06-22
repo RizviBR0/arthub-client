@@ -5,7 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { FiUser, FiShoppingBag, FiStar, FiCheck } from "react-icons/fi";
 import toast from "react-hot-toast";
-import { getUserPurchases } from "@/lib/api/user";
+import { getUserPurchases, getUserDetails } from "@/lib/api/user";
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function UserDashboard() {
   
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState(null);
   
   const [name, setName] = useState("");
   const [updatingProfile, setUpdatingProfile] = useState(false);
@@ -24,6 +25,7 @@ export default function UserDashboard() {
       return;
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setName(session.user.name || "");
 
     const fetchPurchases = async () => {
@@ -37,7 +39,17 @@ export default function UserDashboard() {
       }
     };
 
+    const fetchDetails = async () => {
+      try {
+        const data = await getUserDetails();
+        setUserDetails(data);
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+      }
+    };
+
     fetchPurchases();
+    fetchDetails();
   }, [session, isPending, router]);
 
   const handleUpdateProfile = async (e) => {
@@ -141,7 +153,7 @@ export default function UserDashboard() {
                 <div>
                   <p className="text-sm text-[#e8ddd1]">Current Plan</p>
                   <p className="text-xl font-bold font-serif capitalize">
-                    {session.user.subscriptionTier || "Free"} Member
+                    {(userDetails?.subscriptionTier || session.user.subscriptionTier || "Free")} Member
                   </p>
                 </div>
               </div>
@@ -151,17 +163,17 @@ export default function UserDashboard() {
                 <div className="flex items-end justify-between">
                   <p className="text-2xl font-bold text-[#b07c5b]">
                     {(() => {
-                      const tier = session.user.subscriptionTier || "free";
-                      const count = session.user.purchaseCount || 0;
+                      const tier = userDetails?.subscriptionTier || session.user.subscriptionTier || "free";
+                      const count = typeof userDetails?.purchaseCount === "number" ? userDetails.purchaseCount : (session.user.purchaseCount || 0);
                       let limit = 3;
                       if (tier === "pro") limit = 9;
                       if (tier === "premium") return "Unlimited";
                       return `${Math.max(0, limit - count)} remaining`;
                     })()}
                   </p>
-                  {session.user.subscriptionTier !== "premium" && (
+                  {(userDetails?.subscriptionTier || session.user.subscriptionTier) !== "premium" && (
                     <p className="text-xs text-[#a89888]">
-                      {session.user.purchaseCount || 0} used
+                      {typeof userDetails?.purchaseCount === "number" ? userDetails.purchaseCount : (session.user.purchaseCount || 0)} used
                     </p>
                   )}
                 </div>

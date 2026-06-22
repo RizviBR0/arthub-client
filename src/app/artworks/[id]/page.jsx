@@ -22,6 +22,7 @@ export default function ArtworkDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [dbUser, setDbUser] = useState(null);
 
   const [confirmModalState, setConfirmModalState] = useState({
     isOpen: false,
@@ -36,8 +37,8 @@ export default function ArtworkDetailsPage() {
     setConfirmModalState(prev => ({ ...prev, isOpen: false }));
   };
 
-  const tier = user?.subscriptionTier || "free";
-  const count = user?.purchaseCount || 0;
+  const tier = dbUser?.subscriptionTier || user?.subscriptionTier || "free";
+  const count = typeof dbUser?.purchaseCount === "number" ? dbUser.purchaseCount : (user?.purchaseCount || 0);
   let limit = 3;
   if (tier === "pro") limit = 9;
   if (tier === "premium") limit = Infinity;
@@ -62,10 +63,23 @@ export default function ArtworkDetailsPage() {
       }
     };
 
+    const fetchDbUser = async () => {
+      try {
+        const { getUserDetails } = await import("@/lib/api/user");
+        const details = await getUserDetails();
+        setDbUser(details);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
     if (id) {
       fetchArtwork();
     }
-  }, [id]);
+    if (user) {
+      fetchDbUser();
+    }
+  }, [id, user]);
 
   const handleDelete = async () => {
     setConfirmModalState({

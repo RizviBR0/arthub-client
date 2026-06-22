@@ -93,8 +93,8 @@ function CheckoutSuccessContent() {
       <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-[#e8ddd1] overflow-hidden text-center">
         
         {/* Success Header */}
-        <div className="bg-linear-to-b from-[#faf5ef] to-white pt-12 pb-8 px-6">
-          <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-100 transition-hover:scale-105 duration-500">
+        <div className="bg-linear-to-b from-[#faf5ef] to-white dark:from-[#292524] dark:to-[#1c1917] pt-12 pb-8 px-6">
+          <div className="w-24 h-24 bg-green-50 text-green-500 dark:bg-green-950/30 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-100 dark:border-green-900/50 transition-hover:scale-105 duration-500">
             <FiCheckCircle size={48} />
           </div>
           <h1 className="text-4xl font-serif font-bold text-[#3d3029] mb-3">Order Confirmed!</h1>

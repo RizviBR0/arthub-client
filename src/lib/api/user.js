@@ -20,3 +20,11 @@ export const getUserAuthMethods = async () => {
   if (!res.ok) throw new Error("Failed to fetch auth methods");
   return res.json();
 };
+
+export const getUserDetails = async () => {
+  const res = await fetch(`${baseURL}/api/user/details`, {
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error("Failed to fetch user details");
+  return res.json();
+};

@@ -31,19 +31,19 @@ export default async function Success({ searchParams }) {
     return (
       <div className="min-h-screen bg-[#faf8f5] py-20 px-4 sm:px-6 flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-[#e8ddd1] p-10 max-w-lg w-full text-center shadow-xl">
-          <FiCheckCircle className="text-green-500 w-20 h-20 mx-auto mb-6" />
+          <FiCheckCircle className="text-green-500 dark:text-green-400 w-20 h-20 mx-auto mb-6 animate-pulse" />
           <h1 className="text-3xl font-serif font-bold text-[#3d3029] mb-4">
             Payment Successful!
           </h1>
           <p className="text-lg text-[#7a6e64] mb-8">
             Thank you for upgrading your account! A receipt has been sent to{' '}
-            <span className="font-semibold text-[#5a4d42]">{customerEmail}</span>.
+            <span className="font-semibold text-[#5a4d42] dark:text-[#d6d3d1]">{customerEmail}</span>.
           </p>
           
-          <div className="bg-[#faf5ef] p-4 rounded-lg mb-8 text-left border border-[#e8ddd1]">
+          <div className="bg-[#faf8f5] dark:bg-[#1c1917] p-4 rounded-lg mb-8 text-left border border-[#e8ddd1]">
             <h3 className="font-bold text-[#3d3029] mb-2">Next Steps:</h3>
-            <ul className="text-sm text-[#5a4d42] space-y-2 list-disc list-inside">
-              <li>Your subscription tier has been upgraded to <span className="capitalize font-semibold">{metadata.tier}</span>.</li>
+            <ul className="text-sm text-[#5a4d42] dark:text-[#d6d3d1] space-y-2 list-disc list-inside">
+              <li>Your subscription tier has been upgraded to <span className="capitalize font-semibold">{metadata?.tier || 'Pro'}</span>.</li>
               <li>You now have access to premium artist features.</li>
               <li>Go to your dashboard to manage your new portfolio settings.</li>
             </ul>

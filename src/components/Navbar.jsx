@@ -29,9 +29,11 @@ const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [dbUser, setDbUser] = useState(null);
+
   // Calculate subscription and limits
-  const tier = user?.subscriptionTier || "free";
-  const count = user?.purchaseCount || 0;
+  const tier = dbUser?.subscriptionTier || user?.subscriptionTier || "free";
+  const count = typeof dbUser?.purchaseCount === "number" ? dbUser.purchaseCount : (user?.purchaseCount || 0);
   let limit = 3;
   if (tier === "pro") limit = 9;
   if (tier === "premium") limit = "∞";
@@ -45,8 +47,25 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-  }, []);
+
+    const fetchDbUser = async () => {
+      try {
+        const { getUserDetails } = await import("@/lib/api/user");
+        const details = await getUserDetails();
+        setDbUser(details);
+      } catch (error) {
+        console.error("Error fetching user details in Navbar:", error);
+      }
+    };
+
+    if (user) {
+      fetchDbUser();
+    } else {
+      setDbUser(null);
+    }
+  }, [user]);
 
   const handleSignOut = async () => {
     await authClient.signOut();
