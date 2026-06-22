@@ -12,3 +12,11 @@ export const getUserPurchases = async () => {
   const data = await res.json();
   return data;
 };
+
+export const getUserAuthMethods = async () => {
+  const res = await fetch(`${baseURL}/api/user/auth-methods`, {
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error("Failed to fetch auth methods");
+  return res.json();
+};

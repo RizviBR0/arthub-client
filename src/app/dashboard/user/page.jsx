@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { FiUser, FiShoppingBag, FiStar, FiCheck, FiLogOut } from "react-icons/fi";
+import { FiUser, FiShoppingBag, FiStar, FiCheck } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { getUserPurchases } from "@/lib/api/user";
 
@@ -14,7 +14,7 @@ export default function UserDashboard() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   
-    const [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
   useEffect(() => {
@@ -24,8 +24,7 @@ export default function UserDashboard() {
       return;
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setName(session.user.name);
+    setName(session.user.name || "");
 
     const fetchPurchases = async () => {
       try {
@@ -43,31 +42,47 @@ export default function UserDashboard() {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    if (!name.trim()) {
+      toast.error("Name is required");
+      return;
+    }
     setUpdatingProfile(true);
+    const toastId = toast.loading("Updating name...");
     
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/profile`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ name })
+      const { error } = await authClient.updateUser({
+        name: name,
       });
 
-      if (!res.ok) throw new Error("Failed to update profile");
+      if (error) {
+        throw new Error(error.message || "Failed to update profile");
+      }
       
-      toast.success("Profile updated successfully! Please log in again to see changes.");
+      toast.success("Profile updated successfully!", { id: toastId });
+      window.location.reload();
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while updating profile");
+      toast.error(error.message || "An error occurred while updating profile", { id: toastId });
     } finally {
       setUpdatingProfile(false);
     }
   };
 
-
   if (isPending || loading) {
-    return <div className="p-8 animate-pulse flex space-x-4"><div className="flex-1 space-y-6 py-1"><div className="h-2 bg-slate-200 rounded"></div><div className="space-y-3"><div className="h-2 bg-slate-200 rounded col-span-2"></div></div></div></div>;
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 bg-[#ece5de] rounded w-64"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="h-48 bg-[#ece5de] rounded-xl col-span-1"></div>
+            <div className="h-48 bg-[#ece5de] rounded-xl col-span-2"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
+
+  if (!session) return null;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
@@ -78,9 +93,10 @@ export default function UserDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-                <div className="lg:col-span-1 space-y-8">
+        {/* Left Column — Profile details & subscription */}
+        <div className="lg:col-span-1 space-y-8">
           
-                    <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
+          <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-[#e8ddd1] bg-[#faf8f5] flex items-center gap-2">
               <FiUser className="text-[#b07c5b]" />
               <h2 className="text-lg font-bold text-[#3d3029]">Profile Details</h2>
@@ -109,7 +125,7 @@ export default function UserDashboard() {
               <button
                 type="submit"
                 disabled={updatingProfile}
-                className="w-full py-2.5 bg-[#3d3029] text-white rounded-md font-medium hover:bg-[#2d2522] transition-colors disabled:opacity-70 mt-2"
+                className="w-full py-2.5 bg-[#3d3029] text-white rounded-md font-medium hover:bg-[#2d2522] transition-colors disabled:opacity-70 mt-2 cursor-pointer"
               >
                 {updatingProfile ? "Saving..." : "Save Changes"}
               </button>
@@ -154,9 +170,10 @@ export default function UserDashboard() {
           )}
         </div>
 
-                <div className="lg:col-span-2">
+        {/* Right Column — Purchase History */}
+        <div className="lg:col-span-2">
           <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden h-full">
-            <div className="px-6 py-5 border-b border-[#e8ddd1] flex items-center gap-2">
+            <div className="px-6 py-5 border-b border-[#e8ddd1] flex items-center gap-2 bg-[#faf8f5]">
               <FiShoppingBag className="text-[#b07c5b]" />
               <h2 className="text-xl font-bold text-[#3d3029] font-serif">Purchase History</h2>
             </div>
@@ -164,7 +181,7 @@ export default function UserDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-[#faf8f5] text-[#7a6e64] text-sm uppercase tracking-wider">
+                  <tr className="bg-[#faf8f5] border-b border-[#e8ddd1] text-[#7a6e64] text-sm uppercase tracking-wider">
                     <th className="px-6 py-4 font-medium">Artwork Name</th>
                     <th className="px-6 py-4 font-medium">Artist</th>
                     <th className="px-6 py-4 font-medium">Purchase Date</th>
@@ -175,7 +192,6 @@ export default function UserDashboard() {
                   {purchases.length === 0 ? (
                     <tr>
                       <td colSpan="4" className="px-6 py-16 text-center text-[#7a6e64]">
-                        <FiShoppingBag size={32} className="mx-auto mb-3 opacity-50" />
                         You haven&apos;t purchased any artworks yet.
                       </td>
                     </tr>
@@ -188,7 +204,7 @@ export default function UserDashboard() {
                         <td className="px-6 py-4 text-[#5a4d42] truncate max-w-37.5">
                           {purchase.artwork?.artistName || "Unknown Artist"}
                         </td>
-                        <td className="px-6 py-4 text-[#5a4d42]">
+                        <td className="px-6 py-4 text-[#7a6e64] text-sm">
                           {new Date(purchase.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-[#3d3029]">
@@ -216,13 +232,19 @@ export default function UserDashboard() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {purchases.map(purchase => purchase.artwork && (
-              <div key={purchase._id} className="bg-white rounded-xl border border-[#e8ddd1] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
-                <div className="aspect-4/5 relative bg-[#ece5de]">
+              <div key={purchase._id} className="bg-white rounded-xl border border-[#e8ddd1] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col animate-in fade-in duration-200">
+                <div className="aspect-4/5 relative bg-[#ece5de] overflow-hidden">
                   <img src={purchase.artwork.image} alt={purchase.artwork.title} className="w-full h-full object-cover" />
                 </div>
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="font-bold text-[#3d3029] truncate">{purchase.artwork.title}</h3>
-                  <button onClick={() => router.push(`/artworks/${purchase.artwork._id}`)} className="mt-4 pt-2 pb-2 w-full border-2 border-[#b07c5b] text-[#b07c5b] rounded-lg text-sm font-medium hover:bg-[#b07c5b] hover:text-white transition-colors">
+                <div className="p-4 flex flex-col flex-1 justify-between bg-white">
+                  <div>
+                    <h3 className="font-bold text-[#3d3029] truncate">{purchase.artwork.title}</h3>
+                    <p className="text-xs text-[#7a6e64] mt-0.5">by {purchase.artwork.artistName}</p>
+                  </div>
+                  <button 
+                    onClick={() => router.push(`/artworks/${purchase.artwork._id}`)} 
+                    className="mt-4 pt-2 pb-2 w-full border border-[#b07c5b] text-[#b07c5b] rounded-lg text-sm font-medium hover:bg-[#b07c5b] hover:text-white transition-colors cursor-pointer"
+                  >
                     View Details
                   </button>
                 </div>

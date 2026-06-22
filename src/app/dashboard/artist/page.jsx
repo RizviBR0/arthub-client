@@ -84,9 +84,28 @@ export default function ArtistDashboard() {
     });
   };
 
+  const sortedArtworks = [...artworks].sort((a, b) => {
+    if (a.status === "sold" && b.status !== "sold") return 1;
+    if (a.status !== "sold" && b.status === "sold") return -1;
+    return 0;
+  });
+
   if (isPending || loading) {
-    return <div className="p-8 animate-pulse flex space-x-4"><div className="flex-1 space-y-6 py-1"><div className="h-2 bg-slate-200 rounded"></div><div className="space-y-3"><div className="grid grid-cols-3 gap-4"><div className="h-2 bg-slate-200 rounded col-span-2"></div><div className="h-2 bg-slate-200 rounded col-span-1"></div></div><div className="h-2 bg-slate-200 rounded"></div></div></div></div>;
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 bg-[#ece5de] rounded w-64"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="h-24 bg-[#ece5de] rounded-xl"></div>
+            <div className="h-24 bg-[#ece5de] rounded-xl"></div>
+            <div className="h-24 bg-[#ece5de] rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
+
+  if (session?.user?.role !== "artist") return null;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
@@ -97,13 +116,13 @@ export default function ArtistDashboard() {
         </div>
         <Link 
           href="/dashboard/artist/add"
-          className="flex items-center gap-2 bg-[#b07c5b] hover:bg-[#9e6c4d] text-white px-6 py-2.5 rounded-md font-medium transition-colors shadow-sm self-start md:self-auto"
+          className="flex items-center gap-2 bg-[#b07c5b] hover:bg-[#9e6c4d] text-white px-6 py-2.5 rounded-md font-medium transition-colors shadow-sm self-start md:self-auto cursor-pointer"
         >
           <FiPlus size={18} /> Add New Artwork
         </Link>
       </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-white p-6 rounded-xl border border-[#e8ddd1] shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-[#faf5ef] rounded-full flex items-center justify-center text-[#b07c5b]">
             <FiPlus size={24} />
@@ -133,14 +152,14 @@ export default function ArtistDashboard() {
         </div>
       </div>
 
-            <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden mb-12">
-        <div className="px-6 py-5 border-b border-[#e8ddd1]">
+      <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden mb-12">
+        <div className="px-6 py-5 border-b border-[#e8ddd1] bg-[#faf8f5]">
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Manage Portfolio</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#faf8f5] text-[#7a6e64] text-sm uppercase tracking-wider">
+              <tr className="bg-[#faf8f5] border-b border-[#e8ddd1] text-[#7a6e64] text-sm uppercase tracking-wider">
                 <th className="px-6 py-4 font-medium">Artwork</th>
                 <th className="px-6 py-4 font-medium">Category</th>
                 <th className="px-6 py-4 font-medium">Price</th>
@@ -156,12 +175,12 @@ export default function ArtistDashboard() {
                   </td>
                 </tr>
               ) : (
-                artworks.map((art) => (
+                sortedArtworks.map((art) => (
                   <tr key={art._id} className="hover:bg-[#faf8f5] transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 relative rounded overflow-hidden bg-[#ece5de] shrink-0 border border-[#e8ddd1]">
-                          <Image src={art.image} alt={art.title} fill className="object-cover" />
+                          <Image src={art.image} alt={art.title} fill className="object-cover" unoptimized />
                         </div>
                         <span className="font-semibold text-[#3d3029]">{art.title}</span>
                       </div>
@@ -170,7 +189,7 @@ export default function ArtistDashboard() {
                     <td className="px-6 py-4 text-[#3d3029] font-medium">${art.price.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`inline-block px-2.5 py-1 text-xs font-bold rounded-sm uppercase ${
-                        art.status === "sold" ? "bg-red-50 text-red-600 border border-red-100" : "bg-green-50 text-green-600 border border-green-100"
+                        art.status === "sold" ? "bg-red-55 text-red-600 border border-red-100" : "bg-green-50 text-green-600 border border-green-100"
                       }`}>
                         {art.status}
                       </span>
@@ -190,7 +209,7 @@ export default function ArtistDashboard() {
                             </Link>
                             <button 
                               onClick={() => handleDelete(art._id)}
-                              className="p-2 text-[#7a6e64] hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                              className="p-2 text-[#7a6e64] hover:text-red-500 hover:bg-red-50 rounded transition-colors cursor-pointer"
                               title="Delete"
                             >
                               <FiTrash2 size={18} />
@@ -207,14 +226,14 @@ export default function ArtistDashboard() {
         </div>
       </div>
 
-            <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-[#e8ddd1]">
+      <div className="bg-white rounded-xl border border-[#e8ddd1] shadow-sm overflow-hidden">
+        <div className="px-6 py-5 border-b border-[#e8ddd1] bg-[#faf8f5]">
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Recent Sales History</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#faf8f5] text-[#7a6e64] text-sm uppercase tracking-wider">
+              <tr className="bg-[#faf8f5] border-b border-[#e8ddd1] text-[#7a6e64] text-sm uppercase tracking-wider">
                 <th className="px-6 py-4 font-medium">Artwork Title</th>
                 <th className="px-6 py-4 font-medium">Buyer Name</th>
                 <th className="px-6 py-4 font-medium">Purchase Date</th>
@@ -237,7 +256,7 @@ export default function ArtistDashboard() {
                     <td className="px-6 py-4 text-[#5a4d42]">
                       {sale.buyerName || "Unknown Buyer"}
                     </td>
-                    <td className="px-6 py-4 text-[#5a4d42]">
+                    <td className="px-6 py-4 text-[#7a6e64] text-sm">
                       {new Date(sale.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-right font-bold text-[#3d3029]">

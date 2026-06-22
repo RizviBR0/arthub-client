@@ -22,6 +22,11 @@ export default function CommentsSection({ artworkId }) {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
 
+  // Purchase verification state
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const [checkingPurchase, setCheckingPurchase] = useState(true);
+
+
   const [confirmModalState, setConfirmModalState] = useState({
     isOpen: false,
     title: "",
@@ -53,6 +58,32 @@ export default function CommentsSection({ artworkId }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (artworkId) fetchComments();
   }, [artworkId, fetchComments]);
+
+  useEffect(() => {
+    const checkUserPurchase = async () => {
+      if (!user) {
+        setCheckingPurchase(false);
+        return;
+      }
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/purchases`, {
+          credentials: "include"
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const purchased = data.some(p => p.artworkId === artworkId);
+          setHasPurchased(purchased);
+        }
+      } catch (error) {
+        console.error("Failed to check purchases:", error);
+      } finally {
+        setCheckingPurchase(false);
+      }
+    };
+
+    checkUserPurchase();
+  }, [user, artworkId]);
+
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -151,7 +182,19 @@ export default function CommentsSection({ artworkId }) {
 
       {/* Add Comment Form */}
       <div className="mb-10 bg-[#faf8f5] p-6 rounded-xl border border-[#e8ddd1]">
-        {user ? (
+        {!user ? (
+          <div className="text-center py-4">
+            <p className="text-[#7a6e64] mb-3">You must be logged in to join the discussion.</p>
+            <Link 
+              href="/signin" 
+              className="inline-block px-6 py-2 border-2 border-[#b07c5b] text-[#b07c5b] rounded-md font-medium hover:bg-[#faf5ef] transition-colors"
+            >
+              Sign In to Comment
+            </Link>
+          </div>
+        ) : checkingPurchase ? (
+          <div className="text-center py-4 text-[#7a6e64] animate-pulse">Checking purchase status...</div>
+        ) : hasPurchased ? (
           <form onSubmit={handleAddComment}>
             <textarea
               value={newComment}
@@ -171,14 +214,8 @@ export default function CommentsSection({ artworkId }) {
             </div>
           </form>
         ) : (
-          <div className="text-center py-4">
-            <p className="text-[#7a6e64] mb-3">You must be logged in to join the discussion.</p>
-            <Link 
-              href="/signin" 
-              className="inline-block px-6 py-2 border-2 border-[#b07c5b] text-[#b07c5b] rounded-md font-medium hover:bg-[#faf5ef] transition-colors"
-            >
-              Sign In to Comment
-            </Link>
+          <div className="text-center py-4 text-[#7a6e64]">
+            <p className="mb-1">You can only comment on artworks you have purchased.</p>
           </div>
         )}
       </div>

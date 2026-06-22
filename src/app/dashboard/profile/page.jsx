@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FiUser, FiSave, FiEdit3 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import ImageUpload from "@/components/ImageUpload";
+import { getUserAuthMethods } from "@/lib/api/user";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function ProfilePage() {
     confirmPassword: "",
   });
   const [changingPassword, setChangingPassword] = useState(false);
+  const [hasPassword, setHasPassword] = useState(true);
 
   const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 
@@ -41,6 +43,10 @@ export default function ProfilePage() {
       image: session.user.image || "",
       bio: session.user.bio || "",
     });
+
+    getUserAuthMethods()
+      .then((data) => setHasPassword(data.hasPassword))
+      .catch((err) => console.error("Failed to fetch auth methods", err));
   }, [session, isPending, router]);
 
   const handleChange = (e) => {
@@ -271,53 +277,59 @@ export default function ProfilePage() {
           <h2 className="text-xl font-serif font-bold text-[#3d3029]">Security & Password</h2>
           <p className="text-sm text-[#7a6e64] mt-1">Keep your account secure by updating your password regularly.</p>
         </div>
-        <form onSubmit={handlePasswordChange} className="p-6 md:p-8 space-y-6">
-          <div className="max-w-md space-y-5">
-            <div>
-              <label className="block text-[#3d3029] font-medium mb-2 text-sm">Current Password</label>
-              <input
-                type="password"
-                value={passwordData.currentPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                disabled={changingPassword}
-                className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-[#3d3029] font-medium mb-2 text-sm">New Password</label>
-              <input
-                type="password"
-                value={passwordData.newPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                disabled={changingPassword}
-                className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-[#3d3029] font-medium mb-2 text-sm">Confirm New Password</label>
-              <input
-                type="password"
-                value={passwordData.confirmPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                disabled={changingPassword}
-                className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
-                required
-              />
-            </div>
+        {!hasPassword ? (
+          <div className="p-6 md:p-8 text-[#7a6e64]">
+            <p>Your account is linked via a third-party provider (e.g., Google). Password management is handled by your provider.</p>
           </div>
-          
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={changingPassword}
-              className="px-6 py-2.5 bg-[#3d3029] text-white rounded-lg font-medium hover:bg-[#2a211c] transition-colors disabled:opacity-70 shadow-sm"
-            >
-              {changingPassword ? "Updating..." : "Update Password"}
-            </button>
-          </div>
-        </form>
+        ) : (
+          <form onSubmit={handlePasswordChange} className="p-6 md:p-8 space-y-6">
+            <div className="max-w-md space-y-5">
+              <div>
+                <label className="block text-[#3d3029] font-medium mb-2 text-sm">Current Password</label>
+                <input
+                  type="password"
+                  value={passwordData.currentPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                  disabled={changingPassword}
+                  className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[#3d3029] font-medium mb-2 text-sm">New Password</label>
+                <input
+                  type="password"
+                  value={passwordData.newPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                  disabled={changingPassword}
+                  className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[#3d3029] font-medium mb-2 text-sm">Confirm New Password</label>
+                <input
+                  type="password"
+                  value={passwordData.confirmPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                  disabled={changingPassword}
+                  className="w-full px-4 py-2.5 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={changingPassword}
+                className="px-6 py-2.5 bg-[#3d3029] text-white rounded-lg font-medium hover:bg-[#2a211c] transition-colors disabled:opacity-70 shadow-sm"
+              >
+                {changingPassword ? "Updating..." : "Update Password"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

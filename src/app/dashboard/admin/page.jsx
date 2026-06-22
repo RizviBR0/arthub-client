@@ -336,8 +336,9 @@ export default function AdminDashboard() {
               <thead>
                 <tr className="bg-[#faf8f5] border-b border-[#e8ddd1] text-[#7a6e64] text-xs uppercase tracking-wider">
                   <th className="px-6 py-4 font-medium">Transaction ID</th>
-                  <th className="px-6 py-4 font-medium">Buyer</th>
-                  <th className="px-6 py-4 font-medium">Artwork</th>
+                  <th className="px-6 py-4 font-medium">Type</th>
+                  <th className="px-6 py-4 font-medium">User</th>
+                  <th className="px-6 py-4 font-medium">Details</th>
                   <th className="px-6 py-4 font-medium">Amount</th>
                   <th className="px-6 py-4 font-medium">Date</th>
                   <th className="px-6 py-4 font-medium">Status</th>
@@ -346,7 +347,7 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-[#e8ddd1]">
                 {transactions.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="px-6 py-16 text-center text-[#7a6e64]">No transactions yet.</td>
+                    <td colSpan="7" className="px-6 py-16 text-center text-[#7a6e64]">No transactions yet.</td>
                   </tr>
                 ) : (
                   transactions.map((t) => (
@@ -354,8 +355,15 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-[#7a6e64] text-xs font-mono">
                         {t._id.toString().slice(-8).toUpperCase()}
                       </td>
-                      <td className="px-6 py-4 text-[#3d3029] text-sm">{t.buyerName || t.buyerEmail || "N/A"}</td>
-                      <td className="px-6 py-4 text-[#5a4d42] text-sm max-w-50 truncate">{t.artworkTitle || "N/A"}</td>
+                      <td className="px-6 py-4 text-[#5a4d42] text-sm capitalize">
+                        {t.type === "artwork_purchase" ? "Purchase" : (t.type === "subscription_upgrade" ? "Subscription" : (t.type || "N/A"))}
+                      </td>
+                      <td className="px-6 py-4 text-[#3d3029] text-sm">
+                        {t.buyerEmail || t.buyerName || t.userId || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 text-[#5a4d42] text-sm max-w-50 truncate">
+                        {t.artworkTitle || (t.tier ? `${t.tier.charAt(0).toUpperCase() + t.tier.slice(1)} Upgrade` : "N/A")}
+                      </td>
                       <td className="px-6 py-4 text-[#3d3029] font-medium">${t.amount || 0}</td>
                       <td className="px-6 py-4 text-[#7a6e64] text-sm">
                         {t.createdAt ? new Date(t.createdAt).toLocaleDateString() : "N/A"}
