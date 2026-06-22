@@ -192,9 +192,9 @@ export default function CommentsSection({ artworkId }) {
               Sign In to Comment
             </Link>
           </div>
-        ) : checkingPurchase ? (
+        ) : checkingPurchase && user.role === "user" ? (
           <div className="text-center py-4 text-[#7a6e64] animate-pulse">Checking purchase status...</div>
-        ) : hasPurchased ? (
+        ) : (hasPurchased || user.role === "admin" || user.role === "artist") ? (
           <form onSubmit={handleAddComment}>
             <textarea
               value={newComment}
