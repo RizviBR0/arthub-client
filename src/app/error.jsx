@@ -16,7 +16,7 @@ export default function Error({ error, reset }) {
       </div>
       
       <h2 className="text-3xl font-serif font-bold text-[#3d3029] mb-3 text-center">
-        Something went wrong!
+        Something went wrong. Reload.
       </h2>
       
       <p className="text-[#7a6e64] text-center max-w-md mb-8">
