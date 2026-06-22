@@ -128,6 +128,38 @@ export default function AdminDashboard() {
     });
   };
 
+  const handleUpdateArtworkStatus = async (artworkId, newStatus) => {
+    setConfirmModalState({
+      isOpen: true,
+      title: "Update Status",
+      message: `Change artwork status to ${newStatus === "sold" ? "Sold" : "Available"}?`,
+      confirmText: "Update",
+      isDanger: false,
+      onConfirm: async () => {
+        setUpdatingId(artworkId);
+        const toastId = toast.loading("Updating status...");
+        try {
+          const res = await fetch(`${API}/api/admin/artworks/${artworkId}/status`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ status: newStatus }),
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.msg || "Failed to update status");
+          }
+          setArtworks(artworks.map((a) => (a._id === artworkId ? { ...a, status: newStatus } : a)));
+          toast.success("Artwork status updated", { id: toastId });
+        } catch (error) {
+          toast.error(error.message, { id: toastId });
+        } finally {
+          setUpdatingId(null);
+        }
+      }
+    });
+  };
+
   const getRoleBadge = (role) => {
     const styles = {
       admin: "bg-purple-100 text-purple-800",
@@ -306,11 +338,20 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 text-[#7a6e64] text-sm capitalize">{a.category}</td>
                       <td className="px-6 py-4 text-[#3d3029] font-medium">${a.price}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          a.sold ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
-                        }`}>
-                          {a.sold ? "Sold" : "Available"}
-                        </span>
+                        <div className="relative inline-block w-full sm:w-auto">
+                          <select
+                            className={`appearance-none w-full text-xs font-medium rounded-full px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-[#b07c5b] transition-colors cursor-pointer ${
+                              a.status === "sold" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+                            }`}
+                            value={a.status === "sold" ? "sold" : "available"}
+                            onChange={(e) => handleUpdateArtworkStatus(a._id, e.target.value)}
+                            disabled={updatingId === a._id}
+                          >
+                            <option value="available">Available</option>
+                            <option value="sold">Sold</option>
+                          </select>
+                          <FiChevronDown className={`absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none ${a.status === "sold" ? "text-red-700" : "text-green-700"}`} size={12} />
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button

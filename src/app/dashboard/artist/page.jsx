@@ -189,9 +189,9 @@ export default function ArtistDashboard() {
                     <td className="px-6 py-4 text-[#3d3029] font-medium">${art.price.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`inline-block px-2.5 py-1 text-xs font-bold rounded-sm uppercase ${
-                        art.status === "sold" ? "bg-red-55 text-red-600 border border-red-100" : "bg-green-50 text-green-600 border border-green-100"
+                        art.status === "sold" ? "bg-red-50 text-red-600 border border-red-100" : "bg-green-50 text-green-600 border border-green-100"
                       }`}>
-                        {art.status}
+                        {art.status === "sold" ? "sold" : "available"}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
