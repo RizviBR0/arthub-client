@@ -1,19 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiCheck, FiStar, FiZap } from "react-icons/fi";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { getUserDetails } from "@/lib/api/user";
 
 export default function PricingPage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [loadingTier, setLoadingTier] = useState(null);
+  const [dbUser, setDbUser] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isPending && session?.user && session.user.role !== "user") {
       router.push("/");
+    }
+
+    const fetchDbUser = async () => {
+      try {
+        const details = await getUserDetails();
+        setDbUser(details);
+      } catch (error) {
+        console.error("Error fetching user details in PricingPage:", error);
+      }
+    };
+
+    if (session?.user) {
+      fetchDbUser();
     }
   }, [session, isPending, router]);
 
@@ -55,7 +70,7 @@ export default function PricingPage() {
     }
   };
 
-    const currentTier = "basic"; 
+  const currentTier = dbUser?.subscriptionTier || session?.user?.subscriptionTier || "free"; 
   return (
     <div className="bg-[#faf8f5] py-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
@@ -85,12 +100,21 @@ export default function PricingPage() {
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 10% transaction fee</li>
             </ul>
 
-            <button 
-              disabled 
-              className="w-full py-3 rounded-lg border-2 border-[#d4c3b3] text-[#7a6e64] font-medium bg-[#faf8f5] cursor-not-allowed"
-            >
-              Current Plan
-            </button>
+            {currentTier === "free" ? (
+              <button 
+                disabled 
+                className="w-full py-3 rounded-lg border-2 border-[#d4c3b3] text-[#7a6e64] font-medium bg-[#faf8f5] cursor-not-allowed"
+              >
+                Current Plan
+              </button>
+            ) : (
+              <button 
+                disabled 
+                className="w-full py-3 rounded-lg border-2 border-[#e8ddd1] text-[#a89888] font-medium bg-[#faf8f5] cursor-not-allowed"
+              >
+                Included
+              </button>
+            )}
           </div>
 
           <div className="bg-white rounded-2xl border-2 border-[#b07c5b] p-8 shadow-xl relative flex flex-col md:-translate-y-4">
@@ -111,22 +135,31 @@ export default function PricingPage() {
               <li className="flex items-center gap-3 text-[#5a4d42]"><FiCheck className="text-green-500" /> 5% transaction fee</li>
             </ul>
 
-            <form action="/api/checkout_sessions" method="POST">
-              <input type="hidden" name="tier" value="pro" />
+            {currentTier === "pro" ? (
               <button 
-                type="submit"
-                onClick={(e) => {
-                  if (!session) {
-                    e.preventDefault();
-                    toast("Please log in to upgrade your account", { icon: "🔒" });
-                    router.push("/signin");
-                  }
-                }}
-                className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors flex justify-center items-center gap-2"
+                disabled 
+                className="w-full py-3 rounded-lg border-2 border-[#b07c5b] text-[#b07c5b] font-medium bg-white cursor-not-allowed mt-4"
               >
-                Upgrade to Pro
+                Current Plan
               </button>
-            </form>
+            ) : (
+              <form action="/api/checkout_sessions" method="POST">
+                <input type="hidden" name="tier" value="pro" />
+                <button 
+                  type="submit"
+                  onClick={(e) => {
+                    if (!session) {
+                      e.preventDefault();
+                      toast("Please log in to upgrade your account", { icon: "🔒" });
+                      router.push("/signin");
+                    }
+                  }}
+                  className="w-full py-3 rounded-lg bg-[#b07c5b] hover:bg-[#9e6c4d] text-white font-medium shadow-md transition-colors flex justify-center items-center gap-2 mt-4"
+                >
+                  Upgrade to Pro
+                </button>
+              </form>
+            )}
           </div>
 
           <div className="bg-[#3d3029] text-white rounded-2xl border border-[#3d3029] p-8 shadow-xl flex flex-col">
@@ -144,22 +177,31 @@ export default function PricingPage() {
               <li className="flex items-center gap-3 font-bold text-[#d4c3b3]"><FiZap className="text-yellow-400" /> 0% transaction fee</li>
             </ul>
 
-            <form action="/api/checkout_sessions" method="POST">
-              <input type="hidden" name="tier" value="premium" />
+            {currentTier === "premium" ? (
               <button 
-                type="submit"
-                onClick={(e) => {
-                  if (!session) {
-                    e.preventDefault();
-                    toast("Please log in to upgrade your account", { icon: "🔒" });
-                    router.push("/signin");
-                  }
-                }}
-                className="w-full py-3 rounded-lg bg-white text-[#3d3029] hover:bg-[#faf5ef] font-bold shadow-md transition-colors flex justify-center items-center gap-2"
+                disabled 
+                className="w-full py-3 rounded-lg border-2 border-[#d4c3b3] text-[#d4c3b3] font-bold bg-[#3d3029] cursor-not-allowed mt-4"
               >
-                Go Premium
+                Current Plan
               </button>
-            </form>
+            ) : (
+              <form action="/api/checkout_sessions" method="POST">
+                <input type="hidden" name="tier" value="premium" />
+                <button 
+                  type="submit"
+                  onClick={(e) => {
+                    if (!session) {
+                      e.preventDefault();
+                      toast("Please log in to upgrade your account", { icon: "🔒" });
+                      router.push("/signin");
+                    }
+                  }}
+                  className="w-full py-3 rounded-lg bg-white text-[#3d3029] hover:bg-[#faf5ef] font-bold shadow-md transition-colors flex justify-center items-center gap-2 mt-4"
+                >
+                  Go Premium
+                </button>
+              </form>
+            )}
           </div>
 
         </div>
