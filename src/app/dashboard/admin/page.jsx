@@ -329,7 +329,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-3">
                         <div className="w-12 h-12 relative rounded-md overflow-hidden bg-[#ece5de]">
                           {a.image && (
-                            <Image src={a.image} alt={a.title} fill className="object-cover" unoptimized />
+                            <Image src={a.image} alt={a.title} fill className="object-cover" />
                           )}
                         </div>
                       </td>

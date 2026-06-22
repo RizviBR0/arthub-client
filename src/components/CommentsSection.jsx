@@ -181,44 +181,46 @@ export default function CommentsSection({ artworkId }) {
       </h3>
 
       {/* Add Comment Form */}
-      <div className="mb-10 bg-[#faf8f5] p-6 rounded-xl border border-[#e8ddd1]">
-        {!user ? (
-          <div className="text-center py-4">
-            <p className="text-[#7a6e64] mb-3">You must be logged in to join the discussion.</p>
-            <Link 
-              href="/signin" 
-              className="inline-block px-6 py-2 border-2 border-[#b07c5b] text-[#b07c5b] rounded-md font-medium hover:bg-[#faf5ef] transition-colors"
-            >
-              Sign In to Comment
-            </Link>
-          </div>
-        ) : checkingPurchase && user.role === "user" ? (
-          <div className="text-center py-4 text-[#7a6e64] animate-pulse">Checking purchase status...</div>
-        ) : (hasPurchased || user.role === "admin" || user.role === "artist") ? (
-          <form onSubmit={handleAddComment}>
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Share your thoughts on this artwork..."
-              rows="3"
-              className="w-full px-4 py-3 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors resize-none mb-3"
-            ></textarea>
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={submitting || !newComment.trim()}
-                className="px-6 py-2.5 bg-[#3d3029] text-white rounded-md font-medium hover:bg-[#2d2522] transition-colors disabled:opacity-70"
+      {(!user || user.role === "user") && (
+        <div className="mb-10 bg-[#faf8f5] p-6 rounded-xl border border-[#e8ddd1]">
+          {!user ? (
+            <div className="text-center py-4">
+              <p className="text-[#7a6e64] mb-3">You must be logged in to join the discussion.</p>
+              <Link 
+                href="/signin" 
+                className="inline-block px-6 py-2 border-2 border-[#b07c5b] text-[#b07c5b] rounded-md font-medium hover:bg-[#faf5ef] transition-colors"
               >
-                {submitting ? "Posting..." : "Post Comment"}
-              </button>
+                Sign In to Comment
+              </Link>
             </div>
-          </form>
-        ) : (
-          <div className="text-center py-4 text-[#7a6e64]">
-            <p className="mb-1">You can only comment on artworks you have purchased.</p>
-          </div>
-        )}
-      </div>
+          ) : checkingPurchase ? (
+            <div className="text-center py-4 text-[#7a6e64] animate-pulse">Checking purchase status...</div>
+          ) : hasPurchased ? (
+            <form onSubmit={handleAddComment}>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Share your thoughts on this artwork..."
+                rows="3"
+                className="w-full px-4 py-3 border border-[#d4c3b3] rounded-lg focus:outline-none focus:border-[#b07c5b] focus:ring-1 focus:ring-[#b07c5b] transition-colors resize-none mb-3"
+              ></textarea>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={submitting || !newComment.trim()}
+                  className="px-6 py-2.5 bg-[#3d3029] text-white rounded-md font-medium hover:bg-[#2d2522] transition-colors disabled:opacity-70"
+                >
+                  {submitting ? "Posting..." : "Post Comment"}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="text-center py-4 text-[#7a6e64]">
+              <p className="mb-1">You can only comment on artworks you have purchased.</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Comments List */}
       <div className="space-y-6">

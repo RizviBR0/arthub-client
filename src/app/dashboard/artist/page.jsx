@@ -180,7 +180,7 @@ export default function ArtistDashboard() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 relative rounded overflow-hidden bg-[#ece5de] shrink-0 border border-[#e8ddd1]">
-                          <Image src={art.image} alt={art.title} fill className="object-cover" unoptimized />
+                          <Image src={art.image} alt={art.title} fill className="object-cover" />
                         </div>
                         <span className="font-semibold text-[#3d3029]">{art.title}</span>
                       </div>

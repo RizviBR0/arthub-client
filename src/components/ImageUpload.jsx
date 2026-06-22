@@ -98,7 +98,6 @@ export default function ImageUpload({ value, onChange, disabled, shape = "rectan
             alt="Uploaded preview" 
             fill 
             className="object-cover"
-            unoptimized
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <button

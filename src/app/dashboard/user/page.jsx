@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { FiUser, FiShoppingBag, FiStar, FiCheck } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { getUserPurchases, getUserDetails } from "@/lib/api/user";
@@ -246,7 +247,7 @@ export default function UserDashboard() {
             {purchases.map(purchase => purchase.artwork && (
               <div key={purchase._id} className="bg-white rounded-xl border border-[#e8ddd1] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col animate-in fade-in duration-200">
                 <div className="aspect-4/5 relative bg-[#ece5de] overflow-hidden">
-                  <img src={purchase.artwork.image} alt={purchase.artwork.title} className="w-full h-full object-cover" />
+                  <Image src={purchase.artwork.image} alt={purchase.artwork.title} fill className="object-cover" />
                 </div>
                 <div className="p-4 flex flex-col flex-1 justify-between bg-white">
                   <div>

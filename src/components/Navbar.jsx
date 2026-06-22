@@ -187,7 +187,6 @@ const Navbar = () => {
                       fill
                       className="object-cover"
                       referrerPolicy="no-referrer"
-                      unoptimized
                     />
                   ) : (
                     user.name?.charAt(0)?.toUpperCase() || "U"
@@ -224,7 +223,6 @@ const Navbar = () => {
                               fill
                               className="object-cover"
                               referrerPolicy="no-referrer"
-                              unoptimized
                             />
                           ) : (
                             user.name?.charAt(0)?.toUpperCase() || "U"
