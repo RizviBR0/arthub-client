@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 export async function proxy(request) {
   const { pathname } = request.nextUrl;
   
-  // Check for the session cookie
-  const sessionCookie = request.cookies.get("better-auth.session_token");
+  // Check for the session cookie (handles both local dev and production __Secure- prefix)
+  const sessionCookie = request.cookies.get("better-auth.session_token") || request.cookies.get("__Secure-better-auth.session_token");
 
   // Protect all /dashboard routes
   if (pathname.startsWith("/dashboard")) {
