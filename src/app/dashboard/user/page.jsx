@@ -5,6 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { FiUser, FiShoppingBag, FiStar, FiCheck, FiLogOut } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { getUserPurchases } from "@/lib/api/user";
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -28,13 +29,7 @@ export default function UserDashboard() {
 
     const fetchPurchases = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/purchases`, {
-          credentials: "include"
-        });
-        
-        if (!res.ok) throw new Error("Failed to fetch");
-        
-        const data = await res.json();
+        const data = await getUserPurchases();
         setPurchases(data);
       } catch (error) {
         console.error("Failed to fetch purchases:", error);
@@ -170,10 +165,10 @@ export default function UserDashboard() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-[#faf8f5] text-[#7a6e64] text-sm uppercase tracking-wider">
-                    <th className="px-6 py-4 font-medium">Order ID</th>
-                    <th className="px-6 py-4 font-medium">Date</th>
-                    <th className="px-6 py-4 font-medium">Artist ID</th>
-                    <th className="px-6 py-4 font-medium text-right">Amount</th>
+                    <th className="px-6 py-4 font-medium">Artwork Name</th>
+                    <th className="px-6 py-4 font-medium">Artist</th>
+                    <th className="px-6 py-4 font-medium">Purchase Date</th>
+                    <th className="px-6 py-4 font-medium text-right">Price</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#e8ddd1]">
@@ -187,14 +182,14 @@ export default function UserDashboard() {
                   ) : (
                     purchases.map((purchase) => (
                       <tr key={purchase._id} className="hover:bg-[#faf8f5] transition-colors">
-                        <td className="px-6 py-4 font-mono text-sm text-[#5a4d42]">
-                          #{purchase.stripeSessionId.slice(-8)}
+                        <td className="px-6 py-4 font-semibold text-[#5a4d42]">
+                          {purchase.artworkTitle || "Unknown Artwork"}
+                        </td>
+                        <td className="px-6 py-4 text-[#5a4d42] truncate max-w-37.5">
+                          {purchase.artwork?.artistName || "Unknown Artist"}
                         </td>
                         <td className="px-6 py-4 text-[#5a4d42]">
                           {new Date(purchase.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 text-[#5a4d42] truncate max-w-37.5">
-                          {purchase.artistId}
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-[#3d3029]">
                           ${purchase.amount.toLocaleString()}
@@ -208,6 +203,33 @@ export default function UserDashboard() {
           </div>
         </div>
 
+      </div>
+
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-[#3d3029] font-serif mb-6 flex items-center gap-2">
+          <FiStar className="text-[#b07c5b]" /> Bought Artworks Gallery
+        </h2>
+        {purchases.length === 0 ? (
+          <div className="text-center py-10 bg-white rounded-xl border border-[#e8ddd1] shadow-sm">
+            <p className="text-[#7a6e64]">No artworks to display.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {purchases.map(purchase => purchase.artwork && (
+              <div key={purchase._id} className="bg-white rounded-xl border border-[#e8ddd1] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                <div className="aspect-4/5 relative bg-[#ece5de]">
+                  <img src={purchase.artwork.image} alt={purchase.artwork.title} className="w-full h-full object-cover" />
+                </div>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-bold text-[#3d3029] truncate">{purchase.artwork.title}</h3>
+                  <button onClick={() => router.push(`/artworks/${purchase.artwork._id}`)} className="mt-4 pt-2 pb-2 w-full border-2 border-[#b07c5b] text-[#b07c5b] rounded-lg text-sm font-medium hover:bg-[#b07c5b] hover:text-white transition-colors">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,11 +8,13 @@ import Image from "next/image";
 import { FiPlus, FiEdit2, FiTrash2, FiDollarSign, FiTrendingUp } from "react-icons/fi";
 import ConfirmModal from "@/components/ConfirmModal";
 import toast from "react-hot-toast";
+import { getArtistArtworks, getArtistSales } from "@/lib/api/artist";
 
 export default function ArtistDashboard() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [artworks, setArtworks] = useState([]);
+  const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [confirmModalState, setConfirmModalState] = useState({
     isOpen: false,
@@ -28,8 +30,8 @@ export default function ArtistDashboard() {
   };
 
   const totalArtworks = artworks.length;
-  const soldArtworks = artworks.filter(a => a.status === "sold").length;
-  const totalEarnings = soldArtworks * 450; // Mock earnings
+  const soldArtworks = sales.length || artworks.filter(a => a.status === "sold").length;
+  const totalEarnings = sales.reduce((sum, sale) => sum + (sale.amount || 0), 0);
 
   useEffect(() => {
     if (isPending) return;
@@ -39,29 +41,24 @@ export default function ArtistDashboard() {
       return;
     }
 
-    const fetchMyArtworks = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artist/artworks`, {
-          headers: {
-                                                                                        },
-                    credentials: "include"
-        });
+        const [artData, salesData] = await Promise.all([
+          getArtistArtworks().catch(() => []),
+          getArtistSales().catch(() => [])
+        ]);
         
-                if (!res.ok) {
-           throw new Error("Failed to fetch");
-        }
-        
-        const data = await res.json();
-        setArtworks(data);
+        setArtworks(artData);
+        setSales(salesData);
       } catch (error) {
-        console.error("Failed to fetch artworks:", error);
+        console.error("Failed to fetch dashboard data:", error);
         setArtworks([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMyArtworks();
+    fetchData();
   }, [session, isPending, router]);
 
   const handleDelete = async (id) => {
@@ -214,8 +211,43 @@ export default function ArtistDashboard() {
         <div className="px-6 py-5 border-b border-[#e8ddd1]">
           <h2 className="text-xl font-bold text-[#3d3029] font-serif">Recent Sales History</h2>
         </div>
-        <div className="px-6 py-12 text-center text-[#7a6e64]">
-          <p>Sales tracking and transaction history will be available after Stripe integration.</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#faf8f5] text-[#7a6e64] text-sm uppercase tracking-wider">
+                <th className="px-6 py-4 font-medium">Artwork Title</th>
+                <th className="px-6 py-4 font-medium">Buyer Name</th>
+                <th className="px-6 py-4 font-medium">Purchase Date</th>
+                <th className="px-6 py-4 font-medium text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#e8ddd1]">
+              {sales.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="px-6 py-12 text-center text-[#7a6e64]">
+                    No sales recorded yet.
+                  </td>
+                </tr>
+              ) : (
+                sales.map((sale) => (
+                  <tr key={sale._id} className="hover:bg-[#faf8f5] transition-colors">
+                    <td className="px-6 py-4 font-semibold text-[#5a4d42]">
+                      {sale.artworkTitle || "Unknown Artwork"}
+                    </td>
+                    <td className="px-6 py-4 text-[#5a4d42]">
+                      {sale.buyerName || "Unknown Buyer"}
+                    </td>
+                    <td className="px-6 py-4 text-[#5a4d42]">
+                      {new Date(sale.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 text-right font-bold text-[#3d3029]">
+                      ${sale.amount?.toLocaleString()}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
       <ConfirmModal {...confirmModalState} onClose={closeConfirmModal} />
