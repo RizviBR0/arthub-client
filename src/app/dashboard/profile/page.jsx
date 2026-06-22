@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { FiUser, FiSave, FiEdit3 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import ImageUpload from "@/components/ImageUpload";
-import { getUserAuthMethods } from "@/lib/api/user";
+import { getUserAuthMethods, getUserDetails } from "@/lib/api/user";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -43,6 +43,16 @@ export default function ProfilePage() {
       image: session.user.image || "",
       bio: session.user.bio || "",
     });
+
+    const fetchDetails = async () => {
+      try {
+        const details = await getUserDetails();
+        setFormData((prev) => ({ ...prev, bio: details.bio || "" }));
+      } catch (err) {
+        console.error("Failed to fetch user details", err);
+      }
+    };
+    fetchDetails();
 
     getUserAuthMethods()
       .then((data) => setHasPassword(data.hasPassword))
