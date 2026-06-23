@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 
-const baseURL = "";
+const baseURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
 
 export const subscription = async (data) => {
   try {

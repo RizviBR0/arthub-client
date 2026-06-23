@@ -98,7 +98,7 @@ function CheckoutSuccessContent() {
             <FiCheckCircle size={48} />
           </div>
           <h1 className="text-4xl font-serif font-bold text-[#3d3029] mb-3">Order Confirmed!</h1>
-          <p className="text-[#7a6e64] text-lg">Thank you for your purchase, {session.user.name}.</p>
+          <p className="text-[#7a6e64] text-lg">Thank you for your purchase, {session?.user?.name || "Valued User"}.</p>
         </div>
 
         {/* Transaction Details */}
