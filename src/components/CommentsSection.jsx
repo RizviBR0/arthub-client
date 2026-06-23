@@ -42,7 +42,7 @@ export default function CommentsSection({ artworkId }) {
 
   const fetchComments = useCallback(async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${artworkId}/comments`);
+      const res = await fetch(`${""}/api/artworks/${artworkId}/comments`);
       if (res.ok) {
         const data = await res.json();
         setComments(data);
@@ -66,7 +66,7 @@ export default function CommentsSection({ artworkId }) {
         return;
       }
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/purchases`, {
+        const res = await fetch(`${""}/api/user/purchases`, {
           credentials: "include"
         });
         if (res.ok) {
@@ -91,7 +91,7 @@ export default function CommentsSection({ artworkId }) {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/comments`, {
+      const res = await fetch(`${""}/api/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -121,7 +121,7 @@ export default function CommentsSection({ artworkId }) {
       isDanger: true,
       onConfirm: async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/comments/${id}`, {
+          const res = await fetch(`${""}/api/comments/${id}`, {
             method: "DELETE",
             credentials: "include"
           });
@@ -152,7 +152,7 @@ export default function CommentsSection({ artworkId }) {
     if (!editText.trim()) return;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/comments/${id}`, {
+      const res = await fetch(`${""}/api/comments/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

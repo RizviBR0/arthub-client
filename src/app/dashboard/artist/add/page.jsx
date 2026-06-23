@@ -70,7 +70,7 @@ export default function AddArtworkPage() {
 
       toast.loading("Saving artwork details...", { id: toastId });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks`, {
+      const res = await fetch(`${""}/api/artworks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

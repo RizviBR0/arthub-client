@@ -47,7 +47,7 @@ export default function ArtworkDetailsPage() {
   useEffect(() => {
     const fetchArtwork = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`);
+        const res = await fetch(`${""}/api/artworks/${id}`);
         if (!res.ok) {
           if (res.status === 404) {
              setArtwork(null);
@@ -112,7 +112,7 @@ export default function ArtworkDetailsPage() {
 
     const toastId = toast.loading("Preparing secure checkout...");
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/create-checkout-session`, {
+      const res = await fetch(`${""}/api/create-checkout-session`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // For session cookie

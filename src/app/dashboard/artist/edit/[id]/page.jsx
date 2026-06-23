@@ -37,7 +37,7 @@ export default function EditArtworkPage() {
 
     const fetchArtwork = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`);
+        const res = await fetch(`${""}/api/artworks/${id}`);
         if (!res.ok) throw new Error("Failed to fetch artwork");
         
         const data = await res.json();
@@ -119,7 +119,7 @@ export default function EditArtworkPage() {
 
       toast.loading("Saving changes...", { id: toastId });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
+      const res = await fetch(`${""}/api/artworks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

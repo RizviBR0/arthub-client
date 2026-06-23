@@ -27,7 +27,7 @@ export default function ProfilePage() {
   const [changingPassword, setChangingPassword] = useState(false);
   const [hasPassword, setHasPassword] = useState(true);
 
-  const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+  const API = "";
 
   useEffect(() => {
     if (isPending) return;

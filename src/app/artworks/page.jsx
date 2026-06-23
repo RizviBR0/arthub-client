@@ -56,7 +56,7 @@ function ArtworksBrowser() {
       if (maxPrice) queryParams.append("maxPrice", maxPrice);
       if (sort) queryParams.append("sort", sort);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks?${queryParams.toString()}`);
+      const res = await fetch(`${""}/api/artworks?${queryParams.toString()}`);
       const data = await res.json();
       
       if (data.artworks) {

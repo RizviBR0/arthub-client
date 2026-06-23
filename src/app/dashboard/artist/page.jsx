@@ -73,7 +73,7 @@ export default function ArtistDashboard() {
         toast.success("Artwork deleted!");
         
         try {
-          await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/${id}`, {
+          await fetch(`${""}/api/artworks/${id}`, {
              method: "DELETE",
              credentials: "include"
            });

@@ -48,7 +48,7 @@ export default function PricingPage() {
     const toastId = toast.loading("Preparing secure checkout...");
     
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/create-subscription-checkout`, {
+      const res = await fetch(`${""}/api/create-subscription-checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

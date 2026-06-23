@@ -90,7 +90,7 @@ export default function Banner() {
   useEffect(() => {
     const fetchTrendingArtworks = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artworks/featured`);
+        const res = await fetch(`${""}/api/artworks/featured`);
         const data = await res.json();
         if (data && data.length > 0) {
           setDynamicArtworks(data.filter(a => a.image));

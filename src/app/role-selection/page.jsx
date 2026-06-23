@@ -27,7 +27,7 @@ export default function RoleSelectionPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/user/set-initial-role`, {
+      const res = await fetch(`${""}/api/user/set-initial-role`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -33,7 +33,7 @@ function CheckoutSuccessContent() {
 
     const verifyCheckout = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/checkout-success?session_id=${sessionId}`, {
+        const res = await fetch(`${""}/api/checkout-success?session_id=${sessionId}`, {
           credentials: "include"
         });
         

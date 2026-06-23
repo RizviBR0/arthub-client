@@ -1,4 +1,4 @@
-const baseURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+const baseURL = "";
 
 export const getArtistArtworks = async () => {
   const res = await fetch(`${baseURL}/api/artist/artworks`, {

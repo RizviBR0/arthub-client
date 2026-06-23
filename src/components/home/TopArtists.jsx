@@ -12,7 +12,7 @@ const TopArtists = () => {
   useEffect(() => {
     const fetchTopArtists = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/artists/top`);
+        const res = await fetch(`${""}/api/artists/top`);
         const data = await res.json();
         if (data && data.length > 0) {
           setArtists(data);

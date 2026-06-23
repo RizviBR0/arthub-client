@@ -37,7 +37,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
 
-  const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+  const API = "";
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
@@ -49,13 +49,19 @@ export default function AdminDashboard() {
         fetch(`${API}/api/admin/analytics`, { credentials: "include" }),
       ]);
 
-      if (usersRes.ok) setUsers(await usersRes.json());
+      if (!usersRes.ok) {
+        const errorData = await usersRes.json().catch(() => ({}));
+        throw new Error(`Users API Error: ${errorData.msg || usersRes.status}`);
+      }
+
+      setUsers(await usersRes.json());
+      
       if (artworksRes.ok) setArtworks(await artworksRes.json());
       if (transactionsRes.ok) setTransactions(await transactionsRes.json());
       if (analyticsRes.ok) setAnalytics(await analyticsRes.json());
     } catch (error) {
       console.error("Failed to fetch admin data:", error);
-      toast.error("Failed to load admin data");
+      toast.error(error.message || "Failed to load admin data");
     } finally {
       setLoading(false);
     }

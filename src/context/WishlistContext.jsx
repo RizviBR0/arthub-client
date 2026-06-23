@@ -22,7 +22,7 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlist = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/wishlist`, {
+      const res = await fetch(`${""}/api/wishlist`, {
         headers: {
           // Use the session cookie for auth
         },
@@ -56,7 +56,7 @@ export const WishlistProvider = ({ children }) => {
     setWishlistIds(newIds);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000"}/api/wishlist/toggle`, {
+      const res = await fetch(`${""}/api/wishlist/toggle`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

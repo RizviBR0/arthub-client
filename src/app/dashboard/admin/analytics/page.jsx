@@ -31,7 +31,7 @@ const COLORS = [
   "#9e6c4d",
 ];
 
-const API = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+const API = "";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
