@@ -42,7 +42,7 @@ export default function RoleSelectionPage() {
       toast.success("Account finalized successfully!");
       
       // Force token/session refresh so the new role is applied in the client
-      await authClient.getSession();
+      await authClient.updateUser({ name: session?.user?.name || "User" });
       
       // Redirect to homepage via hard reload to absolutely guarantee fresh session state
       window.location.href = "/";
