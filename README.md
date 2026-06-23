@@ -4,7 +4,7 @@
 ArtHub is a digital platform that connects art lovers, collectors, and buyers with talented artists. The platform allows users to browse, discover, and purchase original artworks. Artists can upload and manage their creations, while an admin oversees the entire system.
 
 ## Live URL
-[Live Deployment URL (Vercel) - Add Here]
+https://arthub-client-six.vercel.app/
 
 ## Key Features
 *   **Role-Based Access Control**: Separate dashboards and permissions for Users (Buyers), Artists, and Admins.
