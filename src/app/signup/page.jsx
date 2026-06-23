@@ -80,7 +80,7 @@ export default function SignUpPage() {
         toast.error(error.message || "Registration failed", { id: toastId });
       } else {
         toast.success("Account created successfully!", { id: toastId });
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (err) {
       toast.error(err.message || "Something went wrong. Please try again.", {

@@ -32,7 +32,7 @@ export default function SignInPage() {
         toast.error(error.message || "Invalid credentials");
       } else {
         toast.success("Logged in successfully!");
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (err) {
       toast.error("Something went wrong. Please try again.");

@@ -72,7 +72,7 @@ const Navbar = () => {
     setIsProfileOpen(false);
     setIsMenuOpen(false);
     toast.success("Logged out successfully");
-    router.push("/");
+    window.location.href = "/";
   };
 
   const navLinks = [
